@@ -16,6 +16,7 @@ private:
     size_t numOfPages = 0;
 
 public:
+    Member() {};
     Member(Member& obj)
     {
         name = _strdup(obj.name);

@@ -14,6 +14,7 @@ private:
     size_SI numOfStatuses = 0;
 
 public:
+    FanPage() {};
     FanPage(FanPage& obj) // Copy constructor
     {
         name = _strdup(obj.name);

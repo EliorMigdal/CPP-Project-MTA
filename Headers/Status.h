@@ -8,6 +8,7 @@ private:
     char* statusContent = nullptr;
 
 public:
+    Status() {}
     Status(Status& obj) //Copy constructor
     {
         statusDate = obj.statusDate;

@@ -6,9 +6,7 @@
 //----------------------------------------------------------
 inline void Member::addFriend(Member& member)
 {
-    if (numOfFriends + 1 < MEMBERS)
-        friends[numOfFriends] = member;
-    numOfFriends++;
+    friends[numOfFriends++] = member;
 }
 //----------------------------------------------------------
 
