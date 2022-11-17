@@ -1,5 +1,6 @@
 #ifndef CPP_ASSIGNMENT1_GLOBALVARIABLES_H
 #define CPP_ASSIGNMENT1_GLOBALVARIABLES_H
+#pragma warning (disable:4996)
 #include <iostream>
 using std::cout;
 using std::cin;
