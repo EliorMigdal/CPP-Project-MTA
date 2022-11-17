@@ -9,12 +9,24 @@ class FanPage : public SystemData {
 private:
     char* name = nullptr;
     Member* members = nullptr;
-    unsigned short int numOfMembers = 0;
+    size_SI numOfMembers = 0;
     Status* bulletinBoard = nullptr;
-    unsigned short int numOfStatuses = 0;
+    size_SI numOfStatuses = 0;
 
 public:
-    FanPage(const char* _name) {strcpy(name, _name);}
+    FanPage(FanPage& obj) // Copy constructor
+    {
+        name = _strdup(obj.name);
+        members = obj.members;
+        numOfMembers = obj.numOfMembers;
+        bulletinBoard = obj.bulletinBoard;
+        numOfStatuses = obj.numOfStatuses;
+    }
+    FanPage(const char*& _name)
+    {
+        name = _strdup(_name);
+    }
+  
 };
 
 #endif

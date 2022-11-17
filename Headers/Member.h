@@ -4,25 +4,40 @@
 #include "Status.h"
 class Status;
 class FanPage;
-
 class Member {
 private:
     char* name = nullptr;
     Date birthday = {0,0,0};
     Status* bulletinBoard = nullptr;
-    int numOfStatuses = 0;
+    size_t numOfStatuses = 0;
     Member* friends = nullptr;
-    int numOfFriends = 0;
+    size_t numOfFriends = 0;
     FanPage* pages = nullptr;
-    int numOfPages = 0;
+    size_t numOfPages = 0;
 
 public:
-    void addFriend(Member& member)
+    Member(Member& obj)
     {
-        if (numOfFriends + 1 < MEMBERS)
-            friends[numOfFriends] = member;
-        numOfFriends++;
+        name = _strdup(obj.name);
+        birthday = obj.birthday;
+        bulletinBoard = obj.bulletinBoard;
+        friends = obj.friends;
+        pages = obj.pages;
+        numOfFriends = obj.numOfFriends;
+        numOfPages = obj.numOfPages;
+        numOfStatuses = obj.numOfStatuses;
+    }//Copy constructor.
+    Member(const char*& _name)
+    {
+       name = _strdup(_name);
     }
+    Member(const char*& _name, const Date& _birthday)
+    {
+        name = _strdup(_name);
+        birthday = _birthday;
+    }
+    inline void addFriend(Member& member);
+  
 };
 
 #endif
