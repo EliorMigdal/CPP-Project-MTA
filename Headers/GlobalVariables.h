@@ -24,6 +24,6 @@ struct Time
     Byte hour = 0, minutes = 0, seconds = 0;
 };
 
-const enum class STATUS_TYPE{TEXT = 0, IMAGE = 1, VIDEO = 2};
+enum class STATUS_TYPE{TEXT = 0, IMAGE = 1, VIDEO = 2};
 
 #endif

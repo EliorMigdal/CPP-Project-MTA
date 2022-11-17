@@ -1,4 +1,4 @@
-#include "GlobalVariables.h"
+#include "../Headers/GlobalVariables.h"
 
 int main() {
     cout << "Check" << endl;
