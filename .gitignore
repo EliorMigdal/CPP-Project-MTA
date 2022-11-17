@@ -1,3 +1,5 @@
 cmake-build-debug/
 *.txt
 .DS_Store
+.idea/
+.vs/
