@@ -9,11 +9,16 @@ int main() {
     cout << "Please choose your action:" << endl;
     cin >> userDecision;
 
-    while (userDecision != 12)
+    while (userDecision != EXIT)
     {
-        mainMenu.setDesicion(userDecision);
+        mainMenu.setDecision(userDecision);
         cout << "Please choose another action:" << endl;
         cin >> userDecision;
+
+        if (userDecision == EXIT)
+        {
+            //frees
+        }
     }
     return 0;
 }

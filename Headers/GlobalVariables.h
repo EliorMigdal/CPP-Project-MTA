@@ -10,6 +10,7 @@ using std::flush;
 typedef unsigned short int size_SI;
 typedef unsigned char Byte;
 //const variables
+constexpr int EXIT = 12;
 //////constexpr Byte MEMBERS = 10;
 //////static constexpr Byte NAME_LEN = 21;
 //////constexpr Byte PAGES = 10;

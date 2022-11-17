@@ -6,21 +6,23 @@
 
 class Menu : public Member, public FanPage, public Status {
 private:
-    int userDesicion = 0;
+    int userDecision = 0;
 
 public:
     Menu(){}
-    void setDesicion(int _desicion)
+    void setDecision(int _decision)
     {
-        if (_desicion < 1 || _desicion > 12)
+        if (_decision < 1 || _decision > 12)
         {
             cout << "Invalid choice. Please try again!" << endl;
             printMenu();
-            cin >> _desicion;
+            cin >> _decision;
         }
 
-        switch(_desicion)
+        switch(_decision)
         {
+            default:
+                break;
             case 1:
                 createMember();
                 break;
@@ -40,22 +42,22 @@ public:
         }
     }
 
-    int getDesicion() const {return userDesicion;}
+    int getDecision() const {return userDecision;}
 
     static void printMenu()
     {
         cout << "1 - Create a member"
-                "\t2 - Create a fanpage"
+                "\t2 - Create a fan page"
                 "\t3 - Create a status"
                 "\t4 - Show all statuses"
                 "\t5 - View 10 last statuses of a friend"
                 "\t6 - Connect 2 members"
                 "\n7 - Disconnect 2 members"
-                "\t8 - Add a member to a fanpage"
-                "\t9 - Remove a member from a fanpage"
-                "\t10 - View all members and fanpages"
-                "\t11 - View all member's friends or Fanpage's fans"
-                "\t12 - exit" << endl;
+                "\t8 - Add a member to a fan page"
+                "\t9 - Remove a member from a fan page"
+                "\t10 - View all members and fan pages"
+                "\t11 - View all member's friends or Fan page's fans"
+                "\t12 - Exit" << endl;
     }
 
     void createMember()
@@ -70,18 +72,18 @@ public:
 
     static void addStatus()
     {
-        int desicion = 0;
+        int decision = 0;
         char* name;
         cout << "Please choose where to add the status:"
                 "\n1 - A Member"
                 "\n2 - A Fan Page" << endl;
-        cin >> desicion;
-        while (desicion != 1 && desicion != 2)
+        cin >> decision;
+        while (decision != 1 && decision != 2)
         {
-            cout << "Invalid desicion. Please choose 1 or 2: " << endl;
-            cin >> desicion;
+            cout << "Invalid decision. Please choose 1 or 2: " << endl;
+            cin >> decision;
         }
-        if (desicion == 1)
+        if (decision == 1)
         {
             cout << "Please enter a member's name:" << endl;
             cin >> name;
@@ -99,20 +101,20 @@ public:
 
     static void showAllStatuses()
     {
-        int desicion = 0;
+        int decision = 0;
         char* name;
         cout << "Please choose the entity of which you want to view the statuses:"
                 "\n1 - A Member"
                 "\n2 - A Fan Page" << endl;
-        cin >> desicion;
+        cin >> decision;
 
-        while (desicion != 1 && desicion != 2)
+        while (decision != 1 && decision != 2)
         {
-            cout << "Invalid desicion. Please choose 1 or 2: " << endl;
-            cin >> desicion;
+            cout << "Invalid decision. Please choose 1 or 2: " << endl;
+            cin >> decision;
         }
 
-        if (desicion == 1)
+        if (decision == 1)
         {
             cout << "Please enter a member's name:" << endl;
             cin >> name;
@@ -151,7 +153,7 @@ public:
 
         if (found1 != -1 && found2 != -1)
         {
-            //use systemdata & member classes
+            //use system data & member classes
         }
         else
         {
