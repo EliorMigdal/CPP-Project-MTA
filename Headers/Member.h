@@ -1,7 +1,6 @@
-#ifndef CPP_ASSIGNMENT1_MEMBERS_H
-#define CPP_ASSIGNMENT1_MEMBERS_H
+#ifndef CPP_PROJECT_MEMBERS_H
+#define CPP_PROJECT_MEMBERS_H
 #include "GlobalVariables.h"
-#include "Status.h"
 class Status;
 class FanPage;
 class Member {

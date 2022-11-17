@@ -1,5 +1,5 @@
-#ifndef CPP_ASSIGNMENT1_GLOBALVARIABLES_H
-#define CPP_ASSIGNMENT1_GLOBALVARIABLES_H
+#ifndef CPP_PROJECT_GLOBALVARIABLES_H
+#define CPP_PROJECT_GLOBALVARIABLES_H
 #pragma warning (disable:4996)
 #include <iostream>
 #include "FanPage.h"

@@ -1,3 +1,5 @@
+#ifndef CPP_PROJECT_STATUS_H
+#define CPP_PROJECT_STATUS_H
 #include "GlobalVariables.h"
 
 class Status {
@@ -39,4 +41,7 @@ public:
         statusContent = new char[strlen(_content) + 1];
         strcpy(statusContent, _content);
     }
+    Status(){}
 };
+
+#endif

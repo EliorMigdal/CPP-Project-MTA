@@ -1,5 +1,6 @@
 #include "../Headers/GlobalVariables.h"
+#include "../Headers/Menu.h"
 
 int main() {
-    cout << "Check" << endl;
+    return 0;
 }
