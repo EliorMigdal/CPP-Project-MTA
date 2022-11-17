@@ -16,7 +16,7 @@ public:
         statusDate = obj.statusDate;
         statusTime = obj.statusTime;
         statusType = obj.statusType;
-        statusContent = _strdup(obj.statusContent);   
+        statusContent = strdup(obj.statusContent);
     }
     Status(const Date& _date)
     {

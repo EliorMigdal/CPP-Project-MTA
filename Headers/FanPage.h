@@ -1,5 +1,5 @@
-#ifndef CPP_CPP_PROJECT_FANPAGE_H
-#define CPP_CPP_PROJECT_FANPAGE_H
+#ifndef CPP_PROJECT_FANPAGE_H
+#define CPP_PROJECT_FANPAGE_H
 #include "GlobalVariables.h"
 #include "SystemData.h"
 class Member;
@@ -17,7 +17,7 @@ public:
     FanPage() {};
     FanPage(FanPage& obj) // Copy constructor
     {
-        name = _strdup(obj.name);
+        name = strdup(obj.name);
         members = obj.members;
         numOfMembers = obj.numOfMembers;
         bulletinBoard = obj.bulletinBoard;
@@ -25,7 +25,7 @@ public:
     }
     FanPage(const char*& _name)
     {
-        name = _strdup(_name);
+        name = strdup(_name);
     }
   
 };

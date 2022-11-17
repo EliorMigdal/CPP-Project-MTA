@@ -18,7 +18,7 @@ public:
     Member() {};
     Member(Member& obj)
     {
-        name = _strdup(obj.name);
+        name = strdup(obj.name);
         birthday = obj.birthday;
         bulletinBoard = obj.bulletinBoard;
         friends = obj.friends;
@@ -29,11 +29,11 @@ public:
     }//Copy constructor.
     Member(const char*& _name)
     {
-       name = _strdup(_name);
+       name = strdup(_name);
     }
     Member(const char*& _name, const Date& _birthday)
     {
-        name = _strdup(_name);
+        name = strdup(_name);
         birthday = _birthday;
     }
     inline void addFriend(Member& member);
