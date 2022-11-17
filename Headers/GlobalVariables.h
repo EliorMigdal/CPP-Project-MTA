@@ -2,7 +2,7 @@
 #define CPP_PROJECT_GLOBALVARIABLES_H
 #pragma warning (disable:4996)
 #include <iostream>
-#include "FanPage.h"
+#define strdup _strdup
 using std::cout;
 using std::cin;
 using std::endl;

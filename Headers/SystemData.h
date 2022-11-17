@@ -1,5 +1,5 @@
-#ifndef CPP_ASSIGNMENT1_SYSTEMDATA_H
-#define CPP_ASSIGNMENT1_SYSTEMDATA_H
+#ifndef CPP_PROJECT_SYSTEMDATA_H
+#define CPP_PROJECT_SYSTEMDATA_H
 #include "GlobalVariables.h"
 class Member;
 class FanPage;

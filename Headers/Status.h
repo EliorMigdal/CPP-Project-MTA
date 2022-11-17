@@ -41,7 +41,6 @@ public:
         statusContent = new char[strlen(_content) + 1];
         strcpy(statusContent, _content);
     }
-    Status(){}
 };
 
 #endif

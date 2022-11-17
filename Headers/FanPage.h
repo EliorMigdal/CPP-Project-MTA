@@ -1,5 +1,5 @@
-#ifndef CPP_ASSIGNMENT1_FANPAGE_H
-#define CPP_ASSIGNMENT1_FANPAGE_H
+#ifndef CPP_CPP_PROJECT_FANPAGE_H
+#define CPP_CPP_PROJECT_FANPAGE_H
 #include "GlobalVariables.h"
 #include "SystemData.h"
 class Member;
