@@ -2,6 +2,7 @@
 
 class Status {
 private:
+    int var = 123;
     Date statusDate = {0,0,0};
     Time statusTime = {0,0,0};
     STATUS_TYPE statusType = STATUS_TYPE::TEXT;
