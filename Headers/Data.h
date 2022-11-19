@@ -1,10 +1,10 @@
-#ifndef CPP_PROJECT_SYSTEMDATA_H
-#define CPP_PROJECT_SYSTEMDATA_H
+#ifndef CPP_PROJECT_DATA_H
+#define CPP_PROJECT_DATA_H
 #include "GlobalVariables.h"
 class Member;
 class FanPage;
 
-class SystemData {
+class Data {
 protected:
     size_SI numOfMembers = 0, numOfPages = 0;
     Member* members = nullptr;

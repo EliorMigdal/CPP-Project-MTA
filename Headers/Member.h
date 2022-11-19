@@ -27,17 +27,17 @@ public:
         numOfPages = obj.numOfPages;
         numOfStatuses = obj.numOfStatuses;
     }//Copy constructor.
-    Member(const char*& _name)
+    Member(const char* _name)
     {
        name = strdup(_name);
     }
-    Member(const char*& _name, const Date& _birthday)
+    Member(const char* _name, const Date& _birthday)
     {
         name = strdup(_name);
+        
         birthday = _birthday;
     }
     inline void addFriend(Member& member);
-  
 };
 
 #endif

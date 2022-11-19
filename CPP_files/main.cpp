@@ -1,17 +1,17 @@
 #include "../Headers/GlobalVariables.h"
-#include "../Headers/Menu.h"
+#include "../Headers/System.h"
 
 int main() {
-    Menu mainMenu;
+    System Facebook;
     int userDecision;
     cout << "Welcome to our social network!" << endl;
-    mainMenu.printMenu();
+    Facebook.printMenu();
     cout << "Please choose your action:" << endl;
     cin >> userDecision;
 
     while (userDecision != EXIT)
     {
-        mainMenu.setDecision(userDecision);
+        Facebook.setDecision(userDecision);
         cout << "Please choose another action:" << endl;
         cin >> userDecision;
 

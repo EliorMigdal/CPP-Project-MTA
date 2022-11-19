@@ -1,11 +1,10 @@
 #ifndef CPP_PROJECT_FANPAGE_H
 #define CPP_PROJECT_FANPAGE_H
 #include "GlobalVariables.h"
-#include "SystemData.h"
 class Member;
 class Status;
 
-class FanPage : public SystemData {
+class FanPage {
 private:
     char* name = nullptr;
     Member* members = nullptr;
