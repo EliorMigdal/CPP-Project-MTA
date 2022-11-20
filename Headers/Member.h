@@ -1,9 +1,11 @@
 #ifndef CPP_PROJECT_MEMBERS_H
 #define CPP_PROJECT_MEMBERS_H
 #include "GlobalVariables.h"
+#include "Status.h"
 class Status;
 class FanPage;
-class Member {
+
+class Member : public Status {
 private:
     char* name = nullptr;
     Date birthday = {0,0,0};
@@ -38,6 +40,11 @@ public:
         birthday = _birthday;
     }
     inline void addFriend(Member& member);
+    char* getName() const {return this->name;}
+    int getNumOfStatuses() const {return this->numOfStatuses;}
+    inline void printStatus(int index) const;
+    inline void printAllStatuses() const;
+    inline void printTenLastStatuses(Member& member) const;
 };
 
 #endif

@@ -1,8 +1,22 @@
-//
-// Created by Elior Migdal on 17/11/2022.
-//
-
 #include "../Headers/System.h"
+//----------------------------------------------------------
+int System::findMember(char *name)
+    {
+        bool found = false;
+        int foundIndex = -1;
+        for (int i = 0; i < numOfMembers && !found; i++)
+        {
+            if(strcmp(members[i].getName(), name) == 0)
+            {
+                foundIndex = i;
+                found = true;
+            }
+        }
+
+        return foundIndex;
+    }
+
+//----------------------------------------------------------
 inline bool BirthayCheck(Date& _Birthay)
 {
     return (_Birthay.day > 0 && _Birthay.day < 32 &&
@@ -143,13 +157,16 @@ void System::showAllStatuses()const
     }
 }
 //----------------------------------------------------------
-inline void System::tenLastStatuses()const
+inline void System::tenLastStatuses()
 {
     char* name = nullptr;
     cout << "Please enter a member's name:" << endl;
     cin >> name;
-    //find member
-    //inherit Member::show10last
+    int found = System::findMember(name);
+    if (found != -1)
+        Member::printTenLastStatuses(members[found]);
+    else
+        cout << name << " was not found in our system!" << endl;
 }
 //----------------------------------------------------------
 void System::connectMembers()
