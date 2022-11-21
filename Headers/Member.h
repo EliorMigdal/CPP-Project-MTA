@@ -42,9 +42,9 @@ public:
     inline void addFriend(Member& member);
     char* getName() const {return this->name;}
     int getNumOfStatuses() const {return this->numOfStatuses;}
-    inline void printStatus(int index) const;
-    inline void printAllStatuses() const;
-    inline void printTenLastStatuses(Member& member) const;
+    inline void printStatus(int index);
+    void printAllStatuses();
+    void printTenLastStatuses(Member& member);
 };
 
 #endif

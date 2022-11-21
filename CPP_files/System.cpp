@@ -65,30 +65,56 @@ void System::setDecision(int& _decision)
         showAllStatuses();
         break;
     case 5:
-        connectMembers();
+        tenLastStatuses();
         break;
-
     }   
 }
 //----------------------------------------------------------
-void System::createMember()
-{//read name and birthay from the user with validation checks instead of doing it in the class;
-    char* name = new char();
+void System::createMember() //read name and birthay from the user with validation checks instead of doing it in the class;
+{
+    char* name = new char(); //Need to create a readName function
     cout << "Creating a member: \nEnter name: " << flush;
-    cin >> name;
+    cin >> name; //Bug: Can only read one name, Like Ben instead of Ben Cohen
     cin.ignore();
-    Date Birthay;
-    cout << "Enter birthay:\nDay: \nMonth: \nYear: " << flush;
-    cin >> Birthay.day >> Birthay.month >> Birthay.year;
+    Date Birthday;
+    cout << "Enter birthday:\nDay: \nMonth: \nYear: " << flush;
+    cin >> Birthday.day >> Birthday.month >> Birthday.year; //Bug: Reads as char because of type *FIXED*
     cin.ignore();
-    while (!BirthayCheck(Birthay))
+    while (!BirthayCheck(Birthday))
     {
-        cout << "Bad birthay Enter again" << endl;
-        Birthay = { 0,0,0 };
-        cin >> Birthay.day >> Birthay.month >> Birthay.year;
+        cout << "Bad birthday, enter again:" << endl;
+        Birthday = { 0,0,0 };
+        cin >> Birthday.day >> Birthday.month >> Birthday.year;
         cin.ignore();
     }
-    Member m1(name,Birthay); 
+    Member m1(name,Birthday);
+    System::addMemberToArray(m1);
+}
+//----------------------------------------------------------
+void System::createMember(const char* _name, const Date& _date) //Added a new constructor (mostly for testing)
+{
+    Member member(_name, _date);
+    System::addMemberToArray(member);
+}
+//----------------------------------------------------------
+Member* System::transferMembers() //Reallocating memory to the members array.
+{
+    Member* output = new Member[numOfMembers+1];
+    for (int i = 0; i < numOfMembers; i++)
+        output[i] = members[i];
+    delete[] members;
+    return output;
+}
+//----------------------------------------------------------
+void System::addMemberToArray(Member &member) //Adds a member to the members array.
+{
+    if (numOfMembers == 0)
+        members = new Member;
+
+    else
+        members = System::transferMembers();
+
+    members[numOfMembers++] = member;
 }
 //----------------------------------------------------------
 void System::createFanPage()
@@ -157,9 +183,9 @@ void System::showAllStatuses()const
     }
 }
 //----------------------------------------------------------
-inline void System::tenLastStatuses()
+void System::tenLastStatuses()
 {
-    char* name = nullptr;
+    char* name; //Need to create a readName function.
     cout << "Please enter a member's name:" << endl;
     cin >> name;
     int found = System::findMember(name);

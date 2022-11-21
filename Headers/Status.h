@@ -53,7 +53,7 @@ public:
     inline char* getStatus() const {return getStatusContent();}
     inline Date getDate() const {return getStatusDate();}
     inline Time getTime() const {return getStatusTime();}
-    inline void printDate(Date date, Time time) const;
+    void printDate(Date date, Time time);
 };
 
 #endif
