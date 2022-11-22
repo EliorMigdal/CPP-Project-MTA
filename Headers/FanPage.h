@@ -6,7 +6,7 @@ class Status;
 
 class FanPage {
 private:
-    char* name = nullptr;
+    string name = "";
     Member* members = nullptr;
     size_SI numOfMembers = 0;
     Status* bulletinBoard = nullptr;
@@ -16,15 +16,15 @@ public:
     FanPage() {};
     FanPage(FanPage& obj) // Copy constructor
     {
-        name = strdup(obj.name);
-        members = obj.members;
-        numOfMembers = obj.numOfMembers;
-        bulletinBoard = obj.bulletinBoard;
-        numOfStatuses = obj.numOfStatuses;
+        this->name= obj.name;
+        this->members = obj.members;
+        this->numOfMembers = obj.numOfMembers;
+        this->bulletinBoard = obj.bulletinBoard;
+        this->numOfStatuses = obj.numOfStatuses;
     }
-    FanPage(const char*& _name)
+    FanPage(const string _name)
     {
-        name = strdup(_name);
+        name = _name;
     }
   
 };

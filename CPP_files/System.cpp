@@ -1,12 +1,12 @@
 #include "../Headers/System.h"
 //----------------------------------------------------------
-int System::findMember(char *name)
+int System::findMember(string& name)
     {
         bool found = false;
         int foundIndex = -1;
         for (int i = 0; i < numOfMembers && !found; i++)
         {
-            if(strcmp(members[i].getName(), name) == 0)
+            if(members[i].getName().compare(name) == 0)
             {
                 foundIndex = i;
                 found = true;
@@ -62,7 +62,7 @@ void System::setDecision(int& _decision)
         addStatus();
         break;
     case 4:
-        showAllStatuses();
+        //showAllStatuses();
         break;
     case 5:
         tenLastStatuses();
@@ -72,13 +72,16 @@ void System::setDecision(int& _decision)
 //----------------------------------------------------------
 void System::createMember() //read name and birthay from the user with validation checks instead of doing it in the class;
 {
-    char* name = new char(); //Need to create a readName function
+    string name; 
     cout << "Creating a member: \nEnter name: " << flush;
-    cin >> name; //Bug: Can only read one name, Like Ben instead of Ben Cohen
-    cin.ignore();
+    std::getline(cin,name); 
     Date Birthday;
-    cout << "Enter birthday:\nDay: \nMonth: \nYear: " << flush;
-    cin >> Birthday.day >> Birthday.month >> Birthday.year; //Bug: Reads as char because of type *FIXED*
+    cout << "Enter birthday:\nDay: " << flush;
+    cin >> Birthday.day;
+    cout <<"Month: " << flush;
+    cin >> Birthday.month; 
+    cout << "Year: " << endl;
+    cin >> Birthday.year;
     cin.ignore();
     while (!BirthayCheck(Birthday))
     {
@@ -91,19 +94,24 @@ void System::createMember() //read name and birthay from the user with validatio
     System::addMemberToArray(m1);
 }
 //----------------------------------------------------------
-void System::createMember(const char* _name, const Date& _date) //Added a new constructor (mostly for testing)
+void System::createMember(const string _name, const Date& _date) //Added a new constructor (mostly for testing)
 {
     Member member(_name, _date);
     System::addMemberToArray(member);
 }
 //----------------------------------------------------------
-Member* System::transferMembers() //Reallocating memory to the members array.
+void System::transferMembers() //updated
 {
-    Member* output = new Member[numOfMembers+1];
+    Member* output = new Member[numOfMembers + 1];
     for (int i = 0; i < numOfMembers; i++)
-        output[i] = members[i];
-    delete[] members;
-    return output;
+    {
+        Member temp(members[i]);
+        output[i] = temp;
+
+    }
+    delete members;
+    members = output;
+    output = nullptr;
 }
 //----------------------------------------------------------
 void System::addMemberToArray(Member &member) //Adds a member to the members array.
@@ -112,9 +120,9 @@ void System::addMemberToArray(Member &member) //Adds a member to the members arr
         members = new Member;
 
     else
-        members = System::transferMembers();
+        System::transferMembers();
 
-    members[numOfMembers++] = member;
+     members[numOfMembers++] = member;
 }
 //----------------------------------------------------------
 void System::createFanPage()
@@ -125,7 +133,7 @@ void System::createFanPage()
 void System::addStatus() 
 {
     int decision = 0;
-    char* name = nullptr;
+    string name = "";
     cout << "Please choose where to add the status:"
         "\n1 - A Member"
         "\n2 - A Fan Page" << endl;
@@ -138,56 +146,56 @@ void System::addStatus()
     if (decision == 1)
     {
         cout << "Please enter a member's name:" << endl;
-        cin >> name;
+        std::getline(cin, name);
         // bool found = findMember(name)
         // if not found, alert - otherwise, inherit Member::addStatus
     }
     else
     {
         cout << "Please enter a Fan Page's name:" << endl;
-        cin >> name;
+        std::getline(cin, name);
         // bool found = findPage(name)
         // if not found, alert - otherwise, inherit FanPage::addStatus
     }
 }
 //----------------------------------------------------------
-void System::showAllStatuses()const
-{
-    int decision = 0;
-    char* name = nullptr;
-    cout << "Please choose the entity of which you want to view the statuses:"
-        "\n1 - A Member"
-        "\n2 - A Fan Page" << endl;
-    cin >> decision;
-
-    while (decision != 1 && decision != 2)
-    {
-        cout << "Invalid decision. Please choose 1 or 2: " << endl;
-        cin >> decision;
-    }
-
-    if (decision == 1)
-    {
-        cout << "Please enter a member's name:" << endl;
-        cin >> name;
-        // bool found = findMember(name)
-        // if not found, alert - otherwise, inherit Member::showStatuses
-    }
-
-    else
-    {
-        cout << "Please enter a Fan Page's name:" << endl;
-        cin >> name;
-        // bool found = findPage(name)
-        // if not found, alert - otherwise, inherit FanPage::showStatuses
-    }
-}
+//void System::showAllStatuses()const
+//{
+//    int decision = 0;
+//    string name = nullptr;
+//    cout << "Please choose the entity of which you want to view the statuses:"
+//        "\n1 - A Member"
+//        "\n2 - A Fan Page" << endl;
+//    cin >> decision;
+//
+//    while (decision != 1 && decision != 2)
+//    {
+//        cout << "Invalid decision. Please choose 1 or 2: " << endl;
+//        cin >> decision;
+//    }
+//
+//    if (decision == 1)
+//    {
+//        cout << "Please enter a member's name:" << endl;
+//        cin >> name;
+//        // bool found = findMember(name)
+//        // if not found, alert - otherwise, inherit Member::showStatuses
+//    }
+//
+//    else
+//    {
+//        cout << "Please enter a Fan Page's name:" << endl;
+//        cin >> name;
+//        // bool found = findPage(name)
+//        // if not found, alert - otherwise, inherit FanPage::showStatuses
+//    }
+//}
 //----------------------------------------------------------
 void System::tenLastStatuses()
 {
-    char* name; //Need to create a readName function.
+    string name; //Need to create a readName function.
     cout << "Please enter a member's name:" << endl;
-    cin >> name;
+    std::getline(cin, name);
     int found = System::findMember(name);
     if (found != -1)
         Member::printTenLastStatuses(members[found]);
@@ -197,14 +205,14 @@ void System::tenLastStatuses()
 //----------------------------------------------------------
 void System::connectMembers()
 {
-    char* name1 = nullptr, * name2 = nullptr;
+    string name1,name2 = "";
     int found1{};
     int found2{};
     cout << "Please enter 1st member's name:" << endl;
-    cin >> name1;
+    std::getline(cin, name1);
     //find
     cout << "Please enter 2nd member's name:" << endl;
-    cin >> name2;
+    std::getline(cin, name2);
     //find
 
     if (found1 != -1 && found2 != -1)

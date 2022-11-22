@@ -5,7 +5,7 @@
 #include "Status.h"
 #include "Data.h"
 
-class System : public Member, public FanPage, public Status ,public Data{
+class System : public Member, public FanPage ,public Data{
 private:
     int userDecision = 0;
     Member* members = nullptr;
@@ -17,14 +17,14 @@ public:
     System(){}
     inline void printMenu();
     void setDecision(int& _decision);
-    int findMember(char* name);
+    int findMember(string& name);
     void createMember(); //Add a few more constructors?
-    void createMember(const char* _name, const Date& _date); //Added (mostly for testing)
+    void createMember(const string _name, const Date& _date); //Added (mostly for testing)
     void addMemberToArray(Member& member); // Added
-    Member* transferMembers(); // Added (Like realloc)
+    void transferMembers(); // Added (Like realloc)
     void createFanPage();
     void addStatus();
-    void showAllStatuses() const;
+   /* void showAllStatuses() const;*/
     void tenLastStatuses();
     void connectMembers();
     int getDecision() const { return userDecision; }

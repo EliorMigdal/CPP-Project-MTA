@@ -7,7 +7,7 @@ class FanPage;
 
 class Member : public Status {
 private:
-    char* name = nullptr;
+    string name = "";
     Date birthday = {0,0,0};
     Status* bulletinBoard = nullptr;
     size_t numOfStatuses = 0;
@@ -18,29 +18,29 @@ private:
 
 public:
     Member() {};
-    Member(Member& obj)
+    Member(const Member& obj)
     {
-        name = strdup(obj.name);
-        birthday = obj.birthday;
-        bulletinBoard = obj.bulletinBoard;
-        friends = obj.friends;
-        pages = obj.pages;
-        numOfFriends = obj.numOfFriends;
-        numOfPages = obj.numOfPages;
-        numOfStatuses = obj.numOfStatuses;
+        this->name = obj.name;
+        this->birthday = obj.birthday;
+        this->bulletinBoard = obj.bulletinBoard;
+        this->friends = obj.friends;
+        this->pages = obj.pages;
+        this->numOfFriends = obj.numOfFriends;
+        this->numOfPages = obj.numOfPages;
+        this->numOfStatuses = obj.numOfStatuses;
     }//Copy constructor.
-    Member(const char* _name)
+    Member(const string _name)
     {
-       name = strdup(_name);
+       name = _name;
     }
-    Member(const char* _name, const Date& _birthday)
+    Member(const string _name, const Date& _birthday)
     {
-        name = strdup(_name);
+        name =_name;
         
         birthday = _birthday;
     }
     inline void addFriend(Member& member);
-    char* getName() const {return this->name;}
+    string getName() const {return this->name;}
     int getNumOfStatuses() const {return this->numOfStatuses;}
     inline void printStatus(int index);
     void printAllStatuses();

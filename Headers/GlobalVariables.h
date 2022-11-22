@@ -2,6 +2,8 @@
 #define CPP_PROJECT_GLOBALVARIABLES_H
 #pragma warning (disable:4996)
 #include <iostream>
+#include <string>
+using std::string;
 using std::cout;
 using std::cin;
 using std::endl;
@@ -26,5 +28,6 @@ struct Time
 };
 //Enums
 enum class STATUS_TYPE{TEXT,IMAGE,VIDEO};
+
 
 #endif

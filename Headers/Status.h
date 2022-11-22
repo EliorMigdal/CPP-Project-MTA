@@ -7,8 +7,8 @@ private:
     Date statusDate = {0,0,0};
     Time statusTime = {0,0,0};
     STATUS_TYPE statusType = STATUS_TYPE::TEXT;
-    char* statusContent = nullptr;
-    char* getStatusContent() const {return this->statusContent;}
+    string statusContent = "";
+    string getStatusContent() const {return this->statusContent;}
     Date getStatusDate() const {return this->statusDate;}
     Time getStatusTime() const {return this->statusTime;}
 
@@ -17,10 +17,10 @@ public:
 
     Status(Status& obj) //Copy constructor
     {
-        statusDate = obj.statusDate;
-        statusTime = obj.statusTime;
-        statusType = obj.statusType;
-        statusContent = strdup(obj.statusContent);
+        this->statusDate = obj.statusDate;
+        this->statusTime = obj.statusTime;
+        this->statusType = obj.statusType;
+        this->statusContent = obj.statusContent;
     }
 
     Status(const Date& _date)
@@ -41,16 +41,15 @@ public:
         statusType = (STATUS_TYPE)_status;
     }
 
-    Status(const Date& _date,const Time& _time, const Byte& _status, const char*& _content)
+    Status(const Date& _date,const Time& _time, const Byte& _status, const string& _content)
     {
         statusDate = _date;
         statusTime = _time;
         statusType = (STATUS_TYPE)_status;
-        statusContent = new char[strlen(_content) + 1];
-        strcpy(statusContent, _content);
+        statusContent = _content;
     }
 
-    inline char* getStatus() const {return getStatusContent();}
+    inline string getStatus() const {return getStatusContent();}
     inline Date getDate() const {return getStatusDate();}
     inline Time getTime() const {return getStatusTime();}
     void printDate(Date date, Time time);

@@ -21,14 +21,14 @@ void Member::printTenLastStatuses(Member& member)  //Prints member's 10 last sta
     else
         cout << member.getName() << "'s last ten statuses:" << endl;
 
-    for (int i = numOfStatuses - 1; i >= 0; i++)
+    for (int i = numOfStatuses - 1; i >= 0; i--)
     {
         cout << "Status #" << i + 1 << ":" << endl;
         Member::printStatus(i);
     }
 }
 //----------------------------------------------------------
-void printAllStatuses()
+void Member::printAllStatuses()
 {
 
 }
