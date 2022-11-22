@@ -5,7 +5,7 @@
 #include "Status.h"
 #include "Data.h"
 
-class System : public Member, public FanPage ,public Data{
+class System {
 private:
     int userDecision = 0;
     Member* members = nullptr;

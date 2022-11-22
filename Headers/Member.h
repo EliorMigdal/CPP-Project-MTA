@@ -5,7 +5,7 @@
 class Status;
 class FanPage;
 
-class Member : public Status {
+class Member  {
 private:
     string name = "";
     Date birthday = {0,0,0};

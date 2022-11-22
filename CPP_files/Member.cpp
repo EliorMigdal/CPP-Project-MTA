@@ -8,7 +8,7 @@ void Member::addFriend(Member& member)
 void Member::printStatus(int index)
 {
     cout << this->bulletinBoard[index].getStatus() << endl;
-    this->bulletinBoard[index].printDate(this->getDate(), this->getTime());
+    this->bulletinBoard[index].printDate(this->bulletinBoard[index].getStatusDate(), this->bulletinBoard[index].getTime());
 }
 //----------------------------------------------------------
 void Member::printTenLastStatuses(Member& member)  //Prints member's 10 last statuses

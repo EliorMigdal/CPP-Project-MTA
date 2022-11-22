@@ -9,8 +9,7 @@ private:
     STATUS_TYPE statusType = STATUS_TYPE::TEXT;
     string statusContent = "";
     string getStatusContent() const {return this->statusContent;}
-    Date getStatusDate() const {return this->statusDate;}
-    Time getStatusTime() const {return this->statusTime;}
+  
 
 public:
     Status() {}
@@ -50,8 +49,8 @@ public:
     }
 
     inline string getStatus() const {return getStatusContent();}
-    inline Date getDate() const {return getStatusDate();}
-    inline Time getTime() const {return getStatusTime();}
+    Date getStatusDate() const { return this->statusDate; }
+    Time getStatusTime() const { return this->statusTime; }
     void printDate(Date date, Time time);
 };
 
