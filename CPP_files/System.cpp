@@ -1,6 +1,8 @@
 #include "../Headers/System.h"
-//----------------------------------------------------------
-int System::findEntity(string &name, const int entityType)
+
+//---------------------------------------------------------
+int System::findEntity(string& name,const int entityType)
+
 {
     bool found = false;
     int foundIndex = -1;
@@ -9,7 +11,7 @@ int System::findEntity(string &name, const int entityType)
     {
         for (int i = 0; i < numOfMembers && !found; i++)
         {
-            if(members[i].getName().compare(name) == 0)
+            if (members[i].getName().compare(name) == 0)
             {
                 foundIndex = i;
                 found = true;
@@ -21,7 +23,10 @@ int System::findEntity(string &name, const int entityType)
     {
         for (int i = 0; i < numOfPages && !found; i++)
         {
-            if(pages[i].getName().compare(name) == 0)
+
+     
+            if (pages[i].getName().compare(name) == 0)
+
             {
                 foundIndex = i;
                 found = true;
@@ -31,6 +36,7 @@ int System::findEntity(string &name, const int entityType)
 
     return foundIndex;
 }
+
 //----------------------------------------------------------
 inline bool BirthdayCheck(Date& _Birthday)
 {
@@ -74,7 +80,7 @@ void System::setDecision(int& _decision)
         createFanPage();
         break;
     case 3:
-        addStatus();
+        newStatus();
         break;
     case 4:
         printAllStatuses();
@@ -104,11 +110,11 @@ void System::createMember() //read name and birthday from the user with validati
         Birthday = { 0,0,0 };
         cin >> Birthday.day >> Birthday.month >> Birthday.year;
         cin.ignore();
-    }
+    } 
     Member m1(name,Birthday);
     System::addMemberToArray(m1);
 }
-//----------------------------------------------------------
+//---------------------------------------------------------- TeST
 void System::createMember(const string _name, const Date& _date) //Added a new constructor (mostly for testing)
 {
     Member member(_name, _date);
@@ -142,7 +148,7 @@ void System::createFanPage()
     //Inherit
 }
 //----------------------------------------------------------
-void System::addStatus() 
+void System::newStatus() 
 {
     int decision = 0;
     string name = "";
@@ -154,12 +160,14 @@ void System::addStatus()
     {
         cout << "Invalid decision. Please choose 1 or 2: " << endl;
         cin >> decision;
+        cin.ignore();
     }
     if (decision == 1)
     {
         cout << "Please enter a member's name:" << endl;
         std::getline(cin, name);
-        // bool found = findMember(name)
+        int found = System::findEntity(name,MEMBER);
+        (found >-1) ? members[found].addStatus()
         // if not found, alert - otherwise, inherit Member::addStatus
     }
     else
@@ -221,6 +229,7 @@ void System::printTenLastStatuses() //Prints a member's friend ten last statuses
     int found = System::findEntity(name, MEMBER), foundFriend = -1, printIndex = -1;
 
     if (found != -1)
+
     {
         cout << "Please type one of " << name << "'s friends's name:" << endl;
         getline(cin, friendName);
@@ -233,6 +242,7 @@ void System::printTenLastStatuses() //Prints a member's friend ten last statuses
             members[printIndex].printStatuses();
         }
     }
+
     else
         cout << name << " was not found in our system!" << endl;
 }

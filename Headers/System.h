@@ -17,16 +17,22 @@ public:
     System(){} //Default constructor.
     inline void printMenu();
     void setDecision(int& _decision);
+
     int getDecision() const { return userDecision; }
     int findEntity(string& name, const int entityType);
-    void createMember(); //Add a few more constructors?
+    void createMember();
+
     void createMember(const string _name, const Date& _date); //Added (mostly for testing)
     void addMemberToArray(Member& member); // Added
-    void transferMembers(); // Added (Like realloc)
+    void transferMembers(); 
     void createFanPage();
     void addStatus();
     void printAllStatuses();
     void printTenLastStatuses();
+
+    void newStatus();
+   /* void showAllStatuses() const;*/
+    void tenLastStatuses();
     void connectMembers();
 };
 

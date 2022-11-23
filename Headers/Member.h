@@ -48,8 +48,16 @@ public:
     int findFriend(string friendName);
     inline void addFriend(Member& member);
     inline void printStatus(int index);
+
     void printStatuses(int numToPrint = PRINT_STATUS);
     void printFanPages() const;
+
+    void printAllStatuses();
+    void printTenLastStatuses();
+    void addStatus();
+private:
+    void transferStatuses();
+
 };
 
 #endif

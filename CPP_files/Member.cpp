@@ -11,6 +11,7 @@ void Member::printStatus(int index)
     this->bulletinBoard[index].printDate(this->bulletinBoard[index].getStatusDate(), this->bulletinBoard[index].getStatusTime());
 }
 //----------------------------------------------------------
+
 void Member::printStatuses(int numToPrint) //Prints member's statuses.
 {
     int numOfStatuses = this->getNumOfStatuses();
@@ -39,11 +40,38 @@ void Member::printStatuses(int numToPrint) //Prints member's statuses.
         }
     }
 }
+//------------------------------------------------------------------------
+void Member::transferStatuses()
+{
+    Status* output = new Status[numOfStatuses + 1];
+    for (size_t i = 0; i < numOfStatuses; i++)
+    {
+        Status temp(output[i]);
+        output[i] = temp;
+
+    }
+    delete bulletinBoard;
+    bulletinBoard = output;
+    output = nullptr;
+}
+//----------------------------------------------------------
+void Member::addStatus()
+{
+    Status status;
+    status.createStatus();
+    if (numOfStatuses == 0)
+        bulletinBoard = new Status;
+
+    else
+        Member::transferStatuses();
+
+    bulletinBoard[numOfStatuses++] = status;
+}
 //----------------------------------------------------------
 int Member::findFriend(std::string friendName) //Searches for a friend in a member's array of friends.
 {
     int found = -1;
-    for (int i = 0; i < numOfFriends && found == -1; i++)
+    for (size_t i = 0; i < numOfFriends && found == -1; i++)
     {
         if (friends[i].getName() == friendName)
             found = i;

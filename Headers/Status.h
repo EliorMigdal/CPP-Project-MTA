@@ -50,6 +50,7 @@ public:
     Date getStatusDate() const { return this->statusDate; }
     Time getStatusTime() const { return this->statusTime; }
     void printDate(Date date, Time time);
+    void createStatus();
 };
 
 #endif

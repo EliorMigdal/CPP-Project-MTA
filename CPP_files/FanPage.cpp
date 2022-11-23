@@ -14,9 +14,3 @@ void FanPage::printStatuses() const //Prints all fan page's statuses.
                 this->bulletinBoard[i].getStatusTime());
     }
 }
-//----------------------------------------------------------
-void FanPage::printMembers() const //Prints a list of a fan page's members.
-{
-    int n = this->getNumOfMembers();
-    
-}
