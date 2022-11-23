@@ -8,34 +8,49 @@ void Member::addFriend(Member& member)
 void Member::printStatus(int index)
 {
     cout << this->bulletinBoard[index].getStatus() << endl;
-    this->bulletinBoard[index].printDate(this->bulletinBoard[index].getStatusDate(), this->bulletinBoard[index].getTime());
+    this->bulletinBoard[index].printDate(this->bulletinBoard[index].getStatusDate(), this->bulletinBoard[index].getStatusTime());
 }
 //----------------------------------------------------------
-void Member::printTenLastStatuses(Member& member)  //Prints member's 10 last statuses
+void Member::printStatuses(int numToPrint) //Prints member's statuses.
 {
-    int numOfStatuses = member.getNumOfStatuses();
+    int numOfStatuses = this->getNumOfStatuses();
+    int logicPrintSize;
     if (numOfStatuses == 0)
-        cout << member.getName() << " has not posted any statuses." << endl;
-    else if (numOfStatuses < 10)
-        cout << member.getName() << " has only posted " << numOfStatuses << " statuses:" << endl;
-    else
-        cout << member.getName() << "'s last ten statuses:" << endl;
+        cout << this->getName() << " has not posted any statuses." << endl;
 
-    for (int i = numOfStatuses - 1; i >= 0; i--)
+    if (numToPrint == PRINT_STATUS)
     {
-        cout << "Status #" << i + 1 << ":" << endl;
-        Member::printStatus(i);
+        if (numOfStatuses < PRINT_STATUS)
+        {
+            logicPrintSize = numOfStatuses;
+            cout << this->getName() << " has only posted " << numOfStatuses << " statuses:" << endl;
+        }
+
+        else
+        {
+            logicPrintSize = PRINT_STATUS;
+            cout << this->getName() << "'s last " << PRINT_STATUS << " statuses:" << endl;
+        }
+
+        for (int i = numOfStatuses - 1; i >= numOfStatuses - logicPrintSize; i--)
+        {
+            cout << "Status #" << i + 1 << ":" << endl;
+            this->printStatus(i);
+        }
     }
 }
 //----------------------------------------------------------
-void Member::printAllStatuses()
+int Member::findFriend(std::string friendName) //Searches for a friend in a member's array of friends.
 {
+    int found = -1;
+    for (int i = 0; i < numOfFriends && found == -1; i++)
+    {
+        if (friends[i].getName() == friendName)
+            found = i;
+    }
 
+    return found;
 }
-//----------------------------------------------------------
-
-
-
 //----------------------------------------------------------
 
 

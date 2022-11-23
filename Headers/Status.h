@@ -8,11 +8,9 @@ private:
     Time statusTime = {0,0,0};
     STATUS_TYPE statusType = STATUS_TYPE::TEXT;
     string statusContent = "";
-    string getStatusContent() const {return this->statusContent;}
-  
 
 public:
-    Status() {}
+    Status() {} //Default constructor.
 
     Status(Status& obj) //Copy constructor
     {
@@ -48,7 +46,7 @@ public:
         statusContent = _content;
     }
 
-    inline string getStatus() const {return getStatusContent();}
+    string getStatus() const { return this->statusContent; }
     Date getStatusDate() const { return this->statusDate; }
     Time getStatusTime() const { return this->statusTime; }
     void printDate(Date date, Time time);

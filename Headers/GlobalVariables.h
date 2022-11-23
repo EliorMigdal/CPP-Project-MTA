@@ -1,6 +1,7 @@
 #ifndef CPP_PROJECT_GLOBALVARIABLES_H
 #define CPP_PROJECT_GLOBALVARIABLES_H
 #pragma warning (disable:4996)
+
 #include <iostream>
 #include <string>
 using std::string;
@@ -8,13 +9,17 @@ using std::cout;
 using std::cin;
 using std::endl;
 using std::flush;
+using std::getline;
 
 //Aliases
 typedef unsigned short int size_SI;
 typedef unsigned char Byte;
 
 //const Variables
-constexpr int EXIT = 12;
+constexpr short int EXIT = 12;
+constexpr short int PRINT_STATUS = 10;
+constexpr short int MEMBER = 0;
+constexpr short int FAN_PAGE = 1;
 
 //structures
 struct Date
@@ -26,8 +31,8 @@ struct Time
 {
     Byte hour = 0, minutes = 0, seconds = 0;
 };
+
 //Enums
 enum class STATUS_TYPE{TEXT,IMAGE,VIDEO};
-
 
 #endif
