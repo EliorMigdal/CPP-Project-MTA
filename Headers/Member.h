@@ -9,52 +9,40 @@ private:
     string name = "";
     Date birthday = {0,0,0};
     Status* bulletinBoard = nullptr;
-    size_t numOfStatuses = 0;
+    size_SI numOfStatuses = 0;
     Member* friends = nullptr;
-    size_t numOfFriends = 0;
+    size_SI numOfFriends = 0;
     FanPage* pages = nullptr;
-    size_t numOfPages = 0;
+    size_SI numOfPages = 0;
 
 public:
-    /////// Constructors
-    Member() {} //Default constructor.
+    //Constructors
+    Member() = default; //Default constructor.
+    Member(Member& object); //Copy constructor.
+    explicit Member(string _name);
+    Member(string _name, Date& _birthday);
 
-    Member(const Member& obj) //Copy constructor.
-    {
-        this->name = obj.name;
-        this->birthday = obj.birthday;
-        this->bulletinBoard = obj.bulletinBoard;
-        this->friends = obj.friends;
-        this->pages = obj.pages;
-        this->numOfFriends = obj.numOfFriends;
-        this->numOfPages = obj.numOfPages;
-        this->numOfStatuses = obj.numOfStatuses;
-    }
+    //Setters
+    void setName(string& _name);
+    void setBirthday(Date& _birthday);
 
-    Member(const string _name)
-    {
-       name = _name;
-    }
+    //Getters
+    string getName() const { return this->name; }
+    Date getBirthday() const { return this->birthday; }
+    Status* getStatusArr() const { return this->bulletinBoard; }
+    int getNumOfStatuses() const { return this->numOfStatuses; }
+    Member* getFriendsArr() const { return this->friends; }
+    int getNumOfFriends() const { return this->numOfFriends; }
+    FanPage* getPagesArr() const { return this->pages; }
+    int getNumOfPages() const { return this->numOfPages; }
 
-    Member(const string _name, const Date& _birthday)
-    {
-        name =_name;
-        birthday = _birthday;
-    }
-
-    /////// Methods
-    string getName() const {return this->name;}
-    int getNumOfStatuses() const {return this->numOfStatuses;}
-    int findFriend(string friendName);
+    //General Methods
     inline void addFriend(Member& member);
-    inline void printStatus(int index);
-
-    void printStatuses(int numToPrint = PRINT_STATUS);
-    void printFanPages() const;
-
-    void printAllStatuses();
-    void printTenLastStatuses();
+    void transferFriends();
+    inline void printStatus(int index) const;
+    void printStatuses(int numToPrint = PRINT_STATUS) const;
     void addStatus();
+
 private:
     void transferStatuses();
 

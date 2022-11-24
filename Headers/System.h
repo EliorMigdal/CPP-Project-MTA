@@ -14,26 +14,26 @@ private:
     int numOfPages = 0;
 
 public:
-    System(){} //Default constructor.
-    inline void printMenu();
+    System() = default; //Default constructor.
+
+    //System-to-user Methods
+    static inline void printMenu();
     void setDecision(int& _decision);
-
     int getDecision() const { return userDecision; }
-    int findEntity(string& name, const int entityType);
-    void createMember();
 
-    void createMember(const string _name, const Date& _date); //Added (mostly for testing)
+    //General Methods
+    int findEntity(string& name, int entityType);
+    void createMember();
+    void createMember(string& _name, Date& _date); //Added (mostly for testing)
     void addMemberToArray(Member& member); // Added
     void transferMembers(); 
     void createFanPage();
     void addStatus();
     void printAllStatuses();
     void printTenLastStatuses();
-
     void newStatus();
-   /* void showAllStatuses() const;*/
-    void tenLastStatuses();
     void connectMembers();
+    void printFanPageMembers();
 };
 
 #endif //CPP_PROJECT_SYSTEM_H

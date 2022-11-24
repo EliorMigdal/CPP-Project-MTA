@@ -9,11 +9,8 @@ using std::cout;
 using std::cin;
 using std::endl;
 using std::flush;
-
 using std::getline;
-#define MEMBERS 2
-#define STATUS 3
-#define FANPAGE 4//Aliases
+
 typedef unsigned short int size_SI;
 typedef unsigned char Byte;
 
@@ -38,6 +35,5 @@ struct Time
 enum class STATUS_TYPE{TEXT,IMAGE,VIDEO};
 
 Date readDate();
-
 
 #endif

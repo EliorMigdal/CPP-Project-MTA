@@ -34,8 +34,9 @@ public:
     string getName() const { return this->name; }
     size_SI getNumOfMembers() const { return this->numOfMembers; }
     size_SI getNumOfStatuses() const { return this->numOfStatuses; }
+    Member* getMemberArr() const { return this->members; }
+    Status* getStatusArr() const { return this->bulletinBoard; }
     void printStatuses() const;
-    void printMembers() const; //How can we make it without inheritance?
 };
 
 #endif
