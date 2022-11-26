@@ -6,45 +6,43 @@ class FanPage;
 
 class Member {
 private:
-    string name = "";
+    char* name = nullptr;
     Date birthday = {0,0,0};
-    Status* bulletinBoard = nullptr;
+    Status** bulletinBoard = nullptr;
     size_SI numOfStatuses = 0;
-    Member* friends = nullptr;
+    Member** friends = nullptr;
     size_SI numOfFriends = 0;
-    FanPage* pages = nullptr;
+    FanPage** pages = nullptr;
     size_SI numOfPages = 0;
 
 public:
     //Constructors
     Member() = default; //Default constructor.
-    Member(Member& object); //Copy constructor.
-    explicit Member(string _name);
-    Member(string _name, Date& _birthday);
-
-    //Setters
-    void setName(string& _name);
-    void setBirthday(Date& _birthday);
+    Member(const Member& object); //Copy constructor.
+    explicit Member(const char* _name);
+    Member(const char* _name, Date& _birthday);
+    ~Member();
 
     //Getters
-    string getName() const { return this->name; }
+    char* getName() const { return this->name; }
     Date getBirthday() const { return this->birthday; }
-    Status* getStatusArr() const { return this->bulletinBoard; }
+    Status** getStatusArr() const { return this->bulletinBoard; }
     int getNumOfStatuses() const { return this->numOfStatuses; }
-    Member* getFriendsArr() const { return this->friends; }
+    Member** getFriendsArr() const { return this->friends; }
     int getNumOfFriends() const { return this->numOfFriends; }
-    FanPage* getPagesArr() const { return this->pages; }
+    FanPage** getPagesArr() const { return this->pages; }
     int getNumOfPages() const { return this->numOfPages; }
 
-    //General Methods
-    inline void addFriend(Member& member);
-    void transferFriends();
-    inline void printStatus(int index) const;
-    void printStatuses(int numToPrint = PRINT_STATUS) const;
+    ////Methods
+    void addFriend(Member* member);
+    inline void printStatus(const int& index) const;
+    void printStatuses(size_SI numToPrint = PRINT_STATUS) const;
     void addStatus();
 
 private:
+    //Private reallocators
     void transferStatuses();
+    void transferFriends();
 
 };
 

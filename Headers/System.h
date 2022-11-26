@@ -8,32 +8,32 @@
 class System {
 private:
     int userDecision = 0;
-    Member* members = nullptr;
+    Member** members = nullptr;
     int numOfMembers = 0;
-    FanPage* pages = nullptr;
+    FanPage** pages = nullptr;
     int numOfPages = 0;
 
 public:
     System() = default; //Default constructor.
-
     //System-to-user Methods
-    static inline void printMenu();
+    inline void printMenu();
     void setDecision(int& _decision);
     int getDecision() const { return userDecision; }
 
     //General Methods
-    int findEntity(string& name, int entityType);
+    int findEntity(const char* name, const size_SI& entityType) const;
     void createMember();
-    void createMember(string& _name, Date& _date); //Added (mostly for testing)
-    void addMemberToArray(Member& member); // Added
+    void createMember(const char* _name, Date& _date); //Added (mostly for testing)
+    void addMemberToArray(Member* member); // Added
     void transferMembers(); 
     void createFanPage();
-    void addStatus();
     void printAllStatuses();
     void printTenLastStatuses();
     void newStatus();
     void connectMembers();
     void printFanPageMembers();
+private:
+    inline bool BirthdayCheck(const Date& _birthday);
 };
 
 #endif //CPP_PROJECT_SYSTEM_H

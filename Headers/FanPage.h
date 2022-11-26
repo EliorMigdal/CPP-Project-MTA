@@ -6,36 +6,25 @@ class Member;
 
 class FanPage {
 private:
-    string name = "";
-    Member* members = nullptr;
-    size_SI numOfMembers = 0;
-    Status* bulletinBoard = nullptr;
-    size_SI numOfStatuses = 0;
+    char* name=nullptr;
+    Member** members = nullptr;
+    size_t numOfMembers = 0;
+    Status** bulletinBoard = nullptr;
+    size_t numOfStatuses = 0;
 
 public:
-    /////// Constructors
-    FanPage() {} //Default constructor.
+    // Constructors
+    FanPage() = default; //Default constructor.
+    FanPage(const FanPage& obj); // Copy constructor
+    explicit FanPage(const char* _name);
+  
 
-    FanPage(FanPage& obj) // Copy constructor
-    {
-        this->name= obj.name;
-        this->members = obj.members;
-        this->numOfMembers = obj.numOfMembers;
-        this->bulletinBoard = obj.bulletinBoard;
-        this->numOfStatuses = obj.numOfStatuses;
-    }
-
-    FanPage(const string _name)
-    {
-        name = _name;
-    }
-
-    /////// Methods
-    string getName() const { return this->name; }
-    size_SI getNumOfMembers() const { return this->numOfMembers; }
-    size_SI getNumOfStatuses() const { return this->numOfStatuses; }
-    Member* getMemberArr() const { return this->members; }
-    Status* getStatusArr() const { return this->bulletinBoard; }
+    // Methods
+    char* getName() const { return this->name; }
+    size_t getNumOfMembers() const { return this->numOfMembers; }
+    size_t getNumOfStatuses() const { return this->numOfStatuses; }
+    Member** getMemberArr() const { return this->members; }
+    Status** getStatusArr() const { return this->bulletinBoard; }
     void printStatuses() const;
 };
 

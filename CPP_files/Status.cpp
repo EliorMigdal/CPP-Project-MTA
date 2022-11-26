@@ -1,19 +1,57 @@
 #include "../Headers/Status.h"
 
-//----------------------------------------------------------
-void Status::printDate(Date date, Time time)
+//constructors
+//------------------------------------------------------
+Status::Status(const Status& obj) :
+    statusDate(obj.statusDate),
+    statusTime(obj.statusTime),
+    statusType(obj.statusType)                           
+{
+    this->statusContent = new char[strlen(obj.statusContent) + 1];
+    checkMem(this->statusContent);
+    strcpy(this->statusContent, obj.statusContent);
+}
+//------------------------------------------------------
+Status::Status(const Date& _date) : statusDate(_date) {}
+//------------------------------------------------------
+Status::Status(const Date& _date, const Time& _time) :
+ statusDate(_date),
+ statusTime(_time){}
+//------------------------------------------------------
+Status::Status(const Date& _date, const Time& _time, const Byte& _status)
+    :
+    statusDate(_date),
+    statusTime(_time),
+    statusType((STATUS_TYPE)_status) {}
+//------------------------------------------------------
+Status::Status(const Date& _date, const Time& _time, const Byte& _status, const char* _content)
+    :
+    statusDate(_date),
+    statusTime(_time),
+    statusType((STATUS_TYPE)_status)
+{
+    this->statusContent = new char[strlen(_content) + 1];
+    checkMem(this->statusContent);
+    strcpy(this->statusContent, _content);
+}
+//------------------------------------------------------
+// 
+//Public methods.
+// ------------------------------------------------------------
+void Status::printDate(const Date& date, const Time& time) const
 {
     cout << date.day << "/" << date.month << "/" << date.year << endl;
     cout << time.hour << ":" << time.minutes << ":" << time.seconds << endl;
 }
 //----------------------------------------------------------
-void Status::createStatus()
+void Status::createStatus()// not yet modified
 {
-    string name;
-    cout << "Creating a member: \nEnter name: " << flush;
-    std::getline(cin, name);
+    char* name = nullptr;
+    
+    //name = readName();
     Date statusDate;
     /*cin.ignore();
     Member m1(name, Birthday);
     System::addMemberToArray(m1);*/
 }
+//----------------------------------------------------------

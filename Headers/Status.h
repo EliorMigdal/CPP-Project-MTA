@@ -7,50 +7,25 @@ private:
     Date statusDate = {0,0,0};
     Time statusTime = {0,0,0};
     STATUS_TYPE statusType = STATUS_TYPE::TEXT;
-    string statusContent = "";
+    char* statusContent = nullptr;
 
 public:
-    Status() {} //Default constructor.
-
-    Status(Status& obj) //Copy constructor
-    {
-        this->statusDate = obj.statusDate;
-        this->statusTime = obj.statusTime;
-        this->statusType = obj.statusType;
-        this->statusContent = obj.statusContent;
-    }
-
-    Status(const Date& _date)
-    {
-        statusDate = _date;
-    }
-
-    Status(const Date& _date, const Time& _time)
-    {
-        statusDate = _date;
-        statusTime = _time;
-    }
-
-    Status(const Date& _date, const Time& _time, const Byte& _status)
-    {
-        statusDate = _date;
-        statusTime = _time;
-        statusType = (STATUS_TYPE)_status;
-    }
-
-    Status(const Date& _date,const Time& _time, const Byte& _status, const string& _content)
-    {
-        statusDate = _date;
-        statusTime = _time;
-        statusType = (STATUS_TYPE)_status;
-        statusContent = _content;
-    }
-
-    string getStatus() const { return this->statusContent; }
+    //Constructors:
+    Status() = default; //Default constructor.
+    Status(const Status& obj); //Copy constructor
+    explicit Status(const Date& _date);
+    Status(const Date& _date, const Time& _time);
+    Status(const Date& _date, const Time& _time, const Byte& _status);
+    Status(const Date& _date, const Time& _time, const Byte& _status, const char* _content);
+    //end of constructors
+    
+    //Methods
+    char* getStatus() const { return this->statusContent; }
     Date getStatusDate() const { return this->statusDate; }
     Time getStatusTime() const { return this->statusTime; }
-    void printDate(Date date, Time time);
+    void printDate(const Date& date, const Time& time) const;
     void createStatus();
+ 
 };
 
 #endif

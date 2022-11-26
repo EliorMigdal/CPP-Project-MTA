@@ -2,12 +2,11 @@
 #include "../Headers/System.h"
 
 int main()
-{
+{ // didnt check yet the main after all the edits..
     System Facebook;
     Date d1 = {24, 4, 1995};
     Date d2 = {23, 5, 1990};
-    Facebook.createMember("Elior", d1);
-    Facebook.createMember("Ben", d2);
+   /* Facebook.createMember("ben", d1);*/
     int userDecision;
     cout << "Welcome to our social network!" << endl;
     Facebook.printMenu();
