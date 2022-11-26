@@ -2,7 +2,7 @@
 //----------------------------------------------------------
 void FanPage::printStatuses() const //Prints all fan page's statuses.
 {
-    string name = this->getName();
+    char* name = this->getName();
     size_SI numOfStatuses = this->getNumOfStatuses();
     cout << name << "'s statuses:" << endl;
 

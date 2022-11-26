@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include <string>
-using std::string;
 using std::cout;
 using std::cin;
 using std::endl;
@@ -37,7 +36,6 @@ struct Time
 //Enums
 enum class STATUS_TYPE{TEXT,IMAGE,VIDEO};
 
-Date readDate();
-
+char* readName();
 
 #endif

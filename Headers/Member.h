@@ -6,7 +6,7 @@ class FanPage;
 
 class Member {
 private:
-    string name = "";
+    char* name = nullptr;
     Date birthday = {0,0,0};
     Status* bulletinBoard = nullptr;
     size_t numOfStatuses = 0;
@@ -31,29 +31,26 @@ public:
         this->numOfStatuses = obj.numOfStatuses;
     }
 
-    Member(const string _name)
+    Member(const char* _name)
     {
-       name = _name;
+        name = new char[strlen(_name)+1];
+        strcpy(name, _name);
     }
 
-    Member(const string _name, const Date& _birthday)
+    Member(const char* _name, const Date& _birthday)
     {
-        name =_name;
+        name = new char[strlen(_name) + 1];
+        strcpy(name, _name);
         birthday = _birthday;
     }
-
+  
     /////// Methods
-    string getName() const {return this->name;}
+    char* getName() const {return this->name;}
     int getNumOfStatuses() const {return this->numOfStatuses;}
-    int findFriend(string friendName);
+    int findFriend(char* friendName);
     inline void addFriend(Member& member);
     inline void printStatus(int index);
-
     void printStatuses(int numToPrint = PRINT_STATUS);
-    void printFanPages() const;
-
-    void printAllStatuses();
-    void printTenLastStatuses();
     void addStatus();
 private:
     void transferStatuses();

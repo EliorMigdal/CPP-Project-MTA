@@ -8,9 +8,9 @@ void Status::printDate(Date date, Time time)
 //----------------------------------------------------------
 void Status::createStatus()
 {
-    string name;
+    char* name= nullptr;
     cout << "Creating a member: \nEnter name: " << flush;
-    std::getline(cin, name);
+    name = readName();
     Date statusDate;
     /*cin.ignore();
     Member m1(name, Birthday);

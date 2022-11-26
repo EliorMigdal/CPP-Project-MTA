@@ -68,7 +68,7 @@ void Member::addStatus()
     bulletinBoard[numOfStatuses++] = status;
 }
 //----------------------------------------------------------
-int Member::findFriend(std::string friendName) //Searches for a friend in a member's array of friends.
+int Member::findFriend(char* friendName) //Searches for a friend in a member's array of friends.
 {
     int found = -1;
     for (size_t i = 0; i < numOfFriends && found == -1; i++)

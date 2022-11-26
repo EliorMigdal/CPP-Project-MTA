@@ -6,7 +6,7 @@ class Member;
 
 class FanPage {
 private:
-    string name = "";
+    char* name = nullptr;
     Member* members = nullptr;
     size_SI numOfMembers = 0;
     Status* bulletinBoard = nullptr;
@@ -25,13 +25,13 @@ public:
         this->numOfStatuses = obj.numOfStatuses;
     }
 
-    FanPage(const string _name)
+    FanPage(const char* _name)
     {
-        name = _name;
+        name = strdup(_name);
     }
 
     /////// Methods
-    string getName() const { return this->name; }
+    char* getName() const { return this->name; }
     size_SI getNumOfMembers() const { return this->numOfMembers; }
     size_SI getNumOfStatuses() const { return this->numOfStatuses; }
     void printStatuses() const;

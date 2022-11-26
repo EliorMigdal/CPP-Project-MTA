@@ -7,7 +7,7 @@ private:
     Date statusDate = {0,0,0};
     Time statusTime = {0,0,0};
     STATUS_TYPE statusType = STATUS_TYPE::TEXT;
-    string statusContent = "";
+    char* statusContent = nullptr;
 
 public:
     Status() {} //Default constructor.
@@ -38,15 +38,15 @@ public:
         statusType = (STATUS_TYPE)_status;
     }
 
-    Status(const Date& _date,const Time& _time, const Byte& _status, const string& _content)
+    Status(const Date& _date,const Time& _time, const Byte& _status, const char*& _content)
     {
         statusDate = _date;
         statusTime = _time;
         statusType = (STATUS_TYPE)_status;
-        statusContent = _content;
+       /* statusContent = _content;*/
     }
 
-    string getStatus() const { return this->statusContent; }
+    char* getStatus() const { return this->statusContent; }
     Date getStatusDate() const { return this->statusDate; }
     Time getStatusTime() const { return this->statusTime; }
     void printDate(Date date, Time time);

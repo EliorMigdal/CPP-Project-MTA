@@ -1,7 +1,7 @@
 #include "../Headers/System.h"
 
 //---------------------------------------------------------
-int System::findEntity(string& name,const int entityType)
+int System::findEntity(const char* name,const int entityType)
 
 {
     bool found = false;
@@ -11,7 +11,7 @@ int System::findEntity(string& name,const int entityType)
     {
         for (int i = 0; i < numOfMembers && !found; i++)
         {
-            if (members[i].getName().compare(name) == 0)
+            if (strcmp(members[i].getName(),name) == 0)
             {
                 foundIndex = i;
                 found = true;
@@ -25,7 +25,7 @@ int System::findEntity(string& name,const int entityType)
         {
 
      
-            if (pages[i].getName().compare(name) == 0)
+            if (strcmp(pages[i].getName(),name) == 0)
 
             {
                 foundIndex = i;
@@ -93,9 +93,9 @@ void System::setDecision(int& _decision)
 //----------------------------------------------------------
 void System::createMember() //read name and birthday from the user with validation checks instead of doing it in the class;
 {
-    string name; 
+    char* name=nullptr; 
     cout << "Creating a member: \nEnter name: " << flush;
-    getline(cin,name);
+    name = readName();
     Date Birthday;
     cout << "Enter birthday:\nDay: " << flush;
     cin >> Birthday.day;
@@ -115,7 +115,7 @@ void System::createMember() //read name and birthday from the user with validati
     System::addMemberToArray(m1);
 }
 //---------------------------------------------------------- TeST
-void System::createMember(const string _name, const Date& _date) //Added a new constructor (mostly for testing)
+void System::createMember(const char* _name, const Date& _date) //Added a new constructor (mostly for testing)
 {
     Member member(_name, _date);
     System::addMemberToArray(member);
@@ -127,7 +127,7 @@ void System::transferMembers() //Updated 22/11 20:00
     for (int i = 0; i < numOfMembers; i++)
         output[i] = Member(members[i]);
 
-    delete[] members;
+    delete members;
     members = output;
     output = nullptr;
 }
@@ -151,7 +151,7 @@ void System::createFanPage()
 void System::newStatus() 
 {
     int decision = 0;
-    string name = "";
+    char* name = nullptr;
     cout << "Please choose where to add the status:"
         "\n1 - A Member"
         "\n2 - A Fan Page" << endl;
@@ -165,15 +165,15 @@ void System::newStatus()
     if (decision == 1)
     {
         cout << "Please enter a member's name:" << endl;
-        std::getline(cin, name);
+        name = readName();
         int found = System::findEntity(name,MEMBER);
-        (found >-1) ? members[found].addStatus()
+       /* (found >-1) ? members[found].addStatus()*/
         // if not found, alert - otherwise, inherit Member::addStatus
     }
     else
     {
         cout << "Please enter a Fan Page's name:" << endl;
-        std::getline(cin, name);
+        name = readName();
         // bool found = findPage(name)
         // if not found, alert - otherwise, inherit FanPage::addStatus
     }
@@ -182,7 +182,7 @@ void System::newStatus()
 void System::printAllStatuses() //Prints an entity's statuses.
 {
     int decision = 0, found = -1;
-    string name = nullptr;
+    char* name = nullptr;
     cout << "Please choose the entity of which you want to view statuses:"
         "\n1 - A Member"
         "\n2 - A Fan Page" << endl;
@@ -197,14 +197,14 @@ void System::printAllStatuses() //Prints an entity's statuses.
     if (decision == 1)
     {
         cout << "Please enter a member's name:" << endl;
-        getline(cin, name);
+        name = readName();
         found = System::findEntity(name, MEMBER);
     }
 
     else
     {
         cout << "Please enter a Fan Page's name:" << endl;
-        getline(cin, name);
+        name = readName();
         found = System::findEntity(name, FAN_PAGE);
     }
 
@@ -223,16 +223,16 @@ void System::printAllStatuses() //Prints an entity's statuses.
 //----------------------------------------------------------
 void System::printTenLastStatuses() //Prints a member's friend ten last statuses.
 {
-    string name, friendName; //Need to create a readName function.
+    char* name = nullptr,* friendName = nullptr; //Need to create a readName function.
     cout << "Please enter a member's name:" << endl;
-    getline(cin, name);
+    name = readName();
     int found = System::findEntity(name, MEMBER), foundFriend = -1, printIndex = -1;
 
     if (found != -1)
 
     {
         cout << "Please type one of " << name << "'s friends's name:" << endl;
-        getline(cin, friendName);
+        friendName = readName();
         foundFriend = members[found].findFriend(friendName);
         if (foundFriend == -1)
             cout << friendName << " was not found in " << name << "'s friends list.\nRedirecting to main menu" << endl;
@@ -249,14 +249,14 @@ void System::printTenLastStatuses() //Prints a member's friend ten last statuses
 //----------------------------------------------------------
 void System::connectMembers()
 {
-    string name1,name2 = "";
+    char* name1=nullptr,*name2 = nullptr;
     int found1{};
     int found2{};
     cout << "Please enter 1st member's name:" << endl;
-    std::getline(cin, name1);
+    name1 = readName();
     //find
     cout << "Please enter 2nd member's name:" << endl;
-    std::getline(cin, name2);
+    name2 = readName();
     //find
 
     if (found1 != -1 && found2 != -1)
