@@ -81,7 +81,7 @@ Member::~Member() //Destructor
 void Member::addFriend(Member* memberToAdd) //Adds a new friends to the friends array.
 {
     if (numOfFriends > 0)
-        transferFriends();
+        Member::transferFriends();
 
         friends[numOfFriends++] = memberToAdd;
 }
