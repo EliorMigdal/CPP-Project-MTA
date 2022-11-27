@@ -99,8 +99,9 @@ void Member::removeFriend(Member* memberToRemove) //Removes a friend from the fr
     delete[] friends;
     friends = output;
 }
+
 //----------------------------------------------------------
-bool Member::checkIfFriend(Member *member) //Searches for a member in other member's friends array.
+bool Member::checkIfFriend(const Member *member) //Searches for a member in other member's friends array.
 {
     bool found = false;
 
@@ -129,7 +130,7 @@ void Member::printFriendsArr() const //Prints friends's names.
 
 //Member-to-Status Methods
 //----------------------------------------------------------
-inline void Member::printStatus(const int& index) const //Prints a status.
+inline void Member::printStatus(const size_t& index) const //Prints a status.
 {
     cout << this->bulletinBoard[index]->Status::getStatus() << endl;
     this->bulletinBoard[index]->Status::printDate(
@@ -137,10 +138,10 @@ inline void Member::printStatus(const int& index) const //Prints a status.
             this->bulletinBoard[index]->Status::getStatusTime());
 }
 //----------------------------------------------------------
-void Member::printStatuses(size_SI numToPrint) const //Prints member's statuses.
+void Member::printStatuses(const size_t& numToPrint) const //Prints member's statuses.
 {
-    int _numOfStatuses = this->Member::getNumOfStatuses();
-    int logicPrintSize = 0;
+    size_t _numOfStatuses = this->Member::getNumOfStatuses();
+    size_t logicPrintSize = 0;
     if (_numOfStatuses == 0)
         cout << this->Member::getName() << " has not posted any statuses." << endl;
 
@@ -158,7 +159,7 @@ void Member::printStatuses(size_SI numToPrint) const //Prints member's statuses.
             cout << this->Member::getName() << "'s last " << PRINT_STATUS << " statuses:" << endl;
         }
 
-        for (int i = _numOfStatuses - 1; i >= _numOfStatuses - logicPrintSize; i--)
+        for (size_t i = _numOfStatuses - 1; i >= _numOfStatuses - logicPrintSize; i--)
         {
             cout << "Status #" << i + 1 << ":" << endl;
             this->Member::printStatus(i);

@@ -29,7 +29,7 @@ char* readName(const size_SI& type) //Reads a name & strings from user, using dy
 //---------------------------------------------------------------------------------
 Date& readBirthday() //Reads birthday from user.
 {
-	Date birthday;
+	Date birthday={ 0,0,0 };
 	cout << "Day: " << flush;
 	cin >> birthday.day;
 	cout << "Month: " << flush;

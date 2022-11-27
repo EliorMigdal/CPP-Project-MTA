@@ -9,11 +9,11 @@ private:
     char* name = nullptr;
     Date birthday = {0,0,0};
     Status** bulletinBoard = nullptr;
-    size_SI numOfStatuses = 0;
+    size_t numOfStatuses = 0;
     Member** friends = nullptr;
-    size_SI numOfFriends = 0;
+    size_t numOfFriends = 0;
     FanPage** pages = nullptr;
-    size_SI numOfPages = 0;
+    size_t numOfPages = 0;
 
 public:
     //Constructors & Destructor
@@ -27,31 +27,32 @@ public:
     char* getName() const { return this->name; }
     Date getBirthday() const { return this->birthday; }
     Status** getStatusArr() const { return this->bulletinBoard; }
-    int getNumOfStatuses() const { return this->numOfStatuses; }
+    size_t getNumOfStatuses() const { return this->numOfStatuses; }
     Member** getFriendsArr() const { return this->friends; }
-    int getNumOfFriends() const { return this->numOfFriends; }
+    size_t getNumOfFriends() const { return this->numOfFriends; }
     FanPage** getPagesArr() const { return this->pages; }
-    int getNumOfPages() const { return this->numOfPages; }
-
+    size_t getNumOfPages() const { return this->numOfPages; }
+   
     //Member-to-Member Methods
     void addFriend(Member* memberToAdd);
     void removeFriend(Member* memberToRemove);
-    bool checkIfFriend(Member* member);
+    bool checkIfFriend(const Member* member);
     void printFriendsArr() const;
+    
 
     //Member-to-Status Methods
-    inline void printStatus(const int& index) const;
-    void printStatuses(size_SI numToPrint = PRINT_STATUS) const;
+    inline void printStatus(const size_t& index) const;
+    void printStatuses(const size_t& numToPrint = PRINT_STATUS) const;
     void addStatus();
 
     //Member-to-FanPage Methods
     void addPage(FanPage* fanPage);
-
 private:
     //Private Re-allocators
     void transferStatuses();
     void transferFriends();
     void transferPages();
+    
 };
 
 #endif

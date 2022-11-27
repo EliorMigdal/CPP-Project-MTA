@@ -19,6 +19,7 @@ Status::Status(const Date& _date, const Time& _time) :
  statusTime(_time)
  {
     this->statusContent = new char[0];
+    checkMem(this->statusContent);
  }
 //------------------------------------------------------
 Status::Status(const Date& _date, const Time& _time, const Byte& _status)
@@ -28,6 +29,7 @@ Status::Status(const Date& _date, const Time& _time, const Byte& _status)
     statusType((STATUS_TYPE)_status)
     {
         this->statusContent = new char[0];
+        checkMem(this->statusContent);
     }
 //------------------------------------------------------
 Status::Status(const Date& _date, const Time& _time, const Byte& _status, const char* _content)
@@ -39,6 +41,10 @@ Status::Status(const Date& _date, const Time& _time, const Byte& _status, const 
     this->statusContent = new char[strlen(_content) + 1];
     checkMem(this->statusContent);
     strcpy(this->statusContent, _content);
+}
+Status::~Status()//Destructor
+{
+    delete[] statusContent;
 }
 //------------------------------------------------------
 // 

@@ -17,6 +17,7 @@ public:
     Status(const Date& _date, const Time& _time);
     Status(const Date& _date, const Time& _time, const Byte& _status);
     Status(const Date& _date, const Time& _time, const Byte& _status, const char* _content);
+    ~Status();
     //end of constructors
     
     //Methods

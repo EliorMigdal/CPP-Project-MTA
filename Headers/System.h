@@ -7,47 +7,50 @@
 
 class System {
 private:
-    int userDecision = 0;
+    Byte userDecision = 0;
     Member** members = nullptr;
-    int numOfMembers = 0;
+    size_t numOfMembers = 0;
     FanPage** pages = nullptr;
-    int numOfPages = 0;
+    size_t numOfPages = 0;
 
 public:
     System();
     ~System();
 
     //System-to-user Methods
-    inline void printMenu();
-    void setDecision(int& _decision);
-    int getDecision() const { return userDecision; }
+    inline void printMenu() const;
+    void setDecision(Byte& _decision);
+    inline Byte getDecision() const { return this->userDecision; }
 
     //General Methods
     int findEntity(const char* name, const size_SI& entityType) const;
-    void printAllStatuses();
-    void printAllEntities();
-    void printAllFriends();
-
+    
     //Members Methods
     void createMember();
-    void createMember(const char* _name, Date& _date);
-    void addMemberToArray(Member& member);
-    void transferMembers();
-    void printTenLastStatuses();
-    void connectMembers();
-    void disconnectMembers();
-
+    void createMember(const char* _name, Date& _date); // Temp function for testings
+    void addMemberToArray(Member* member);
+    
     //Fan Pages Methods
-    void createFanPage();
+    void createFanPage();//****************** need to implement
     void addFan();
-    void removeFan();
+    void removeFan(); //****************** need to implement
     void printAllFans(FanPage* fanpage) const;
 
     //Status Methods
-    void newStatus();
+    void newStatus(); //****************** need to implement
 
 private:
+    //System private Methods
     inline bool BirthdayCheck(const Date& _birthday);
+    void printAllStatuses() const;
+    void printAllEntities() const;
+    void printAllFriends() const; 
+    void transferMembers();
+    void printTenLastStatuses() const;
+    
+    //System members private Methods
+    void connectMembers(const size_SI& type = CONNECT);
+    void disconnectMembers();
 };
 
 #endif //CPP_PROJECT_SYSTEM_H

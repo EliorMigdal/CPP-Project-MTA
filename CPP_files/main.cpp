@@ -6,13 +6,13 @@ int main()
     System Facebook;
     Date d1 = {24, 4, 1995};
     Date d2 = {23, 5, 1990};
-    int userDecision;
+    Byte userDecision;
     cout << "Welcome to our social network!" << endl;
     Facebook.printMenu();
-    cout << "Please choose your action:" << endl;
-    cin >> userDecision;
     Facebook.createMember("Elior Migdal", d1);
     Facebook.createMember("Ben Cohen", d2);
+    cout << "Please choose your action:" << endl;
+    cin >> userDecision;
 
     while (userDecision != EXIT)
     {
