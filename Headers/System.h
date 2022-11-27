@@ -14,7 +14,9 @@ private:
     int numOfPages = 0;
 
 public:
-    System() = default; //Default constructor.
+    System(); //Constructor.
+    ~System();
+
     //System-to-user Methods
     inline void printMenu();
     void setDecision(int& _decision);
@@ -23,8 +25,8 @@ public:
     //General Methods
     int findEntity(const char* name, const size_SI& entityType) const;
     void createMember();
-    void createMember(const char* _name, Date& _date); //Added (mostly for testing)
-    void addMemberToArray(Member* member); // Added
+    void createMember(const char* _name, Date& _date);
+    void addMemberToArray(Member& member);
     void transferMembers(); 
     void createFanPage();
     void printAllStatuses();

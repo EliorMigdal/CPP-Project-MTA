@@ -1,7 +1,21 @@
 #include "../Headers/System.h"
 
 //---------------------------------------------------------
-int System::findEntity(const char* name, const size_SI& entityType) const
+System::System() //Constructor
+{
+    members = new Member * [numOfMembers];
+    checkMem(members);
+    pages = new FanPage * [numOfPages];
+    checkMem(pages);
+}
+//---------------------------------------------------------
+System::~System()
+{
+    delete[] members;
+    delete[] pages;
+}
+//---------------------------------------------------------
+int System::findEntity(const char* name, const size_SI& entityType) const //Searches for a member/fan page in their array.
 {
     bool found = false;
     int foundIndex = -1;
@@ -10,7 +24,7 @@ int System::findEntity(const char* name, const size_SI& entityType) const
     {
         for (int i = 0; i < numOfMembers && !found; i++)
         {
-            if (members[i]->getName() == name)
+            if (strcmp(members[i]->getName(), name) == 0)
             {
                 foundIndex = i;
                 found = true;
@@ -22,7 +36,7 @@ int System::findEntity(const char* name, const size_SI& entityType) const
     {
         for (int i = 0; i < numOfPages && !found; i++)
         {
-            if (pages[i]->getName() == name)
+            if (strcmp(pages[i]->getName(), name) == 0)
             {
                 foundIndex = i;
                 found = true;
@@ -33,14 +47,14 @@ int System::findEntity(const char* name, const size_SI& entityType) const
     return foundIndex;
 }
 //----------------------------------------------------------
-inline bool System::BirthdayCheck(const Date& _birthday)
+inline bool System::BirthdayCheck(const Date& _birthday) //Verifies birthday inserted correctly.
 {
     return (_birthday.day > 0 && _birthday.day < 32 &&
         _birthday.month > 0 && _birthday.month < 13
         && _birthday.year>1900 && _birthday.year < 2023) ? true : false;
 }
 //----------------------------------------------------------
-inline void System::printMenu()
+inline void System::printMenu() //Prints the menu for the user.
 {
     cout << "1 - Create a member"
         "\n2 - Create a fan page"
@@ -56,7 +70,7 @@ inline void System::printMenu()
         "\n12 - Exit" << endl;
 }
 //----------------------------------------------------------
-void System::setDecision(int& _decision)
+void System::setDecision(int& _decision) //Gets the decision from user and acts on it.
 {
     if (_decision < 1 || _decision > 12)
     {
@@ -100,17 +114,18 @@ void System::createMember() //read name and birthday from the user with validati
         cout << "Bad birthday, enter again:" << endl;
         Birthday = readBirthday();
     } 
-    Member m1(name,Birthday);
-    System::addMemberToArray(&m1);
+    Member* m1 = new Member(name, Birthday);
+    delete[] name;
+    System::addMemberToArray(*m1);
 }
 //----------------------------------------------------------
-void System::createMember(const char* _name, Date& _date) //Added a new constructor (mostly for testing)
+void System::createMember(const char* _name, Date& _date) //For hard-coded data.
 {
-    Member member(_name, _date);
-    System::addMemberToArray(&member);
+    Member* member = new Member(_name, _date);
+    System::addMemberToArray(*member);
 }
 //----------------------------------------------------------
-void System::transferMembers() //Updated 22/11 20:00
+void System::transferMembers() //Re-allocates memory to members array.
 {
     auto* output = new Member * [numOfMembers + 1];
     checkMem(output);
@@ -123,24 +138,20 @@ void System::transferMembers() //Updated 22/11 20:00
     members = output;
 }
 //----------------------------------------------------------
-void System::addMemberToArray(Member* member) //Adds a member to the members array. Updated 22/11 20:00.
+void System::addMemberToArray(Member& member) //Adds a member to the members array.
 {
-    if (numOfMembers == 0)
-        members = new Member * [numOfMembers];
-
-    else
+    if (numOfMembers > 0)
         System::transferMembers();
 
-     members[numOfMembers++] = member;
+     members[numOfMembers++] = &member;
 }
-////----------------------------------------------------------
-
+//----------------------------------------------------------
 void System::createFanPage()
 {
 
 
 }
-////----------------------------------------------------------
+//----------------------------------------------------------
 void System::connectMembers() //Connecting 2 members.
 {
     char* name1 = nullptr, *name2 = nullptr;
@@ -148,7 +159,7 @@ void System::connectMembers() //Connecting 2 members.
 
     cout << "Please enter 2 members whom you'd like to connect:" << endl;
     name1 = readName(DEFAULT_TYPE);
-    name2 = readName(DEFAULT_TYPE);
+    name2 = readName(DEFAULT_FLUSH);
 
     found1 = findEntity(name1, MEMBER);
     found2 = findEntity(name2, MEMBER);
@@ -157,6 +168,7 @@ void System::connectMembers() //Connecting 2 members.
     {
         members[found1]->addFriend(members[found2]);
         members[found2]->addFriend(members[found1]);
+        cout << "Connected Successfully." << endl;
     }
 
     else
@@ -168,7 +180,7 @@ void System::connectMembers() //Connecting 2 members.
         : cout << "Redirecting to main menu." << endl;
    
 }
-////----------------------------------------------------------
+//----------------------------------------------------------
 void System::newStatus() // not yet modified
 {
     int decision = 0;
@@ -230,16 +242,15 @@ void System::printAllStatuses() //Prints an entity's statuses.
 
     else
     {
-        if (decision == 1)// not yet modified
+        if (decision == 1)
         {
-     /*       members[found].printStatuses(members[found].getNumOfStatuses());*/
-
+            members[found]->Member::printStatuses(members[found]->Member::getNumOfStatuses());
         }
 
         else
         {
-          /*  cout << name << "'s statuses:" << endl;
-            pages[found].printStatuses();*/
+            cout << name << "'s statuses:" << endl;
+            pages[found]->FanPage::printStatuses();
         }
     }
 }
@@ -247,7 +258,7 @@ void System::printAllStatuses() //Prints an entity's statuses.
 void System::printTenLastStatuses() //Prints a member's friends ten last statuses.
 {
     char* name = nullptr;
-     name = readName(MEMBER);
+    name = readName();
     int found = System::findEntity(name, MEMBER);
 
     if (found != -1)
@@ -278,4 +289,4 @@ void System::printFanPageMembers() //Prints all of a fan page's members.
 
     delete pageName;
 }
-////----------------------------------------------------------
+//----------------------------------------------------------

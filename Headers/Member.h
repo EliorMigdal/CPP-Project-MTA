@@ -43,7 +43,6 @@ private:
     //Private reallocators
     void transferStatuses();
     void transferFriends();
-
 };
 
 #endif

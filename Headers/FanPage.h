@@ -6,7 +6,7 @@ class Member;
 
 class FanPage {
 private:
-    char* name=nullptr;
+    char* name = nullptr;
     Member** members = nullptr;
     size_t numOfMembers = 0;
     Status** bulletinBoard = nullptr;
@@ -17,7 +17,6 @@ public:
     FanPage() = default; //Default constructor.
     FanPage(const FanPage& obj); // Copy constructor
     explicit FanPage(const char* _name);
-  
 
     // Methods
     char* getName() const { return this->name; }

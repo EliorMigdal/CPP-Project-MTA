@@ -16,13 +16,19 @@ Status::Status(const Date& _date) : statusDate(_date) {}
 //------------------------------------------------------
 Status::Status(const Date& _date, const Time& _time) :
  statusDate(_date),
- statusTime(_time){}
+ statusTime(_time)
+ {
+    this->statusContent = new char[0];
+ }
 //------------------------------------------------------
 Status::Status(const Date& _date, const Time& _time, const Byte& _status)
     :
     statusDate(_date),
     statusTime(_time),
-    statusType((STATUS_TYPE)_status) {}
+    statusType((STATUS_TYPE)_status)
+    {
+        this->statusContent = new char[0];
+    }
 //------------------------------------------------------
 Status::Status(const Date& _date, const Time& _time, const Byte& _status, const char* _content)
     :
