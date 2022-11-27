@@ -7,7 +7,7 @@ using std::cout;
 using std::cin;
 using std::endl;
 using std::flush;
-
+using std::getline;
 typedef unsigned short int size_SI;
 typedef unsigned char Byte;
 

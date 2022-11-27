@@ -29,7 +29,8 @@ char* readName(const size_SI& type)
 	default:
 		break;
 	}
-	cin >> data;
+	cin.ignore();
+	cin.getline(data, MAX_CHARS_LEN);
 	char* updated = new char[strlen(data) + 1];
 	checkMem(updated);
 	strcpy(updated, data);
