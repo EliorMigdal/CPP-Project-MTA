@@ -1,8 +1,8 @@
 #include "../Headers/Member.h"
 
-//Constructors
-//----------------------------------------------------------
-Member::Member(const char* _name, Date &_birthday): birthday(_birthday)
+//Constructors & Destructor
+// ----------------------------------------------------------
+Member::Member(const char* _name, Date &_birthday): birthday(_birthday) //Constructor.
 {
     this->name = new char[strlen(_name) + 1];
     checkMem(this->name);
@@ -61,10 +61,8 @@ Member::Member(const Member& obj) : //Copy Constructor.
         this->pages[i] = obj.pages[i];
     }
 }
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//Destructor
 //-------------------------------------------------------------
-Member::~Member()
+Member::~Member() //Destructor
 {
     delete name;
     delete[] friends;
@@ -75,44 +73,76 @@ Member::~Member()
 
     delete[] bulletinBoard;
 }
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// Methods: 
-//--------------------------------------------------------------------------------------
-void Member::addFriend(Member* member) //Adds a new friends to the friends array.
-{ 
+//----------------------------------------------------------
+
+
+//Member-to-Member Methods
+//----------------------------------------------------------
+void Member::addFriend(Member* memberToAdd) //Adds a new friends to the friends array.
+{
     if (numOfFriends > 0)
         transferFriends();
 
-    friends[numOfFriends++] = member;
+        friends[numOfFriends++] = memberToAdd;
 }
 //----------------------------------------------------------
-void Member::transferFriends() //Re-allocates memory for friends array.
+void Member::removeFriend(Member* memberToRemove) //Removes a friend from the friends array.
 {
-    auto* output = new Member * [numOfFriends + 1];
+    auto* output = new Member * [this->numOfFriends];
 
-    for(int i = 0; i < numOfFriends; i++)
-        output[i] = friends[i];
+    for (size_t i = 0; i < numOfFriends - 1; i++)
+    {
+        if (friends[i] != memberToRemove)
+            output[i] = friends[i];
+    }
 
     delete[] friends;
     friends = output;
 }
-////----------------------------------------------------------
-void Member::printStatus(const int& index) const
+//----------------------------------------------------------
+bool Member::checkIfFriend(Member *member) //Searches for a member in other member's friends array.
+{
+    bool found = false;
+
+    for (size_t i = 0; i < numOfFriends && !found; i++)
+    {
+        if (friends[i] == member)
+            found = true;
+    }
+
+    return found;
+}
+//----------------------------------------------------------
+void Member::printFriendsArr() const //Prints friends's names.
+{
+    if (this->numOfFriends == 0)
+        cout << this->getName() << " has no friends." << endl;
+
+    else
+        cout << this->getName() << "'s friends are:" << endl;
+
+    for (size_t i = 0; i < numOfFriends; i++)
+        cout << friends[i]->getName() << endl;
+}
+//----------------------------------------------------------
+
+
+//Member-to-Status Methods
+//----------------------------------------------------------
+inline void Member::printStatus(const int& index) const //Prints a status.
 {
     cout << this->bulletinBoard[index]->Status::getStatus() << endl;
     this->bulletinBoard[index]->Status::printDate(
         this->bulletinBoard[index]->Status::getStatusDate(),
             this->bulletinBoard[index]->Status::getStatusTime());
 }
-////----------------------------------------------------------
+//----------------------------------------------------------
 void Member::printStatuses(size_SI numToPrint) const //Prints member's statuses.
 {
     int _numOfStatuses = this->Member::getNumOfStatuses();
     int logicPrintSize = 0;
     if (_numOfStatuses == 0)
-    {
         cout << this->Member::getName() << " has not posted any statuses." << endl;
-    }
 
     else if (numToPrint == PRINT_STATUS)
     {
@@ -135,22 +165,8 @@ void Member::printStatuses(size_SI numToPrint) const //Prints member's statuses.
         }
     }
 }
-////------------------------------------------------------------------------
-void Member::transferStatuses() //Re-allocating memory for status arr.
-{
-    auto* output = new Status * [numOfStatuses + 1];
-
-    for(size_t i = 0; i < numOfStatuses; i++)
-    {
-       
-        output[i] = bulletinBoard[i];
-    }
-
-    delete[] bulletinBoard;
-    bulletinBoard = output;
-}
-////----------------------------------------------------------
-void Member::addStatus()
+//----------------------------------------------------------
+void Member::addStatus() //Creates a new status.
 {
     Status status;
     status.createStatus();
@@ -163,5 +179,56 @@ void Member::addStatus()
     bulletinBoard[numOfStatuses++] = &status;
 }
 //----------------------------------------------------------
+
+
+//Member-to-FanPage Methods
 //----------------------------------------------------------
+void Member::addPage(FanPage *fanPage) //Adds a new page to the pages array.
+{
+    if (numOfPages > 0)
+        transferPages();
+
+    pages[numOfPages++] = fanPage;
+
+}
+//----------------------------------------------------------
+
+
+//Private Methods
+//----------------------------------------------------------
+void Member::transferFriends() //Re-allocates memory for friends array.
+{
+    auto* output = new Member * [numOfFriends + 1];
+    checkMem(output);
+
+    for(size_t i = 0; i < numOfFriends; i++)
+        output[i] = friends[i];
+
+    delete[] friends;
+    friends = output;
+}
+//----------------------------------------------------------
+void Member::transferStatuses() //Re-allocating memory for status arr.
+{
+    auto* output = new Status * [numOfStatuses + 1];
+    checkMem(output);
+
+    for(size_t i = 0; i < numOfStatuses; i++)
+        output[i] = bulletinBoard[i];
+
+    delete[] bulletinBoard;
+    bulletinBoard = output;
+}
+//----------------------------------------------------------
+void Member::transferPages() //Re-allocating memory for pages arr.
+{
+    auto* output = new FanPage * [numOfPages + 1];
+    checkMem(output);
+
+    for (size_t i = 0; i < numOfPages; i++)
+        output[i] = pages[i];
+
+    delete[] pages;
+    pages = output;
+}
 //----------------------------------------------------------

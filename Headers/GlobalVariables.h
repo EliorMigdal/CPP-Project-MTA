@@ -11,9 +11,12 @@ using std::getline;
 typedef unsigned short int size_SI;
 typedef unsigned char Byte;
 
-//const Variables
-constexpr auto DEFAULT_TYPE = 9;
-constexpr auto DEFAULT_FLUSH = 22;
+//Const Variables
+constexpr size_SI DEFAULT_TYPE = 9;
+constexpr size_SI DEFAULT_FLUSH = 22;
+constexpr size_SI CONNECT = 30;
+constexpr size_SI DISCONNECT = 31;
+constexpr size_SI ADD_FAN = 32;
 constexpr size_SI MAX_CHARS_LEN = 250;
 constexpr size_SI STATUS = 2;
 constexpr size_SI EXIT = 12;
@@ -36,7 +39,7 @@ struct Time
 enum class STATUS_TYPE{TEXT,IMAGE,VIDEO};
 
 //Global Functions
-char* readName(const size_SI& type = 100);
+char* readName(const size_SI& type = DEFAULT_TYPE);
 void checkMem(void* ptr);
 Date& readBirthday();
 

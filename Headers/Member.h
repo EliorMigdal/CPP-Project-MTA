@@ -16,9 +16,9 @@ private:
     size_SI numOfPages = 0;
 
 public:
-    //Constructors
-    Member() = default; //Default constructor.
-    Member(const Member& object); //Copy constructor.
+    //Constructors & Destructor
+    Member() = default;
+    Member(const Member& object);
     explicit Member(const char* _name);
     Member(const char* _name, Date& _birthday);
     ~Member();
@@ -33,16 +33,25 @@ public:
     FanPage** getPagesArr() const { return this->pages; }
     int getNumOfPages() const { return this->numOfPages; }
 
-    ////Methods
-    void addFriend(Member* member);
+    //Member-to-Member Methods
+    void addFriend(Member* memberToAdd);
+    void removeFriend(Member* memberToRemove);
+    bool checkIfFriend(Member* member);
+    void printFriendsArr() const;
+
+    //Member-to-Status Methods
     inline void printStatus(const int& index) const;
     void printStatuses(size_SI numToPrint = PRINT_STATUS) const;
     void addStatus();
 
+    //Member-to-FanPage Methods
+    void addPage(FanPage* fanPage);
+
 private:
-    //Private reallocators
+    //Private Re-allocators
     void transferStatuses();
     void transferFriends();
+    void transferPages();
 };
 
 #endif

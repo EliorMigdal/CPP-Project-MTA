@@ -1,10 +1,8 @@
 #include "../Headers/FanPage.h"
 
-
-//Constructors:
+//Constructors & Destructor
 //----------------------------------------------------------
-//Copy constructor
-FanPage::FanPage(const FanPage& obj): 
+FanPage::FanPage(const FanPage& obj): //Copy Constructor.
    numOfMembers(obj.numOfMembers),
    numOfStatuses(obj.numOfStatuses)
 {  
@@ -25,7 +23,7 @@ FanPage::FanPage(const FanPage& obj):
     }
 }
 //-----------------------------------------------------------
-FanPage::FanPage(const char* _name)
+FanPage::FanPage(const char* _name) //Constructor.
 {
     this->name = new char[strlen(_name) + 1];
     checkMem(this->name);
@@ -33,7 +31,35 @@ FanPage::FanPage(const char* _name)
 }
 //-----------------------------------------------------------
 
-// Methods: 
+
+//FanPage-to-FanPage Methods
+//-----------------------------------------------------------
+
+
+//FanPage-to-Member Methods
+//-----------------------------------------------------------
+bool FanPage::checkIfFan(Member *member) //Checks whether member is a fan of the page.
+{
+    bool output = false;
+
+    for (size_t i = 0; i < numOfMembers && !output; i++)
+        if (members[i] == member)
+            output = true;
+
+    return output;
+}
+//-----------------------------------------------------------
+void FanPage::addMember(Member *member) //Adds a new member to members array.
+{
+    if (numOfMembers > 0)
+        transferMembers();
+
+    members[numOfMembers++] = member;
+}
+//-----------------------------------------------------------
+
+
+// FanPage-to-Status Methods
 //----------------------------------------------------------
 void FanPage::printStatuses() const //Prints all fan page's statuses.
 {
@@ -48,7 +74,20 @@ void FanPage::printStatuses() const //Prints all fan page's statuses.
                 this->bulletinBoard[i]->getStatusTime());
     }
 }
-//void FanPage::printMembers() const
-//{
-//}
+//----------------------------------------------------------
+
+
+//Private Methods
+//----------------------------------------------------------
+void FanPage::transferMembers() //Re-allocates memory for members array.
+{
+    auto* output = new Member * [numOfMembers + 1];
+    checkMem(output);
+
+    for (size_t i = 0; i < numOfMembers; i++)
+        output[i] = members[i];
+
+    delete[] members;
+    members = output;
+}
 //----------------------------------------------------------

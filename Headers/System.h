@@ -14,7 +14,7 @@ private:
     int numOfPages = 0;
 
 public:
-    System(); //Constructor.
+    System();
     ~System();
 
     //System-to-user Methods
@@ -24,16 +24,28 @@ public:
 
     //General Methods
     int findEntity(const char* name, const size_SI& entityType) const;
+    void printAllStatuses();
+    void printAllEntities();
+    void printAllFriends();
+
+    //Members Methods
     void createMember();
     void createMember(const char* _name, Date& _date);
     void addMemberToArray(Member& member);
-    void transferMembers(); 
-    void createFanPage();
-    void printAllStatuses();
+    void transferMembers();
     void printTenLastStatuses();
-    void newStatus();
     void connectMembers();
-    void printFanPageMembers();
+    void disconnectMembers();
+
+    //Fan Pages Methods
+    void createFanPage();
+    void addFan();
+    void removeFan();
+    void printAllFans(FanPage* fanpage) const;
+
+    //Status Methods
+    void newStatus();
+
 private:
     inline bool BirthdayCheck(const Date& _birthday);
 };
