@@ -6,11 +6,11 @@ Member::Member(const char* _name, Date &_birthday): birthday(_birthday) //Constr
 {
     this->name = new char[strlen(_name) + 1];
     checkMem(this->name);
-    this->friends = new Member * [numOfFriends];
+    this->friends = new Member * [1];
     checkMem(this->friends);
-    this->bulletinBoard = new Status * [numOfStatuses];
+    this->bulletinBoard = new Status * [1];
     checkMem(this->bulletinBoard);
-    this->pages = new FanPage * [numOfPages];
+    this->pages = new FanPage * [1];
     checkMem(this->pages);
     strcpy(this->name, _name);
 }
@@ -19,13 +19,14 @@ Member::Member(const char* _name) //Constructor.
 {
     this->name = new char[strlen(_name) + 1];
     checkMem(this->name);
-    this->friends = new Member * [numOfFriends];
+    this->friends = new Member * [1];
     checkMem(this->friends);
-    this->bulletinBoard = new Status * [numOfStatuses];
+    this->bulletinBoard = new Status * [1];
     checkMem(this->bulletinBoard);
-    this->pages = new FanPage * [numOfPages];
+    this->pages = new FanPage * [1];
     checkMem(this->pages);
     strcpy(this->name, _name);
+
 }
 //----------------------------------------------------------
 Member::Member(const Member& obj) : //Copy Constructor.
@@ -37,6 +38,7 @@ Member::Member(const Member& obj) : //Copy Constructor.
     this->name = new char[strlen(obj.name) + 1];
     checkMem(this->name);
     strcpy(this->name, obj.name);
+
 
     this->bulletinBoard = new Status * [numOfStatuses];
     checkMem(this->bulletinBoard);
@@ -92,12 +94,12 @@ void Member::removeFriend(Member* memberToRemove) //Removes a friend from the fr
 
     for (size_t i = 0; i < numOfFriends - 1; i++)
     {
-        if (friends[i] != memberToRemove)
-            output[i] = friends[i];
+        if (this->friends[i] != memberToRemove)
+            output[i] = this->friends[i];
     }
 
-    delete[] friends;
-    friends = output;
+    delete[] this->friends;
+    this->friends = output;
 }
 
 //----------------------------------------------------------

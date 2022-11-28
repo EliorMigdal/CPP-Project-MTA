@@ -9,7 +9,7 @@ FanPage::FanPage(const FanPage& obj): //Copy Constructor.
     this->name = new char[strlen(obj.name) + 1];
     checkMem(this->name);
     strcpy(this->name, obj.name);
-
+    
     this->members = new Member * [numOfMembers];
     checkMem(this->members);
     for (size_t i = 0; i < numOfMembers; i++)

@@ -49,7 +49,7 @@ private:
     void printTenLastStatuses() const;
     
     //System members private Methods
-    void connectMembers(const size_SI& type = CONNECT);
+    void connectMembers();
     void disconnectMembers();
 };
 

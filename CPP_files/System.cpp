@@ -4,9 +4,9 @@
 //---------------------------------------------------------
 System::System() //Constructor
 {
-    members = new Member * [numOfMembers];
+    members = new Member * [1];
     checkMem(members);
-    pages = new FanPage * [numOfPages];
+    pages = new FanPage * [1];
     checkMem(pages);
 }
 //---------------------------------------------------------
@@ -37,13 +37,13 @@ inline void System::printMenu() const//Prints the menu for the user.
 //----------------------------------------------------------
 void System::setDecision(Byte& _decision) //Gets the decision from user and acts on it.
 {
-    if (_decision < 1 || _decision > 12)
+    if (_decision-'0' < 1 || _decision - '0' > 12)
     {
         cout << "Invalid choice. Please try again!" << endl;
         System::printMenu();
         cin >> _decision;
     }
-    switch (_decision)
+    switch ((_decision - '0'))
     {
         default:
             break;
@@ -300,7 +300,7 @@ void System::printTenLastStatuses() const //Prints a member's friends ten last s
     delete[] name;
 }
 //----------------------------------------------------------
-void System::connectMembers(const size_SI& type) //Connects XOR Disconnects two members.
+void System::connectMembers() //Connects two members.
 {
     char* firstMemberName = nullptr, *secondMemberName = nullptr;
     int foundFirst = -1, foundSecond = -1;
@@ -321,30 +321,24 @@ void System::connectMembers(const size_SI& type) //Connects XOR Disconnects two 
 
         if (!areFriends)
         {
-            if (type == CONNECT)
-            {
                 members[foundFirst]->Member::addFriend(members[foundSecond]);
-                members[foundSecond]->Member::addFriend(members[foundFirst]);
-            }
-            else
-            {
-                members[foundFirst]->Member::removeFriend(members[foundSecond]);
-                members[foundSecond]->Member::removeFriend(members[foundFirst]);
-            }
-           
+                members[foundSecond]->Member::addFriend(members[foundFirst]); 
+                cout << "Users: " << firstMemberName << " and " << secondMemberName << " Connected Succesfully." << endl;
         }
-
+   
         else
             cout << firstMemberName << " and " << secondMemberName << " are already friends." << endl;
     }
 
     else
     {
-        if (foundFirst == -1)
-            cout << firstMemberName << " was not found in our system.\nRedirecting to main menu." << endl;
-
-        else
-            cout << secondMemberName << " was not found in our system.\nRedirecting to main menu." << endl;
+        (foundFirst == -1) ?
+            cout <<  firstMemberName << "was not found in our system. "  << endl
+            :
+        (foundSecond == -1) ?
+            cout <<  secondMemberName << "was not found in our system. " << endl
+            : 
+            cout << "Redirecting to main menu." << endl;
     }
 
     delete[] firstMemberName;
@@ -353,7 +347,51 @@ void System::connectMembers(const size_SI& type) //Connects XOR Disconnects two 
 //----------------------------------------------------------
 void System::disconnectMembers() //Disconnects two members.
 {
-    System::connectMembers(DISCONNECT);
+    
+    char* firstMemberName = nullptr, * secondMemberName = nullptr;
+    int foundFirst = -1, foundSecond = -1;
+    bool areFriends;
+
+    cout << "Please enter 1st member name:" << endl;
+    firstMemberName = readName();
+
+    cout << "Please enter 2nd member name:" << endl;
+    secondMemberName = readName(DEFAULT_FLUSH);
+
+    
+    foundFirst = System::findEntity(firstMemberName, MEMBER);
+    foundSecond = System::findEntity(secondMemberName, MEMBER);
+
+    
+        if (foundFirst != -1 && foundSecond != -1)
+        {
+           
+            areFriends = members[foundFirst]->Member::checkIfFriend(members[foundSecond]);
+
+            if (areFriends)
+            {
+                members[foundFirst]->Member::removeFriend(members[foundSecond]);
+                members[foundSecond]->Member::removeFriend(members[foundFirst]);
+                cout << "Users: " << firstMemberName << " and " << secondMemberName << " Disconnected Succesfully." << endl;
+            }
+            else
+            {
+                cout << firstMemberName << " and " << secondMemberName << " are not friends." << endl;
+            }
+        }
+
+        else
+        {
+            (foundFirst == -1) ?
+                cout << firstMemberName << " was not found in our system.\nRedirecting to main menu." << endl
+                :
+                (foundSecond == -1) ?
+                cout << secondMemberName << "was not found in our system.\nRedirecting to main menu." << endl
+                : cout << firstMemberName << " and " << secondMemberName << "was not found in our system\nRedirecting to main menu." << endl;
+        }
+
+    delete[] firstMemberName;
+    delete[] secondMemberName;
 }
 //----------------------------------------------------------
 

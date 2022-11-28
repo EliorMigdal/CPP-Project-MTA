@@ -41,6 +41,7 @@ Status::Status(const Date& _date, const Time& _time, const Byte& _status, const 
     this->statusContent = new char[strlen(_content) + 1];
     checkMem(this->statusContent);
     strcpy(this->statusContent, _content);
+
 }
 Status::~Status()//Destructor
 {
