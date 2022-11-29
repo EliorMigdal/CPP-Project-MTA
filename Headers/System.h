@@ -24,31 +24,41 @@ public:
 
     //General Methods
     int findEntity(const char* name, const size_SI& entityType) const;
-    
+    char* InputOperation(const size_SI& type, int* foundedIndex);
     //Members Methods
     void createMember();
     void createMember(const char* _name, Date& _date); // Temp function for testings
     void addMemberToArray(Member* member);
     
     //Fan Pages Methods
-    void createFanPage();//****************** need to implement
+    void createFanPage();
     void addFan();
-    void removeFan(); //****************** need to implement
-    void printAllFans(FanPage* fanpage) const;
+    void removeFan();
+    void addFanPageToArray(FanPage* member);
 
     //Status Methods
-    void newStatus(); //****************** need to implement
+    void newStatus();
 
 private:
-    //System private Methods
-    inline bool BirthdayCheck(const Date& _birthday);
-    void printAllStatuses() const;
-    void printAllEntities() const;
-    void printAllFriends() const; 
-    void transferMembers();
-    void printTenLastStatuses() const;
+    /*System private Methods*/
     
-    //System members private Methods
+    //--Global function
+    inline bool BirthdayCheck(const Date& _birthday);
+   
+    //--Printers functions
+    void printAllStatuses();
+    void printAllEntities() const;
+    void printAllFriends(); 
+    void printTenLastStatuses();
+    
+    //--Reallocation functions
+    void transferMembers();
+    void transferFanPages();
+    
+    //System-Fan Page- private Methods
+    void printAllFans(FanPage* fanpage) const;
+    
+    //System-members private Methods
     void connectMembers();
     void disconnectMembers();
 };

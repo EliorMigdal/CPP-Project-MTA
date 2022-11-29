@@ -171,15 +171,13 @@ void Member::printStatuses(const size_t& numToPrint) const //Prints member's sta
 //----------------------------------------------------------
 void Member::addStatus() //Creates a new status.
 {
-    Status status;
-    status.createStatus();
-    if (numOfStatuses == 0)
-        bulletinBoard = new Status * [numOfStatuses];
-
-    else
+   
+    auto* newStatus = new Status;
+    newStatus->Status::createStatus();
+    if (numOfStatuses > 0)
         Member::transferStatuses();
 
-    bulletinBoard[numOfStatuses++] = &status;
+    bulletinBoard[numOfStatuses++] = newStatus;
 }
 //----------------------------------------------------------
 

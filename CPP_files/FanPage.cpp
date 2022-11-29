@@ -30,14 +30,34 @@ FanPage::FanPage(const char* _name) //Constructor.
     this->name = new char[strlen(_name) + 1];
     checkMem(this->name);
     strcpy(this->name, _name);
+    this->members = new Member * [1];
+    checkMem(this->members);
+    this->bulletinBoard = new Status * [1];
+    checkMem(this->bulletinBoard);
 }
 //-----------------------------------------------------------
 
 
 //FanPage-to-FanPage Methods
 //-----------------------------------------------------------
+bool FanPage::findIndexAndRemoveFAN(Member * member)
+{
+   
+    bool deleted = false;
+    for (size_t i = 0; i < this->numOfMembers && !deleted; i++)
+    {
+        if (members[i] == member)
+        {
+            delete members[i];
+            members[i] = members[this->numOfMembers - 1];
+            this->numOfMembers--;
+            deleted = true;
+        }
+    }
+    return deleted;
+}
 
-
+//-----------------------------------------------------------
 //FanPage-to-Member Methods
 //-----------------------------------------------------------
 bool FanPage::checkIfFan(Member *member) //Checks whether member is a fan of the page.
@@ -77,6 +97,16 @@ void FanPage::printStatuses() const //Prints all fan page's statuses.
     }
 }
 //----------------------------------------------------------
+void FanPage::addStatus()
+{
+    auto* newStatus = new Status;
+    newStatus->Status::createStatus();
+    if (numOfStatuses > 0)
+       FanPage::transferStatuses();
+
+    bulletinBoard[numOfStatuses++] = newStatus;
+}
+//----------------------------------------------------------
 
 
 //Private Methods
@@ -91,5 +121,17 @@ void FanPage::transferMembers() //Re-allocates memory for members array.
 
     delete[] members;
     members = output;
+}
+//----------------------------------------------------------
+void FanPage::transferStatuses() //Re-allocating memory for status arr.
+{
+    auto* output = new Status * [numOfStatuses + 1];
+    checkMem(output);
+
+    for (size_t i = 0; i < numOfStatuses; i++)
+        output[i] = bulletinBoard[i];
+
+    delete[] bulletinBoard;
+    bulletinBoard = output;
 }
 //----------------------------------------------------------

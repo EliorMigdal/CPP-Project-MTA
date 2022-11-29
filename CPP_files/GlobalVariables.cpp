@@ -11,7 +11,7 @@ void checkMem(void* ptr) //Verifies memory allocation.
 	}
 }
 //---------------------------------------------------------------------------------
-char* readName(const size_SI& type) //Reads a name & strings from user, using dynamic allocation.
+char* readString(const size_SI& type) //Reads a name & strings from user, using dynamic allocation.
 {
 	char* data = new char[MAX_CHARS_LEN];
 	checkMem(data);
@@ -40,3 +40,16 @@ Date& readBirthday() //Reads birthday from user.
 	return birthday;
 }
 //---------------------------------------------------------------------------------
+void GetTimeAndDate(Time& exactTime , Date& exactDate)
+{
+	time_t curr_time;
+	curr_time = time(NULL);
+	tm* tm_local = localtime(&curr_time);
+	exactTime.hour = tm_local->tm_hour;
+	exactTime.minutes = tm_local->tm_min;
+	exactTime.seconds = tm_local->tm_sec;
+	exactDate.year = tm_local->tm_year + 1900;
+	exactDate.month = tm_local->tm_mon + 1;
+	exactDate.day = tm_local->tm_mday;
+}
+

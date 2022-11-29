@@ -2,7 +2,7 @@
 #define CPP_PROJECT_FANPAGE_H
 #include "GlobalVariables.h"
 #include "Status.h"
-class Member;
+#include "Member.h"
 
 class FanPage {
 private:
@@ -30,14 +30,18 @@ public:
 
     //FanPage-to-Member Methods
     bool checkIfFan(Member* member);
+    bool findIndexAndRemoveFAN(Member* member);
     void addMember(Member* member);
-
+    
     //FanPage-to-Status Methods
     void printStatuses() const;
+    void addStatus();
 
     //Private Methods
 private:
+    
     void transferMembers();
+    void transferStatuses();
 };
 
 #endif
