@@ -7,7 +7,7 @@
 
 class System {
 private:
-    Byte userDecision = 0;
+    size_SI userDecision = 0;
     Member** members = nullptr;
     size_t numOfMembers = 0;
     FanPage** pages = nullptr;
@@ -19,12 +19,12 @@ public:
 
     //System-to-user Methods
     inline void printMenu() const;
-    void setDecision(Byte& _decision);
-    inline Byte getDecision() const { return this->userDecision; }
+    void setDecision(size_SI& _decision);
+    inline size_SI getDecision() const { return userDecision; }
 
     //General Methods
     int findEntity(const char* name, const size_SI& entityType) const;
-    char* InputOperation(const size_SI& type, int* foundedIndex);
+    char* InputOperation(const size_SI& type, int* foundedIndex, const bool& readAfter);
     //Members Methods
     void createMember();
     void createMember(const char* _name, Date& _date); // Temp function for testings

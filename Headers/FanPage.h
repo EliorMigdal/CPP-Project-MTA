@@ -19,11 +19,11 @@ public:
     explicit FanPage(const char* _name);
 
     //Getters
-    char* getName() const { return this->name; }
-    size_t getNumOfMembers() const { return this->numOfMembers; }
-    size_t getNumOfStatuses() const { return this->numOfStatuses; }
-    Member** getMemberArr() const { return this->members; }
-    Status** getStatusArr() const { return this->bulletinBoard; }
+    char* getName() const { return name; }
+    size_t getNumOfMembers() const { return numOfMembers; }
+    size_t getNumOfStatuses() const { return numOfStatuses; }
+    Member** getMemberArr() const { return members; }
+    Status** getStatusArr() const { return bulletinBoard; }
 
     //FanPage-to-FanPage Methods
 

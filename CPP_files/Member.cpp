@@ -97,7 +97,7 @@ void Member::removeFriend(Member* memberToRemove) //Removes a friend from the fr
         if (this->friends[i] != memberToRemove)
             output[i] = this->friends[i];
     }
-
+    this->numOfFriends--;
     delete[] this->friends;
     this->friends = output;
 }
@@ -134,10 +134,11 @@ void Member::printFriendsArr() const //Prints friends's names.
 //----------------------------------------------------------
 inline void Member::printStatus(const size_t& index) const //Prints a status.
 {
-    cout << this->bulletinBoard[index]->Status::getStatus() << endl;
-    this->bulletinBoard[index]->Status::printDate(
-        this->bulletinBoard[index]->Status::getStatusDate(),
-            this->bulletinBoard[index]->Status::getStatusTime());
+    cout << "Created in date: " << flush;
+    this->bulletinBoard[index - 1]->Status::printDate(
+        this->bulletinBoard[index - 1]->Status::getStatusDate(),
+            this->bulletinBoard[index - 1]->Status::getStatusTime());
+    cout << "Status content: " << this->bulletinBoard[index - 1]->Status::getStatus() << endl;
 }
 //----------------------------------------------------------
 void Member::printStatuses(const size_t& numToPrint) const //Prints member's statuses.
@@ -161,9 +162,9 @@ void Member::printStatuses(const size_t& numToPrint) const //Prints member's sta
             cout << this->Member::getName() << "'s last " << PRINT_STATUS << " statuses:" << endl;
         }
 
-        for (size_t i = _numOfStatuses - 1; i >= _numOfStatuses - logicPrintSize; i--)
+        for (size_t i = _numOfStatuses; i > _numOfStatuses - logicPrintSize; i--)
         {
-            cout << "Status #" << i + 1 << ":" << endl;
+            cout << "Status #" << i << ":" << endl;
             this->Member::printStatus(i);
         }
     }
@@ -178,6 +179,7 @@ void Member::addStatus() //Creates a new status.
         Member::transferStatuses();
 
     bulletinBoard[numOfStatuses++] = newStatus;
+    cout << this->name << " Uploded status succesfully" << endl;
 }
 //----------------------------------------------------------
 

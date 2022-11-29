@@ -19,9 +19,9 @@ public:
     //end of constructors
     
     //Methods
-    char* getStatus() const { return this->statusContent; }
-    Date getStatusDate() const { return this->statusDate; }
-    Time getStatusTime() const { return this->statusTime; }
+    char* getStatus() const { return statusContent; }
+    Date getStatusDate() const { return statusDate; }
+    Time getStatusTime() const { return statusTime; }
     void printDate(const Date& date, const Time& time) const;
     void createStatus();
  

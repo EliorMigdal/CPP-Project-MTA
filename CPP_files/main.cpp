@@ -10,7 +10,7 @@ int main()
     System Facebook;
     Date d1 = {24, 4, 1995};
     Date d2 = {23, 5, 1990};
-    Byte userDecision;
+    size_SI userDecision;
     cout << "Welcome to our social network!" << endl;
     Facebook.printMenu();
     Facebook.createMember("Elior Migdal", d1);

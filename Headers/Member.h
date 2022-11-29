@@ -24,14 +24,14 @@ public:
     ~Member();
 
     //Getters
-    char* getName() const { return this->name; }
-    Date getBirthday() const { return this->birthday; }
-    Status** getStatusArr() const { return this->bulletinBoard; }
-    size_t getNumOfStatuses() const { return this->numOfStatuses; }
-    Member** getFriendsArr() const { return this->friends; }
-    size_t getNumOfFriends() const { return this->numOfFriends; }
-    FanPage** getPagesArr() const { return this->pages; }
-    size_t getNumOfPages() const { return this->numOfPages; }
+    char* getName() const { return name; }
+    Date getBirthday() const { return birthday; }
+    Status** getStatusArr() const { return bulletinBoard; }
+    size_t getNumOfStatuses() const { return numOfStatuses; }
+    Member** getFriendsArr() const { return friends; }
+    size_t getNumOfFriends() const { return numOfFriends; }
+    FanPage** getPagesArr() const { return pages; }
+    size_t getNumOfPages() const { return numOfPages; }
    
     //Member-to-Member Methods
     void addFriend(Member* memberToAdd);

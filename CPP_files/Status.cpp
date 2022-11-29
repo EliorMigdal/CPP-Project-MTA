@@ -35,7 +35,7 @@ Status::~Status()//Destructor
 // ------------------------------------------------------------
 void Status::printDate(const Date& date, const Time& time) const
 {
-    cout << date.day << "/" << date.month << "/" << date.year << endl;
+    cout << date.day << "/" << date.month << "/" << date.year<< " "<< flush;
     cout << time.hour << ":" << time.minutes << ":" << time.seconds << endl;
 }
 //----------------------------------------------------------
