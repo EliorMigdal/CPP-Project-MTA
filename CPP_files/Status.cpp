@@ -25,25 +25,34 @@ Status::Status(const Date& _date, const Time& _time, const Byte& _status, const 
     strcpy(this->statusContent, _content);
 
 }
+//------------------------------------------------------
 Status::~Status() //Destructor
 {
     delete[] statusContent;
 }
 //------------------------------------------------------
+Status::Status(const char *statusContent) //Constructor.
+{
+    this->statusContent = new char [strlen(statusContent) + 1];
+    checkMem(this->statusContent);
+    strcpy(this->statusContent, statusContent);
+    setTimeAndDate(this->statusTime, this->statusDate);
+}
+//------------------------------------------------------
 
 
 //General methods
-// ------------------------------------------------------------
+//------------------------------------------------------
 void Status::printDate(const Date& date, const Time& time) const //Prints status's date.
 {
     cout << date.day << "/" << date.month << "/" << date.year<< " "<< flush;
     cout << time.hour << ":" << time.minutes << ":" << time.seconds << endl;
 }
-//----------------------------------------------------------
+//------------------------------------------------------
 void Status::createStatus() //Creates a new status.
 {
    cout << "Please enter a your Status content:" << endl;
    this->statusContent = readString(DEFAULT_FLUSH);
    setTimeAndDate(this->statusTime, this->statusDate);
 }
-//----------------------------------------------------------
+//------------------------------------------------------

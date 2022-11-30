@@ -15,6 +15,7 @@ public:
     Status(const Status& obj);
     explicit Status(const Date& _date);
     Status(const Date& _date, const Time& _time, const Byte& _status, const char* _content);
+    explicit Status(const char* statusContent);
     ~Status();
 
     //Getters

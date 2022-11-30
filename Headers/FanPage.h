@@ -28,12 +28,13 @@ public:
 
     //FanPage-to-Member Methods
     bool checkIfFan(Member* member);
-    bool findIndexAndRemoveFAN(Member* member);
+    bool findIndexAndRemoveFAN(const Member* member);
     void addMember(Member* member);
     
     //FanPage-to-Status Methods
     void printStatuses() const;
     void addStatus();
+    void addStatus(const char* statusContent);
 
     //Private Methods
 private:

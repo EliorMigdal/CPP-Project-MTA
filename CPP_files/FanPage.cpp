@@ -69,22 +69,24 @@ void FanPage::addMember(Member *member) //Adds a new member to members array.
     members[numOfMembers++] = member;
 }
 //-----------------------------------------------------------
-bool FanPage::findIndexAndRemoveFAN(Member * member)
+bool FanPage::findIndexAndRemoveFAN(const Member * member) //Removes a member from a fanpage's members arr.
 {
-
-    auto* output = new Member * [this->numOfMembers];
+    auto* output = new Member * [this->numOfMembers - 1];
+    size_t index = 0;
     bool deleted = false;
-    for (size_t i = 0; i < this->numOfMembers && !deleted; i++)
+
+    for (size_t i = 0; i < this->numOfMembers; i++)
     {
         if (this->members[i] != member)
         {
-            output[i] = this->members[i];
+            output[index] = this->members[i];
+            index++;
         }
+
         else
-        {
             deleted = true;
-        }
     }
+
     this->numOfMembers--;
     delete[] this->members;
     this->members = output;
@@ -109,7 +111,7 @@ void FanPage::printStatuses() const //Prints all fan page's statuses.
     }
 }
 //----------------------------------------------------------
-void FanPage::addStatus()
+void FanPage::addStatus() //Adds a status to a fanpage.
 {
     auto* newStatus = new Status;
     checkMem(newStatus);
@@ -122,6 +124,16 @@ void FanPage::addStatus()
     bulletinBoard[numOfStatuses++] = newStatus;
 }
 //----------------------------------------------------------
+void FanPage::addStatus(const char *statusContent) //For hard coded data.
+{
+    auto* newStatus = new Status(statusContent);
+    checkMem(newStatus);
+
+    if (numOfStatuses > 0)
+        FanPage::transferStatuses();
+
+    bulletinBoard[numOfStatuses++] = newStatus;
+}
 
 
 //Private Methods

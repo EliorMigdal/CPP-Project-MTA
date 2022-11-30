@@ -16,6 +16,7 @@ private:
 public:
     System();
     ~System();
+    System(const System& sys) = delete;
 
     //System-to-user Methods
     inline void printMenu() const;
@@ -31,16 +32,20 @@ public:
     void createMember(const char* _name, Date& _date);
     void addMemberToArray(Member* member);
     void connectMembers(const char* name1, const char* name2);
+    void disconnectMembers(const char* name1, const char* name2);
     
     //FanPage Methods
     void createFanPage();
     void createFanPage(const char* _name);
     void addFan();
+    void addFan(const char* pageName, const char* fanName);
     void removeFan();
+    void removeFan(const char* pageName, const char* fanName);
     void addFanPageToArray(FanPage* member);
 
     //Status Methods
     void newStatus();
+    void newStatus(const char* name, const size_SI& type, const char* statusContent);
 
 private:
     //System Private Methods

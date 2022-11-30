@@ -43,9 +43,11 @@ public:
     inline void printStatus(const size_t& index) const;
     void printStatuses(const size_t& numToPrint = PRINT_STATUS) const;
     void addStatus();
+    void addStatus(const char* statusContent);
 
     //Member-to-FanPage Methods
     void addPage(FanPage* fanPage);
+    void removePage(FanPage* fanPage);
 
 private:
     //Private Re-allocators

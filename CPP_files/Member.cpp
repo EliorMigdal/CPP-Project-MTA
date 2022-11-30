@@ -39,7 +39,6 @@ Member::Member(const Member& obj) : //Copy Constructor.
     checkMem(this->name);
     strcpy(this->name, obj.name);
 
-
     this->bulletinBoard = new Status * [numOfStatuses];
     checkMem(this->bulletinBoard);
     for (size_t i = 0; i < numOfStatuses; i++)
@@ -90,12 +89,16 @@ void Member::addFriend(Member* memberToAdd) //Adds a new friends to the friends 
 //----------------------------------------------------------
 void Member::removeFriend(Member* memberToRemove) //Removes a friend from the friends array.
 {
-    auto* output = new Member * [this->numOfFriends];
+    auto* output = new Member * [this->numOfFriends - 1];
+    size_SI index = 0;
 
-    for (size_t i = 0; i < numOfFriends - 1; i++)
+    for (size_t i = 0; i < numOfFriends; i++)
     {
         if (this->friends[i] != memberToRemove)
-            output[i] = this->friends[i];
+        {
+            output[index] = this->friends[i];
+            index++;
+        }
     }
     this->numOfFriends--;
     delete[] this->friends;
@@ -182,6 +185,16 @@ void Member::addStatus() //Creates a new status.
     cout << this->name << " Uploaded status successfully." << endl;
 }
 //----------------------------------------------------------
+void Member::addStatus(const char *statusContent) //For hard-coded data.
+{
+    auto* newStatus = new Status(statusContent);
+    checkMem(newStatus);
+
+    if (numOfStatuses > 0)
+        Member::transferStatuses();
+
+    bulletinBoard[numOfStatuses++] = newStatus;
+}
 
 
 //Member-to-FanPage Methods
@@ -192,6 +205,24 @@ void Member::addPage(FanPage *fanPage) //Adds a new page to the pages array.
         transferPages();
 
     pages[numOfPages++] = fanPage;
+}
+//----------------------------------------------------------
+void Member::removePage(FanPage *fanPage) //Removes a page from the page array.
+{
+    auto* output = new FanPage * [numOfPages - 1];
+    checkMem(output);
+    size_t index = 0;
+
+    for (size_t i = 0; i < numOfPages; i++)
+        if (fanPage != pages[i])
+        {
+            output[index] = pages[i];
+            index++;
+        }
+
+    delete[] pages;
+    pages = output;
+    numOfPages--;
 }
 //----------------------------------------------------------
 

@@ -304,6 +304,16 @@ void System::connectMembers(const char *name1, const char *name2) //Connect memb
     members[found2]->Member::addFriend(members[found1]);
 }
 //----------------------------------------------------------
+void System::disconnectMembers(const char *name1, const char *name2) //Disconnect members for hard-coded data.
+{
+    int found1, found2;
+    found1 = findEntity(name1, MEMBER);
+    found2 = findEntity(name2, MEMBER);
+
+    members[found1]->Member::removeFriend(members[found2]);
+    members[found2]->Member::removeFriend(members[found1]);
+}
+//----------------------------------------------------------
 
 
 //Fan Pages Methods
@@ -373,7 +383,18 @@ void System::addFan() //Adds a fan to a fan page's members array.
     delete[] memberName;
 }
 //----------------------------------------------------------
-void System::removeFan() //Removes a fan from a fan page's members array. Implementation needed.
+void System::addFan(const char *pageName, const char *fanName) //Add fan for hard-coded data.
+{
+    int foundPage, foundFan;
+
+    foundPage = findEntity(pageName, FAN_PAGE);
+    foundFan = findEntity(fanName, MEMBER);
+
+    pages[foundPage]->FanPage::addMember(members[foundFan]);
+    members[foundFan]->Member::addPage(pages[foundPage]);
+}
+//----------------------------------------------------------
+void System::removeFan() //Removes a fan from a fan page's members array.
 {
     char* fanPageName = nullptr, * memberName = nullptr;
     int foundFanPage = -1, foundMember = -1;
@@ -407,7 +428,18 @@ void System::removeFan() //Removes a fan from a fan page's members array. Implem
     delete[] memberName;
 }
 //----------------------------------------------------------
-void System::addFanPageToArray(FanPage* page)
+void System::removeFan(const char *pageName, const char *fanName) //Remove fan for hard-coded data.
+{
+    int foundPage, foundFan;
+
+    foundPage = findEntity(pageName, FAN_PAGE);
+    foundFan = findEntity(fanName, MEMBER);
+
+    pages[foundPage]->FanPage::findIndexAndRemoveFAN(members[foundFan]);
+    members[foundFan]->Member::removePage(pages[foundPage]);
+}
+//----------------------------------------------------------
+void System::addFanPageToArray(FanPage* page) //Adds a new fanpage to the pages array.
 {
     if (numOfPages > 0)
         System::transferFanPages();
@@ -419,7 +451,7 @@ void System::addFanPageToArray(FanPage* page)
 
 //Status Methods
 //----------------------------------------------------------
-void System::newStatus() 
+void System::newStatus() //Creates a new status.
 {
     int decision = 0;
     char* name= nullptr;
@@ -460,6 +492,17 @@ void System::newStatus()
             return;
         }
     }
+}
+//----------------------------------------------------------
+void System::newStatus(const char *name, const size_SI &type, const char *statusContent) //Creates a new status for hard-coded data.
+{
+    int found = findEntity(name, type);
+
+    if (type == MEMBER)
+        members[found]->Member::addStatus(statusContent);
+
+    else
+        pages[found]->FanPage::addStatus();
 }
 //----------------------------------------------------------
 

@@ -16,16 +16,11 @@ typedef unsigned char Byte;
 //Const Variables
 constexpr size_SI DEFAULT_TYPE = 9;
 constexpr size_SI DEFAULT_FLUSH = 22;
-constexpr size_SI CONNECT = 30;
-constexpr size_SI DISCONNECT = 31;
-constexpr size_SI ADD_FAN = 32;
 constexpr size_SI MAX_CHARS_LEN = 250;
-constexpr size_SI STATUS = 2;
 constexpr size_SI EXIT = 12;
 constexpr size_SI PRINT_STATUS = 10;
 constexpr size_SI MEMBER = 0;
 constexpr size_SI MEMBER_CREATION = 5;
-constexpr size_SI MEMBER_REMOVAL = 4;
 constexpr size_SI FAN_PAGE = 1;
 constexpr size_SI FAN_PAGE_CREATION = 2;
 constexpr int NOEXIST = -1;
