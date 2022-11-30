@@ -30,7 +30,7 @@ inline void System::printMenu() const //Prints the menu for the user.
         "\n2 - Create a fan page\t\t8 - Add a member to a fan page"
         "\n3 - Create a status\t\t9 - Remove a member from a fan page"
         "\n4 - Show all statuses\t\t10 - View all members and fan pages"
-        "\n5 - View 10 last statuses\t11 - View all member's friends or Fan page's fans"
+        "\n5 - 10 last statuses of member\t11 - View all member's friends or Fan page's fans"
         "\n6 - Connect 2 members\t\t12 - Exit" << endl;
           
 }
@@ -103,7 +103,7 @@ char* System::InputOperation(const size_SI& type, int* foundedIndex = nullptr, c
             cout << input << " Fan Page was not found in our system. You have " << MAX_ATTEMPTS - counter
                 << " more attempts.\nPlease enter a Fan Page's name:" << endl;
             delete[] input;
-            input = readString();
+            (readAfter) ? input = readString() : input = readString(DEFAULT_FLUSH);     
             counter++;
             *foundedIndex = System::findEntity(input, FAN_PAGE);
         }
@@ -148,24 +148,25 @@ char* System::InputOperation(const size_SI& type, int* foundedIndex = nullptr, c
         }
         break;
     case MEMBER:
+        
         cout << "Please enter a member's name:" << endl;
         (readAfter)? input = readString(DEFAULT_FLUSH): input = readString();
-        tempfound = System::findEntity(input, MEMBER);
-        while (tempfound == NOEXIST && counter < MAX_ATTEMPTS)
+        *foundedIndex = System::findEntity(input, MEMBER);
+        while (*foundedIndex == NOEXIST && counter < MAX_ATTEMPTS)
         {
             cout << input << " was not found in our system. You have " << MAX_ATTEMPTS - counter
                 << " more attempts.\nPlease enter a member's name:" << endl;
             delete[] input;
-            input = readString(DEFAULT_FLUSH);
+            (readAfter) ? input = readString() : input = readString(DEFAULT_FLUSH);
             counter++;
-            tempfound = System::findEntity(input, MEMBER);
+            *foundedIndex = System::findEntity(input, MEMBER);
         }
         if (counter == MAX_ATTEMPTS )
         {
             cout << "Cannot find entity\nToo many entries Redirecting to main menu" << endl;
             return nullptr;
         }
-        else if(tempfound != NOEXIST)
+        else if(*foundedIndex != NOEXIST)
         {
             cout << "User: " << input << " founded!" << endl;
         }
@@ -454,7 +455,7 @@ void System::newStatus(const char *name, const size_SI &type, const char *status
         members[found]->Member::addStatus(statusContent);
 
     else
-        pages[found]->FanPage::addStatus();
+        pages[found]->FanPage::addStatus(statusContent);
 }
 //----------------------------------------------------------
 
@@ -502,10 +503,10 @@ void System::Start() //Hard-coded data for our system.
     this->addFan("They were on a break!", "Ben Cohen");
     this->addFan("They were on a break!", "Ben Hanover");
     this->newStatus("Elior Migdal", MEMBER, "They were on a break!!!");
-    this->newStatus("They were on a break", FAN_PAGE, "@Elior yes they were!");
-    this->newStatus("They were on a break", FAN_PAGE, "@Ben Cohen what do you think?");
+    this->newStatus("They were on a break!", FAN_PAGE, "@Elior yes they were!");
+    this->newStatus("They were on a break!", FAN_PAGE, "@Ben Cohen what do you think?");
     this->newStatus("Ben Cohen", MEMBER, "Yes yes");
-    this->newStatus("They were on a break", FAN_PAGE, "Good good");
+    this->newStatus("They were on a break!", FAN_PAGE, "Good good");
     this->newStatus("Ben Hanover", MEMBER, "YES!!!!!!!!!");
     this->newStatus("We love Tel-Aviv", FAN_PAGE, "We LOVE Tel Aviv!!");
     this->addFan("We love Tel-Aviv", "Ramez Mannaa");
@@ -519,6 +520,20 @@ void System::Start() //Hard-coded data for our system.
     this->disconnectMembers("Ben Hanover", "Elior Migdal");
     this->disconnectMembers("Ramez Mannaa", "Elior Migdal");
     this->newStatus("Elior Migdal", MEMBER, "LOL you all left me!");
+
+    size_SI userDecision;
+    cout << "Welcome to our social network!" << endl;
+    printMenu();
+    cout << "Please choose your action: " << flush;
+    cin >> userDecision;
+
+    while (userDecision != EXIT)
+    {
+        setDecision(userDecision);
+        printMenu();
+        cout << "Please choose another action: " << flush;
+        cin >> userDecision;
+    }
 }
 //----------------------------------------------------------
 
@@ -553,9 +568,9 @@ void System::printAllStatuses() //Prints an entity's statuses.
     }
 
     (decision == 1 ) ?
-            name = InputOperation(MEMBER, &found,true)
+            name = InputOperation(MEMBER, &found)
                      :
-            name = InputOperation(FAN_PAGE, &found,true);
+            name = InputOperation(FAN_PAGE, &found);
 
     if (found != -1 && name != nullptr)
     {
@@ -586,6 +601,7 @@ void System::printTenLastStatuses() //Prints a member's friends ten last statuse
                 size_t numOfFriends = members[found]->Member::getNumOfFriends();
                 for (size_t i = 0; i < numOfFriends; i++)
                 {
+                    cout << "------------------------------------\nFriend #" << i + 1 <<"\n------------------------------------" << endl;
                     friendsArr[i]->Member::printStatuses(PRINT_STATUS);
                 }
             }
@@ -593,7 +609,7 @@ void System::printTenLastStatuses() //Prints a member's friends ten last statuse
         }
         else
         {
-            cout << "Member " << name << "Have no friends yet\nRedirecting to main menu" << flush;
+            cout << "Member " << name << " Have no friends yet\nRedirecting to main menu" << endl;
             
         }
     }

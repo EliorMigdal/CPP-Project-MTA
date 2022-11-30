@@ -89,7 +89,16 @@ void Member::addFriend(Member* memberToAdd) //Adds a new friends to the friends 
 //----------------------------------------------------------
 void Member::removeFriend(Member* memberToRemove) //Removes a friend from the friends array.
 {
-    auto* output = new Member * [this->numOfFriends - 1];
+    Member** output;
+    if (this->numOfFriends == 1)
+    {
+        output = new Member * [1];
+    }
+    else
+    {
+        output = new Member * [this->numOfFriends - 1];
+    }
+    checkMem(output);
     size_SI index = 0;
 
     for (size_t i = 0; i < numOfFriends; i++)
@@ -136,11 +145,11 @@ void Member::printFriendsArr() const //Prints friends's names.
 //----------------------------------------------------------
 inline void Member::printStatus(const size_t& index) const //Prints a status.
 {
-    cout << "Created in date: " << flush;
+    cout << "\tCreated in date: " << flush;
     this->bulletinBoard[index - 1]->Status::printDate(
         this->bulletinBoard[index - 1]->Status::getStatusDate(),
             this->bulletinBoard[index - 1]->Status::getStatusTime());
-    cout << "Status content: " << this->bulletinBoard[index - 1]->Status::getStatus() << endl;
+    cout << "\tStatus content: " << this->bulletinBoard[index - 1]->Status::getStatus() << endl;
 }
 //----------------------------------------------------------
 void Member::printStatuses(const size_t& numToPrint) const //Prints member's statuses.
@@ -150,7 +159,7 @@ void Member::printStatuses(const size_t& numToPrint) const //Prints member's sta
     if (_numOfStatuses == 0)
         cout << this->Member::getName() << " has not posted any statuses." << endl;
 
-    else if (numToPrint == PRINT_STATUS)
+    else 
     {
         if (_numOfStatuses < PRINT_STATUS)
         {
@@ -209,17 +218,27 @@ void Member::addPage(FanPage *fanPage) //Adds a new page to the pages array.
 //----------------------------------------------------------
 void Member::removePage(FanPage *fanPage) //Removes a page from the page array.
 {
-    auto* output = new FanPage * [numOfPages - 1];
+    FanPage** output;
+    if (numOfPages == 1)
+    {
+        output = new FanPage * [numOfPages];
+    }
+    else
+    {
+        output = new FanPage * [numOfPages - 1];  
+    }
     checkMem(output);
+    
     size_t index = 0;
 
     for (size_t i = 0; i < numOfPages; i++)
+    {
         if (fanPage != pages[i])
         {
             output[index] = pages[i];
             index++;
         }
-
+    }
     delete[] pages;
     pages = output;
     numOfPages--;
@@ -260,6 +279,7 @@ void Member::transferPages() //Re-allocating memory for pages arr.
 
     for (size_t i = 0; i < numOfPages; i++)
         output[i] = pages[i];
+
 
     delete[] pages;
     pages = output;

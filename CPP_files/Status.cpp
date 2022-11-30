@@ -33,7 +33,7 @@ Status::~Status() //Destructor
 //------------------------------------------------------
 Status::Status(const char *statusContent) //Constructor.
 {
-    this->statusContent = new char [strlen(statusContent) + 1];
+    this->statusContent = new char[strlen(statusContent) + 1];
     checkMem(this->statusContent);
     strcpy(this->statusContent, statusContent);
     setTimeAndDate(this->statusTime, this->statusDate);
