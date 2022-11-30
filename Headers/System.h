@@ -21,6 +21,8 @@ public:
     System& operator=(System&& sys) = delete;
     System& operator=(const System& sys) = delete;
 
+    //System - System methods
+    void Start();
     //System-to-user Methods
     inline void printMenu() const;
     void setDecision(size_SI& _decision);
@@ -52,7 +54,7 @@ public:
 
 private:
     //System Private Methods
-    
+   
     //Global methods
     inline bool BirthdayCheck(const Date& _birthday);
    

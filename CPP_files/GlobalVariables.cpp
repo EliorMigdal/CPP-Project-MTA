@@ -29,7 +29,6 @@ char* readString(const size_SI& type) //Reads a name & strings from user, using 
 //---------------------------------------------------------------------------------
 void readBirthday(Date& birthday) //Reads birthday from user.
 {
-	Date birthday={ 0,0,0 };
 	cout << "Day: " << flush;
 	cin >> birthday.day;
 	cout << "Month: " << flush;

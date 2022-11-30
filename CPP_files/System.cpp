@@ -26,18 +26,13 @@ System::~System() //Destructor.
 //----------------------------------------------------------
 inline void System::printMenu() const //Prints the menu for the user.
 {
-    cout << "1 - Create a member"
-            "\n2 - Create a fan page"
-            "\n3 - Create a status"
-            "\n4 - Show all statuses"
-            "\n5 - View 10 last statuses of a member's friends"
-            "\n6 - Connect 2 members"
-            "\n7 - Disconnect 2 members"
-            "\n8 - Add a member to a fan page"
-            "\n9 - Remove a member from a fan page"
-            "\n10 - View all members and fan pages"
-            "\n11 - View all member's friends or Fan page's fans"
-            "\n12 - Exit" << endl;
+    cout << "1 - Create a member\t\t7 - Disconnect 2 members"
+        "\n2 - Create a fan page\t\t8 - Add a member to a fan page"
+        "\n3 - Create a status\t\t9 - Remove a member from a fan page"
+        "\n4 - Show all statuses\t\t10 - View all members and fan pages"
+        "\n5 - View 10 last statuses\t11 - View all member's friends or Fan page's fans"
+        "\n6 - Connect 2 members\t\t12 - Exit" << endl;
+          
 }
 //----------------------------------------------------------
 void System::setDecision(size_SI& _decision) //Gets the decision from user and acts on it.
@@ -249,7 +244,7 @@ void System::createMember() //read name and birthday from the user with validati
         while (!BirthdayCheck(Birthday))
         {
             cout << "Bad birthday, enter again:" << endl;
-            Birthday = readBirthday();
+            readBirthday(Birthday);
         }
         auto* m1 = new Member(name, Birthday);
         checkMem(m1);
@@ -463,6 +458,27 @@ void System::newStatus(const char *name, const size_SI &type, const char *status
 }
 //----------------------------------------------------------
 
+
+void System::Start()
+{
+    Date eliDay = { 24, 4, 1995 };
+    Date bencoDay = { 23, 5, 1990 };
+    Date benhanDay = { 5, 9, 1983 };
+    Date ramezDay = { 14, 12, 2005 };
+    this->createMember("Elior Migdal", eliDay);
+    this->createMember("Ben Cohen", bencoDay);
+    this->createMember("Ben Hanover", benhanDay);
+    this->createMember("Ramez Mannaa", ramezDay);
+    this->createFanPage("The Bens");
+    this->createFanPage("We love Tel-Aviv");
+    this->createFanPage("They were on a break!");
+    this->connectMembers("Elior Migdal", "Ben Cohen");
+    this->connectMembers("Elior Migdal", "Ben Hanover");
+    this->connectMembers("Ben Cohen", "Ramez Mannaa");
+    this->connectMembers("Ben Cohen", "Ben Hanover");
+    this->connectMembers("Ramez Mannaa", "Elior Migdal");
+    this->connectMembers("Ramez Mannaa", "Ben Hanover");
+}
 
 //Private Global Methods
 //----------------------------------------------------------
