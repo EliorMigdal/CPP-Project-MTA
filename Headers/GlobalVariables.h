@@ -4,7 +4,6 @@
 #include <iostream>
 #include <string>
 #include <time.h>
-#include <windows.h> 
 using std::cout;
 using std::cin;
 using std::endl;
@@ -30,6 +29,7 @@ constexpr size_SI MEMBER_REMOVAL = 4;
 constexpr size_SI FAN_PAGE = 1;
 constexpr size_SI FAN_PAGE_CREATION = 2;
 constexpr int NOEXIST = -1;
+constexpr size_SI MAX_ATTEMPTS = 3;
 
 //Structures
 struct Date
@@ -49,5 +49,5 @@ enum class STATUS_TYPE{TEXT,IMAGE,VIDEO};
 char* readString(const size_SI& type = DEFAULT_TYPE);
 void checkMem(void* ptr);
 Date& readBirthday();
-void GetTimeAndDate(Time& exactTime, Date& exactDate);
+void setTimeAndDate(Time& exactTime, Date& exactDate);
 #endif

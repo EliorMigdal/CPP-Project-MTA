@@ -38,7 +38,6 @@ public:
     void removeFriend(Member* memberToRemove);
     bool checkIfFriend(const Member* member);
     void printFriendsArr() const;
-    
 
     //Member-to-Status Methods
     inline void printStatus(const size_t& index) const;
@@ -47,6 +46,7 @@ public:
 
     //Member-to-FanPage Methods
     void addPage(FanPage* fanPage);
+
 private:
     //Private Re-allocators
     void transferStatuses();

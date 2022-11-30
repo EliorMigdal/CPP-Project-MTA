@@ -17,6 +17,7 @@ public:
     FanPage() = default;
     FanPage(const FanPage& obj);
     explicit FanPage(const char* _name);
+    ~FanPage();
 
     //Getters
     char* getName() const { return name; }
@@ -24,9 +25,6 @@ public:
     size_t getNumOfStatuses() const { return numOfStatuses; }
     Member** getMemberArr() const { return members; }
     Status** getStatusArr() const { return bulletinBoard; }
-
-    //FanPage-to-FanPage Methods
-
 
     //FanPage-to-Member Methods
     bool checkIfFan(Member* member);
@@ -39,7 +37,6 @@ public:
 
     //Private Methods
 private:
-    
     void transferMembers();
     void transferStatuses();
 };

@@ -25,13 +25,16 @@ public:
     //General Methods
     int findEntity(const char* name, const size_SI& entityType) const;
     char* InputOperation(const size_SI& type, int* foundedIndex, const bool& readAfter);
-    //Members Methods
+
+    //Member Methods
     void createMember();
-    void createMember(const char* _name, Date& _date); // Temp function for testings
+    void createMember(const char* _name, Date& _date);
     void addMemberToArray(Member* member);
+    void connectMembers(const char* name1, const char* name2);
     
-    //Fan Pages Methods
+    //FanPage Methods
     void createFanPage();
+    void createFanPage(const char* _name);
     void addFan();
     void removeFan();
     void addFanPageToArray(FanPage* member);
@@ -40,27 +43,26 @@ public:
     void newStatus();
 
 private:
-    /*System private Methods*/
+    //System Private Methods
     
-    //--Global function
+    //Global methods
     inline bool BirthdayCheck(const Date& _birthday);
    
-    //--Printers functions
+    //Printers methods //Why private?
     void printAllStatuses();
-    void printAllEntities() const;
-    void printAllFriends(); 
     void printTenLastStatuses();
-    
-    //--Reallocation functions
-    void transferMembers();
-    void transferFanPages();
-    
-    //System-Fan Page- private Methods
+    void printAllEntities() const;
+    void printAllFriends();
     void printAllFans(FanPage* fanpage) const;
-    
-    //System-members private Methods
+    void printAllPages();
+
+    //System-Member Methods //Why private?
     void connectMembers();
     void disconnectMembers();
+
+    //Reallocation methods
+    void transferMembers();
+    void transferFanPages();
 };
 
 #endif //CPP_PROJECT_SYSTEM_H

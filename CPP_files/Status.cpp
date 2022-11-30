@@ -1,6 +1,6 @@
 #include "../Headers/Status.h"
 
-//constructors
+//Constructors
 //------------------------------------------------------
 Status::Status(const Status& obj) :
     statusDate(obj.statusDate),
@@ -25,24 +25,25 @@ Status::Status(const Date& _date, const Time& _time, const Byte& _status, const 
     strcpy(this->statusContent, _content);
 
 }
-Status::~Status()//Destructor
+Status::~Status() //Destructor
 {
     delete[] statusContent;
 }
 //------------------------------------------------------
-// 
-//Public methods.
+
+
+//General methods
 // ------------------------------------------------------------
-void Status::printDate(const Date& date, const Time& time) const
+void Status::printDate(const Date& date, const Time& time) const //Prints status's date.
 {
     cout << date.day << "/" << date.month << "/" << date.year<< " "<< flush;
     cout << time.hour << ":" << time.minutes << ":" << time.seconds << endl;
 }
 //----------------------------------------------------------
-void Status::createStatus()
+void Status::createStatus() //Creates a new status.
 {
    cout << "Please enter a your Status content:" << endl;
    this->statusContent = readString(DEFAULT_FLUSH);
-   GetTimeAndDate(this->statusTime, this->statusDate);
+   setTimeAndDate(this->statusTime, this->statusDate);
 }
 //----------------------------------------------------------

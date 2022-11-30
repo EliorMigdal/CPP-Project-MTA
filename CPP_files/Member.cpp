@@ -101,7 +101,6 @@ void Member::removeFriend(Member* memberToRemove) //Removes a friend from the fr
     delete[] this->friends;
     this->friends = output;
 }
-
 //----------------------------------------------------------
 bool Member::checkIfFriend(const Member *member) //Searches for a member in other member's friends array.
 {
@@ -172,14 +171,15 @@ void Member::printStatuses(const size_t& numToPrint) const //Prints member's sta
 //----------------------------------------------------------
 void Member::addStatus() //Creates a new status.
 {
-   
     auto* newStatus = new Status;
+    checkMem(newStatus);
+
     newStatus->Status::createStatus();
     if (numOfStatuses > 0)
         Member::transferStatuses();
 
     bulletinBoard[numOfStatuses++] = newStatus;
-    cout << this->name << " Uploded status succesfully" << endl;
+    cout << this->name << " Uploaded status successfully." << endl;
 }
 //----------------------------------------------------------
 
@@ -192,7 +192,6 @@ void Member::addPage(FanPage *fanPage) //Adds a new page to the pages array.
         transferPages();
 
     pages[numOfPages++] = fanPage;
-
 }
 //----------------------------------------------------------
 

@@ -36,28 +36,18 @@ FanPage::FanPage(const char* _name) //Constructor.
     checkMem(this->bulletinBoard);
 }
 //-----------------------------------------------------------
-
-
-//FanPage-to-FanPage Methods
-//-----------------------------------------------------------
-bool FanPage::findIndexAndRemoveFAN(Member * member)
+FanPage::~FanPage() //Destructor.
 {
-   
-    bool deleted = false;
-    for (size_t i = 0; i < this->numOfMembers && !deleted; i++)
-    {
-        if (members[i] == member)
-        {
-            delete members[i];
-            members[i] = members[this->numOfMembers - 1];
-            this->numOfMembers--;
-            deleted = true;
-        }
-    }
-    return deleted;
-}
+    delete[] name;
+    delete[] members;
 
+    for (size_SI i = 0; i < numOfStatuses; i++)
+        delete bulletinBoard[i];
+    delete[] bulletinBoard;
+}
 //-----------------------------------------------------------
+
+
 //FanPage-to-Member Methods
 //-----------------------------------------------------------
 bool FanPage::checkIfFan(Member *member) //Checks whether member is a fan of the page.
@@ -77,6 +67,22 @@ void FanPage::addMember(Member *member) //Adds a new member to members array.
         transferMembers();
 
     members[numOfMembers++] = member;
+}
+//-----------------------------------------------------------
+bool FanPage::findIndexAndRemoveFAN(Member * member)
+{
+    bool deleted = false;
+    for (size_t i = 0; i < this->numOfMembers && !deleted; i++)
+    {
+        if (members[i] == member)
+        {
+            delete members[i]; //Problem
+            members[i] = members[this->numOfMembers - 1];
+            this->numOfMembers--;
+            deleted = true;
+        }
+    }
+    return deleted;
 }
 //-----------------------------------------------------------
 
@@ -100,7 +106,10 @@ void FanPage::printStatuses() const //Prints all fan page's statuses.
 void FanPage::addStatus()
 {
     auto* newStatus = new Status;
+    checkMem(newStatus);
+
     newStatus->Status::createStatus();
+
     if (numOfStatuses > 0)
        FanPage::transferStatuses();
 

@@ -10,21 +10,21 @@ private:
     char* statusContent = nullptr;
 
 public:
-    //Constructors:
-    Status() = default; //Default constructor.
-    Status(const Status& obj); //Copy constructor
+    //Constructors
+    Status() = default;
+    Status(const Status& obj);
     explicit Status(const Date& _date);
     Status(const Date& _date, const Time& _time, const Byte& _status, const char* _content);
     ~Status();
-    //end of constructors
-    
-    //Methods
+
+    //Getters
     char* getStatus() const { return statusContent; }
     Date getStatusDate() const { return statusDate; }
     Time getStatusTime() const { return statusTime; }
+
+    //General Methods
     void printDate(const Date& date, const Time& time) const;
     void createStatus();
- 
 };
 
 #endif

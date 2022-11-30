@@ -2,7 +2,7 @@
 
 //Constructor & Destructor
 //---------------------------------------------------------
-System::System() //Constructor
+System::System() //Constructor.
 {
     members = new Member * [1];
     checkMem(members);
@@ -12,14 +12,19 @@ System::System() //Constructor
 //---------------------------------------------------------
 System::~System() //Destructor.
 {
+    for (size_SI i = 0; i < numOfMembers; i++)
+        delete members[i];
     delete[] members;
+
+    for (size_SI i = 0; i < numOfPages; i++)
+        delete pages[i];
     delete[] pages;
 }
 
 
 //System-to-user methods
 //----------------------------------------------------------
-inline void System::printMenu() const//Prints the menu for the user.
+inline void System::printMenu() const //Prints the menu for the user.
 {
     cout << "1 - Create a member"
             "\n2 - Create a fan page"
@@ -43,7 +48,7 @@ void System::setDecision(size_SI& _decision) //Gets the decision from user and a
         System::printMenu();
         cin >> _decision;
     }
-    switch ((_decision ))
+    switch (_decision )
     {
         default:
             break;
@@ -84,9 +89,10 @@ void System::setDecision(size_SI& _decision) //Gets the decision from user and a
 }
 //----------------------------------------------------------
 
+
 //General Methods
 //---------------------------------------------------------
-char* System::InputOperation(const size_SI& type, int* foundedIndex = nullptr,const bool& readAfter = false)
+char* System::InputOperation(const size_SI& type, int* foundedIndex = nullptr, const bool& readAfter = false)
 {
     int tempfound = -1;
     bool rel = false;
@@ -172,7 +178,6 @@ char* System::InputOperation(const size_SI& type, int* foundedIndex = nullptr,co
         else if(*foundedIndex != NOEXIST)
         {
             cout << "User: " << input << " founded!" << endl;
-        
         }
         if (rel) { delete foundedIndex; }
         break;
@@ -240,91 +245,6 @@ int System::findEntity(const char* name, const size_SI& entityType) const //Sear
     return foundIndex;
 }
 //----------------------------------------------------------
-void System::printAllStatuses() //Prints an entity's statuses.
-{
-    Byte decision = 0;
-    int found = -1;
-    char* name = nullptr;
-    cout << "Please choose the entity of which you want to view statuses:"
-            "\n1 - A Member"
-            "\n2 - A Fan Page" << endl;
-    cin >> decision;
-
-    while (decision != 1 && decision != 2)
-    {
-        cout << "Invalid decision. Please choose 1 or 2: " << endl;
-        cin >> decision;
-    }
-   
-    (decision == 1 ) ? 
-        name = InputOperation(MEMBER, &found,true) 
-        : 
-        name = InputOperation(FAN_PAGE, &found,true);
-  
-    if (found != -1 && name != nullptr)
-    {
-        if (decision == 1)
-            members[found]->Member::printStatuses(members[found]->Member::getNumOfStatuses());
-        else
-        {
-            cout << name << "'s statuses:" << endl;
-            pages[found]->FanPage::printStatuses();
-        }
-    }
-
-    delete[] name;
-}
-//----------------------------------------------------------
-void System::printAllEntities() const//Prints all entities.
-{
-    if (numOfMembers == 0)
-        cout << "Our system has no members yet." << endl;
-
-    else
-        cout << "Our system's members list:" << endl;
-
-    for (size_t i = 0; i < numOfMembers; i++)
-        cout << members[i]->Member::getName() << endl;
-
-    if (numOfPages == 0)
-        cout << "Our system has no fan pages yet." << endl;
-
-    else
-        cout << "Our system's fan pages list:" << endl;
-
-    for (size_t i = 0; i < numOfPages; i++)
-        cout << pages[i]->FanPage::getName() << endl;
-}
-//----------------------------------------------------------
-void System::printAllFriends()  //Prints an entity's friends.
-{
-    int decision, foundEntity = -1;
-    char* entityName = nullptr;
-    cout << "Please enter the entity of which you want to view its friends:"
-            "\n1 - A Member"
-            "\n2 - A Fan Page" << endl;
-    cin >> decision;
-
-    while (decision != 1 && decision != 2)
-    {
-        cout << "Invalid decision. Please choose 1 or 2: " << endl;
-        cin >> decision;
-    }
-
-    (decision == 1) ? entityName = InputOperation(MEMBER, &foundEntity): entityName = InputOperation(FAN_PAGE, &foundEntity);
- 
-
-    if (foundEntity != -1 && entityName != nullptr)
-    {
-         if (decision == 1)
-            members[foundEntity]->Member::printFriendsArr();
-         else
-            System::printAllFans(pages[foundEntity]);
-    }
-    delete[] entityName;
-  
-}
-//----------------------------------------------------------
 
 
 //Members Methods
@@ -369,122 +289,21 @@ void System::addMemberToArray(Member* member) //Adds a member to the members arr
     members[numOfMembers++] = member;
 }
 //----------------------------------------------------------
-void System::transferMembers() //Re-allocates memory to members array.
+void System::connectMembers(const char *name1, const char *name2) //Connect members for hard-coded data.
 {
-    auto* output = new Member * [numOfMembers + 1];
-    checkMem(output);
-    for (size_t i = 0 ; i < numOfMembers;i++)
-    {
-        output[i] = members[i];
-    }
+    int found1, found2;
+    found1 = findEntity(name1, MEMBER);
+    found2 = findEntity(name2, MEMBER);
 
-    delete[] members;
-    members = output;
+    members[found1]->Member::addFriend(members[found2]);
+    members[found2]->Member::addFriend(members[found1]);
 }
 //----------------------------------------------------------
-void System::printTenLastStatuses()  //Prints a member's friends ten last statuses.
-{
-    
-    char* name = nullptr;
-    int found = -1;
-    name = InputOperation(MEMBER, &found);
-    if (name != nullptr)
-    {
-        if (members[found]->Member::getNumOfFriends() != 0)
-        {
-            if (found != -1)
-            {
-                Member** friendsArr = members[found]->Member::getFriendsArr();
-                size_t numOfFriends = members[found]->Member::getNumOfFriends();
-                for (size_t i = 0; i < numOfFriends; i++)
-                {
-                    friendsArr[i]->Member::printStatuses(PRINT_STATUS);
-                }
-            }
-
-        }
-        else
-        {
-            cout << "Member " << name << "Have no friends yet\nRedirecting to main menu" << flush;
-            delete[]name;
-        }
-    }
-    
-    else
-    {
-        delete[] name;
-        return;
-    }
-
-    delete[] name;
-}
-//----------------------------------------------------------
-void System::connectMembers() //Connects two members.
-{
-    char* firstMemberName = nullptr, * secondMemberName = nullptr;
-    int foundFirst = -1, foundSecond = -1;
-    bool areFriends;
-    firstMemberName = InputOperation(MEMBER, &foundFirst);
-    secondMemberName = InputOperation(MEMBER, &foundSecond,true);
-
-    if (foundFirst != -1 && foundSecond != -1 && firstMemberName != nullptr && secondMemberName != nullptr)
-    {
-        areFriends = members[foundFirst]->Member::checkIfFriend(members[foundSecond]);
-        if (!areFriends)
-        {
-                members[foundFirst]->Member::addFriend(members[foundSecond]);
-                members[foundSecond]->Member::addFriend(members[foundFirst]); 
-                cout << "Users: " << firstMemberName << " and " << secondMemberName << " Connected Succesfully." << endl;
-        }
-        else
-            cout << firstMemberName << " and " << secondMemberName << " are already friends." << endl;
-    }
-    else
-    {
-        delete[] firstMemberName;
-        delete[] secondMemberName;
-        return;
-    }
-
-    delete[] firstMemberName;
-    delete[] secondMemberName;
-}
-//----------------------------------------------------------
-void System::disconnectMembers() //Disconnects two members.
-{ 
-    char* firstMemberName = nullptr, * secondMemberName = nullptr;
-    int foundFirst = -1, foundSecond = -1;
-    bool areFriends;
-    firstMemberName = InputOperation(MEMBER, &foundFirst);
-    secondMemberName = InputOperation(MEMBER, &foundSecond,true);
-
-    if (foundFirst != -1 && foundSecond != -1 && firstMemberName!=nullptr && secondMemberName != nullptr)
-    {     
-        areFriends = members[foundFirst]->Member::checkIfFriend(members[foundSecond]);
-        if (areFriends)
-        {
-            members[foundFirst]->Member::removeFriend(members[foundSecond]);
-            members[foundSecond]->Member::removeFriend(members[foundFirst]);
-            cout << "Users: " << firstMemberName << " and " << secondMemberName << " Disconnected Succesfully." << endl;
-        }
-        else
-            cout << firstMemberName << " and " << secondMemberName << " are not friends." << endl;     
-    }
-    else
-    {
-        delete[] firstMemberName;
-        delete[] secondMemberName;
-        return;
-    }
-    delete[] firstMemberName;
-    delete[] secondMemberName;
-}
-//------------------------------------------------------------------------------------------
 
 
 //Fan Pages Methods
-//----------------------------------------------------------------------------------------
-void System::createFanPage() //Implementation needed.
+//----------------------------------------------------------
+void System::createFanPage() //Creates a fan page.
 {
     char* name = nullptr;
     name = InputOperation(FAN_PAGE_CREATION);
@@ -502,7 +321,14 @@ void System::createFanPage() //Implementation needed.
         return;
     }
 }
-//-----------------------------------------------------------------------------------------
+//----------------------------------------------------------
+void System::createFanPage(const char *_name) //Creates a fan page for hard-coded data.
+{
+    auto* page = new FanPage(_name);
+    checkMem(page);
+    System::addFanPageToArray(page);
+}
+//----------------------------------------------------------
 void System::addFan() //Adds a fan to a fan page's members array.
 {
     char* fanPageName = nullptr, *memberName = nullptr;
@@ -527,7 +353,7 @@ void System::addFan() //Adds a fan to a fan page's members array.
         {
             members[foundMember]->Member::addPage(pages[foundFanPage]);
             pages[foundFanPage]->FanPage::addMember(members[foundMember]);
-            cout << "Succesfully added " << memberName << " To " << fanPageName << "!" << endl;
+            cout << "Successfully added " << memberName << " To " << fanPageName << "!" << endl;
         }
         else
             cout << memberName << " is already " << fanPageName << "'s fan" << endl;
@@ -541,7 +367,7 @@ void System::addFan() //Adds a fan to a fan page's members array.
     delete[] fanPageName;
     delete[] memberName;
 }
-//------------------------------------------------------------------------------------------
+//----------------------------------------------------------
 void System::removeFan() //Removes a fan from a fan page's members array. Implementation needed.
 {
     char* fanPageName = nullptr, * memberName = nullptr;
@@ -575,7 +401,7 @@ void System::removeFan() //Removes a fan from a fan page's members array. Implem
     delete[] fanPageName;
     delete[] memberName;
 }
-//----------------------------------------------------------------------------------
+//----------------------------------------------------------
 void System::addFanPageToArray(FanPage* page)
 {
     if (numOfPages > 0)
@@ -583,9 +409,9 @@ void System::addFanPageToArray(FanPage* page)
 
     pages[numOfPages++] = page;
 }
-
-
 //----------------------------------------------------------
+
+
 //Status Methods
 //----------------------------------------------------------
 void System::newStatus() // not yet modified
@@ -619,7 +445,6 @@ void System::newStatus() // not yet modified
     }
     else
     {
-        
         name = InputOperation(FAN_PAGE, &found,true);
         if (found != -1 && name !=nullptr)
         {
@@ -634,13 +459,137 @@ void System::newStatus() // not yet modified
 //----------------------------------------------------------
 
 
-//Private Methods
+//Private Global Methods
 //----------------------------------------------------------
 inline bool System::BirthdayCheck(const Date& _birthday) //Verifies birthday inserted correctly.
 {
     return (_birthday.day > 0 && _birthday.day < 32 &&
         _birthday.month > 0 && _birthday.month < 13
         && _birthday.year>1900 && _birthday.year < 2023) ? true : false;
+}
+//----------------------------------------------------------
+
+
+//Private Printer Methods
+//----------------------------------------------------------
+void System::printAllStatuses() //Prints an entity's statuses.
+{
+    size_SI decision = 0;
+    int found = -1;
+    char* name = nullptr;
+    cout << "Please choose the entity of which you want to view statuses:"
+            "\n1 - A Member"
+            "\n2 - A Fan Page" << endl;
+    cin >> decision;
+
+    while (decision != 1 && decision != 2)
+    {
+        cout << "Invalid decision. Please choose 1 or 2: " << endl;
+        cin >> decision;
+    }
+
+    (decision == 1 ) ?
+            name = InputOperation(MEMBER, &found,true)
+                     :
+            name = InputOperation(FAN_PAGE, &found,true);
+
+    if (found != -1 && name != nullptr)
+    {
+        if (decision == 1)
+            members[found]->Member::printStatuses(members[found]->Member::getNumOfStatuses());
+        else
+        {
+            cout << name << "'s statuses:" << endl;
+            pages[found]->FanPage::printStatuses();
+        }
+    }
+
+    delete[] name;
+}
+//----------------------------------------------------------
+void System::printTenLastStatuses() //Prints a member's friends ten last statuses.
+{
+    char* name = nullptr;
+    int found = -1;
+    name = InputOperation(MEMBER, &found);
+    if (name != nullptr)
+    {
+        if (members[found]->Member::getNumOfFriends() != 0)
+        {
+            if (found != -1)
+            {
+                Member** friendsArr = members[found]->Member::getFriendsArr();
+                size_t numOfFriends = members[found]->Member::getNumOfFriends();
+                for (size_t i = 0; i < numOfFriends; i++)
+                {
+                    friendsArr[i]->Member::printStatuses(PRINT_STATUS);
+                }
+            }
+
+        }
+        else
+        {
+            cout << "Member " << name << "Have no friends yet\nRedirecting to main menu" << flush;
+            delete[]name;
+        }
+    }
+
+    else
+    {
+        delete[] name;
+        return;
+    }
+
+    delete[] name;
+}
+//----------------------------------------------------------
+void System::printAllEntities() const //Prints all entities.
+{
+    if (numOfMembers == 0)
+        cout << "Our system has no members yet." << endl;
+
+    else
+        cout << "Our system's members list:" << endl;
+
+    for (size_t i = 0; i < numOfMembers; i++)
+        cout << members[i]->Member::getName() << endl;
+
+    if (numOfPages == 0)
+        cout << "Our system has no fan pages yet." << endl;
+
+    else
+        cout << "Our system's fan pages list:" << endl;
+
+    for (size_t i = 0; i < numOfPages; i++)
+        cout << pages[i]->FanPage::getName() << endl;
+}
+//----------------------------------------------------------
+void System::printAllFriends() //Prints an entity's friends.
+{
+    int decision, foundEntity = -1;
+    char* entityName = nullptr;
+    cout << "Please enter the entity of which you want to view its friends:"
+            "\n1 - A Member"
+            "\n2 - A Fan Page" << endl;
+    cin >> decision;
+
+    while (decision != 1 && decision != 2)
+    {
+        cout << "Invalid decision. Please choose 1 or 2: " << endl;
+        cin >> decision;
+    }
+
+    (decision == 1) ? entityName = InputOperation(MEMBER, &foundEntity): entityName = InputOperation(FAN_PAGE, &foundEntity);
+
+    if (foundEntity != -1 && entityName != nullptr)
+    {
+        if (decision == 1)
+            members[foundEntity]->Member::printFriendsArr();
+        else
+            System::printAllFans(pages[foundEntity]);
+    }
+
+    delete[] entityName;
 }
 //----------------------------------------------------------
 void System::printAllFans(FanPage* fanpage) const //Prints a fan page's fans list.
@@ -658,6 +607,127 @@ void System::printAllFans(FanPage* fanpage) const //Prints a fan page's fans lis
         cout << fansArr[i]->Member::getName() << endl;
 }
 //----------------------------------------------------------
+void System::printAllPages() //Prints a list of a member's pages.
+{
+    char* memberName = nullptr;
+    int found, attempts = 1; //First attempt is 2 rows below.
+    cout << "Please enter a member who you'd like to view his pages list:" << endl;
+    memberName = readString();
+
+    found = System::findEntity(memberName, MEMBER);
+    while (found == -1 && attempts < MAX_ATTEMPTS)
+    {
+        cout << memberName << " was not found in our system. You have " << MAX_ATTEMPTS-attempts
+             << " more attempts.\nPlease enter a member's name:" << endl;
+        delete[] memberName;
+        memberName = readString();
+        attempts++;
+        found = System::findEntity(memberName, MEMBER);
+    }
+
+    if (found == -1)
+        cout << memberName << " was not found in our system.\nRedirecting to main menu." << endl;
+
+    else
+    {
+        size_SI membersNumOfPages = members[found]->Member::getNumOfPages();
+        FanPage** membersArrOfPages = members[found]->Member::getPagesArr();
+
+        if (membersNumOfPages == 0)
+            cout << memberName << " isn't a fan of any page." << endl;
+
+        else
+            cout << memberName << " is a fan of the following pages:" << endl;
+
+        for (size_SI i = 0; i < membersNumOfPages; i++)
+            cout << membersArrOfPages[i]->FanPage::getName() << endl;
+    }
+
+    delete[] memberName;
+}
+//----------------------------------------------------------
+
+
+//Private System-Member Methods
+//----------------------------------------------------------
+void System::connectMembers() //Connects two members.
+{
+    char* firstMemberName = nullptr, * secondMemberName = nullptr;
+    int foundFirst = -1, foundSecond = -1;
+    bool areFriends;
+    firstMemberName = InputOperation(MEMBER, &foundFirst);
+    secondMemberName = InputOperation(MEMBER, &foundSecond,true);
+
+    if (foundFirst != -1 && foundSecond != -1 && firstMemberName != nullptr && secondMemberName != nullptr)
+    {
+        areFriends = members[foundFirst]->Member::checkIfFriend(members[foundSecond]);
+        if (!areFriends)
+        {
+            members[foundFirst]->Member::addFriend(members[foundSecond]);
+            members[foundSecond]->Member::addFriend(members[foundFirst]);
+            cout << "Users: " << firstMemberName << " and " << secondMemberName << " Connected Succesfully." << endl;
+        }
+        else
+            cout << firstMemberName << " and " << secondMemberName << " are already friends." << endl;
+    }
+    else
+    {
+        delete[] firstMemberName;
+        delete[] secondMemberName;
+        return;
+    }
+
+    delete[] firstMemberName;
+    delete[] secondMemberName;
+}
+//----------------------------------------------------------
+void System::disconnectMembers() //Disconnects two members.
+{
+    char* firstMemberName = nullptr, * secondMemberName = nullptr;
+    int foundFirst = -1, foundSecond = -1;
+    bool areFriends;
+    firstMemberName = InputOperation(MEMBER, &foundFirst);
+    secondMemberName = InputOperation(MEMBER, &foundSecond,true);
+
+    if (foundFirst != -1 && foundSecond != -1 && firstMemberName!=nullptr && secondMemberName != nullptr)
+    {
+        areFriends = members[foundFirst]->Member::checkIfFriend(members[foundSecond]);
+        if (areFriends)
+        {
+            members[foundFirst]->Member::removeFriend(members[foundSecond]);
+            members[foundSecond]->Member::removeFriend(members[foundFirst]);
+            cout << "Users: " << firstMemberName << " and " << secondMemberName << " Disconnected Succesfully." << endl;
+        }
+        else
+            cout << firstMemberName << " and " << secondMemberName << " are not friends." << endl;
+    }
+    else
+    {
+        delete[] firstMemberName;
+        delete[] secondMemberName;
+        return;
+    }
+    delete[] firstMemberName;
+    delete[] secondMemberName;
+}
+//----------------------------------------------------------
+
+
+//Private Re-Allocation Methods
+//----------------------------------------------------------
+void System::transferMembers() //Re-allocates memory to members array.
+{
+    auto* output = new Member * [numOfMembers + 1];
+    checkMem(output);
+    for (size_t i = 0 ; i < numOfMembers;i++)
+    {
+        output[i] = members[i];
+    }
+
+    delete[] members;
+    members = output;
+}
+//----------------------------------------------------------
 void System::transferFanPages()
 {
     auto* output = new FanPage * [numOfPages + 1];
@@ -671,3 +741,4 @@ void System::transferFanPages()
     pages = output;
 
 }
+//----------------------------------------------------------

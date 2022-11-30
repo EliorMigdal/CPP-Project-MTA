@@ -40,7 +40,7 @@ Date& readBirthday() //Reads birthday from user.
 	return birthday;
 }
 //---------------------------------------------------------------------------------
-void GetTimeAndDate(Time& exactTime , Date& exactDate)
+void setTimeAndDate(Time& exactTime, Date& exactDate) //Sets date & time for statuses.
 {
 	time_t curr_time;
 	curr_time = time(NULL);
@@ -52,4 +52,4 @@ void GetTimeAndDate(Time& exactTime , Date& exactDate)
 	exactDate.month = tm_local->tm_mon + 1;
 	exactDate.day = tm_local->tm_mday;
 }
-
+//---------------------------------------------------------------------------------
