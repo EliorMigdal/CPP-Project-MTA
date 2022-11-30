@@ -17,6 +17,9 @@ public:
     System();
     ~System();
     System(const System& sys) = delete;
+    System(System&& sys) = delete;
+    System& operator=(System&& sys) = delete;
+    System& operator=(const System& sys) = delete;
 
     //System-to-user Methods
     inline void printMenu() const;

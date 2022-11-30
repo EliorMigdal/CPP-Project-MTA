@@ -95,7 +95,6 @@ void System::setDecision(size_SI& _decision) //Gets the decision from user and a
 char* System::InputOperation(const size_SI& type, int* foundedIndex = nullptr, const bool& readAfter = false)
 {
     int tempfound = -1;
-    bool rel = false;
     char* input = nullptr;
     int counter = 0;
     switch (type)
@@ -154,63 +153,47 @@ char* System::InputOperation(const size_SI& type, int* foundedIndex = nullptr, c
         }
         break;
     case MEMBER:
-       
-        if (foundedIndex == nullptr)
-        {
-            rel = true;
-            foundedIndex = new int;
-            checkMem(foundedIndex);
-            *foundedIndex = 0;
-        }
         cout << "Please enter a member's name:" << endl;
         (readAfter)? input = readString(DEFAULT_FLUSH): input = readString();
-        *foundedIndex = System::findEntity(input, MEMBER);
-        while (*foundedIndex == NOEXIST && counter < MAX_ATTEMPTS)
+        tempfound = System::findEntity(input, MEMBER);
+        while (tempfound == NOEXIST && counter < MAX_ATTEMPTS)
         {
             cout << input << " was not found in our system. You have " << MAX_ATTEMPTS - counter
                 << " more attempts.\nPlease enter a member's name:" << endl;
             delete[] input;
             input = readString(DEFAULT_FLUSH);
             counter++;
-            *foundedIndex = System::findEntity(input, MEMBER);
+            tempfound = System::findEntity(input, MEMBER);
         }
-        if (counter == MAX_ATTEMPTS && *foundedIndex == NOEXIST)
+        if (counter == MAX_ATTEMPTS )
         {
             cout << "Cannot find entity\nToo many entries Redirecting to main menu" << endl;
             return nullptr;
         }
-        else if(*foundedIndex != NOEXIST)
+        else if(tempfound != NOEXIST)
         {
             cout << "User: " << input << " founded!" << endl;
         }
-        if (rel) { delete foundedIndex; }
         break;
     case MEMBER_CREATION:
-        if (foundedIndex == nullptr)
-        {
-            rel = true;
-            foundedIndex = new int;
-            checkMem(foundedIndex);
-            *foundedIndex = 0;
-        }
+       
         cout << "Please enter a member's name:" << endl;
         input = readString();
-        *foundedIndex = System::findEntity(input, MEMBER);
-        while (*foundedIndex != NOEXIST && counter < MAX_ATTEMPTS)
+        tempfound = System::findEntity(input, MEMBER);
+        while (tempfound != NOEXIST && counter < MAX_ATTEMPTS)
         {
-            cout << input << " was not found in our system. You have " << MAX_ATTEMPTS - counter
+            cout << input << " was found in our system. You have " << MAX_ATTEMPTS - counter
                 << " more attempts.\nPlease enter a member's name:" << endl;
             delete[] input;
             input = readString(DEFAULT_FLUSH);
             counter++;
-            *foundedIndex = System::findEntity(input, MEMBER);
+            tempfound = System::findEntity(input, MEMBER);
         }
         if (counter == MAX_ATTEMPTS)
         {
             cout << "Too many entries Redirecting to main menu" << endl;
             return nullptr;
         }
-        if (rel) { delete foundedIndex; }
         break;
     default:
         break;
@@ -269,14 +252,11 @@ void System::createMember() //read name and birthday from the user with validati
         }
         auto* m1 = new Member(name, Birthday);
         checkMem(m1);
-        delete[] name;
+      
         System::addMemberToArray(m1);
     }
-    else
-    {
-        delete[] name;
-        return;
-    }
+      delete[] name;
+  
 }
 //----------------------------------------------------------
 void System::createMember(const char* _name, Date& _date) //For hard-coded data.
@@ -327,14 +307,10 @@ void System::createFanPage() //Creates a fan page.
     {
         auto* page = new FanPage(name);
         checkMem(page);
-        delete[] name;
+    
         System::addFanPageToArray(page);
     }
-    else
-    {
-        delete[] name;
-        return;
-    }
+    delete[] name; 
 }
 //----------------------------------------------------------
 void System::createFanPage(const char *_name) //Creates a fan page for hard-coded data.
@@ -372,12 +348,6 @@ void System::addFan() //Adds a fan to a fan page's members array.
         }
         else
             cout << memberName << " is already " << fanPageName << "'s fan" << endl;
-    }
-    else
-    {   
-        delete[] fanPageName;
-        delete[] memberName;
-        return;
     }
     delete[] fanPageName;
     delete[] memberName;
@@ -417,12 +387,6 @@ void System::removeFan() //Removes a fan from a fan page's members array.
             cout << "Succesfully deleted " << memberName << " From " << fanPageName << "!" << endl;
         else
             cout << memberName << " not a " << fanPageName << "'s fan" << endl;
-    }
-    else
-    {
-        delete[] fanPageName;
-        delete[] memberName;
-        return;
     }
     delete[] fanPageName;
     delete[] memberName;
@@ -474,10 +438,6 @@ void System::newStatus() //Creates a new status.
         {
             members[found]->Member::addStatus();
         }
-        else
-        {
-            return;
-        }
         
     }
     else
@@ -486,10 +446,6 @@ void System::newStatus() //Creates a new status.
         if (found != -1 && name !=nullptr)
         {
             pages[found]->FanPage::addStatus();
-        }
-        else
-        {
-            return;
         }
     }
 }
@@ -578,16 +534,9 @@ void System::printTenLastStatuses() //Prints a member's friends ten last statuse
         else
         {
             cout << "Member " << name << "Have no friends yet\nRedirecting to main menu" << flush;
-            delete[]name;
+            
         }
     }
-
-    else
-    {
-        delete[] name;
-        return;
-    }
-
     delete[] name;
 }
 //----------------------------------------------------------
@@ -693,9 +642,17 @@ void System::connectMembers() //Connects two members.
     int foundFirst = -1, foundSecond = -1;
     bool areFriends;
     firstMemberName = InputOperation(MEMBER, &foundFirst);
-    secondMemberName = InputOperation(MEMBER, &foundSecond,true);
-
-    if (foundFirst != -1 && foundSecond != -1 && firstMemberName != nullptr && secondMemberName != nullptr)
+    if (firstMemberName == nullptr)
+    {
+        return;
+    }
+    secondMemberName = InputOperation(MEMBER, &foundSecond, true);
+    if (secondMemberName == nullptr)
+    {
+        delete[] firstMemberName;
+        return;
+    }
+    if (foundFirst != -1 && foundSecond != -1)
     {
         areFriends = members[foundFirst]->Member::checkIfFriend(members[foundSecond]);
         if (!areFriends)
@@ -707,13 +664,6 @@ void System::connectMembers() //Connects two members.
         else
             cout << firstMemberName << " and " << secondMemberName << " are already friends." << endl;
     }
-    else
-    {
-        delete[] firstMemberName;
-        delete[] secondMemberName;
-        return;
-    }
-
     delete[] firstMemberName;
     delete[] secondMemberName;
 }
@@ -724,9 +674,17 @@ void System::disconnectMembers() //Disconnects two members.
     int foundFirst = -1, foundSecond = -1;
     bool areFriends;
     firstMemberName = InputOperation(MEMBER, &foundFirst);
-    secondMemberName = InputOperation(MEMBER, &foundSecond,true);
-
-    if (foundFirst != -1 && foundSecond != -1 && firstMemberName!=nullptr && secondMemberName != nullptr)
+    if (firstMemberName == nullptr)
+    {
+        return;
+    }
+    secondMemberName = InputOperation(MEMBER, &foundSecond, true);
+    if (secondMemberName == nullptr)
+    {
+        delete[] firstMemberName;
+        return;
+    }
+    if (foundFirst != -1 && foundSecond != -1)
     {
         areFriends = members[foundFirst]->Member::checkIfFriend(members[foundSecond]);
         if (areFriends)
@@ -737,12 +695,6 @@ void System::disconnectMembers() //Disconnects two members.
         }
         else
             cout << firstMemberName << " and " << secondMemberName << " are not friends." << endl;
-    }
-    else
-    {
-        delete[] firstMemberName;
-        delete[] secondMemberName;
-        return;
     }
     delete[] firstMemberName;
     delete[] secondMemberName;
