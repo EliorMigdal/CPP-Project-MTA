@@ -104,15 +104,16 @@ char* System::InputOperation(const size_SI& type, int* foundedIndex = nullptr, c
         cout << "Please enter a fan page's name:" << endl;
         (readAfter) ? input = readString(DEFAULT_FLUSH) : input = readString();
         *foundedIndex = System::findEntity(input, FAN_PAGE);
-        while (*foundedIndex == NOEXIST && counter < 3)
+        while (*foundedIndex == NOEXIST && counter < MAX_ATTEMPTS)
         {
-            cout << "Fan Page: " << input << " Don't exist in the system\nplease enter a Page name again" << endl;
+            cout << input << " Fan Page was not found in our system. You have " << MAX_ATTEMPTS - counter
+                << " more attempts.\nPlease enter a Fan Page's name:" << endl;
             delete[] input;
             input = readString();
             counter++;
             *foundedIndex = System::findEntity(input, FAN_PAGE);
         }
-        if (counter == 3 && *foundedIndex == NOEXIST)
+        if (counter == MAX_ATTEMPTS && *foundedIndex == NOEXIST)
         {
             cout << "Cannot find entity\nToo many entries Redirecting to main menu" << endl;
             return nullptr;
@@ -127,15 +128,17 @@ char* System::InputOperation(const size_SI& type, int* foundedIndex = nullptr, c
         cout << "Please enter a fan page's name:" << endl;
         input = readString();
         tempfound = System::findEntity(input, FAN_PAGE);
-        while (tempfound != NOEXIST && counter < 3)
+        while (tempfound != NOEXIST && counter < MAX_ATTEMPTS)
         {
-            cout << "Fan Page: " << input << " already exist in the system\nplease enter a name again" << endl;
+            cout << input << " Already found in our system. You have " << MAX_ATTEMPTS - counter
+                << " more attempts.\nPlease enter a fan page's name:" << endl;
+         
             delete[]input;
             input = readString(DEFAULT_FLUSH);
             counter++;
             tempfound = System::findEntity(input, FAN_PAGE);
         }
-        if (counter == 3 && tempfound == NOEXIST)
+        if (counter == MAX_ATTEMPTS && tempfound == NOEXIST)
         {
             cout << "Cannot find entity\nToo many entries Redirecting to main menu" << endl;
             return nullptr;
@@ -162,15 +165,16 @@ char* System::InputOperation(const size_SI& type, int* foundedIndex = nullptr, c
         cout << "Please enter a member's name:" << endl;
         (readAfter)? input = readString(DEFAULT_FLUSH): input = readString();
         *foundedIndex = System::findEntity(input, MEMBER);
-        while (*foundedIndex == NOEXIST && counter < 3)
+        while (*foundedIndex == NOEXIST && counter < MAX_ATTEMPTS)
         {
-            cout << "User: " << input << " Don't exist in the system\nplease enter a User name again:" << endl;
+            cout << input << " was not found in our system. You have " << MAX_ATTEMPTS - counter
+                << " more attempts.\nPlease enter a member's name:" << endl;
             delete[] input;
             input = readString(DEFAULT_FLUSH);
             counter++;
             *foundedIndex = System::findEntity(input, MEMBER);
         }
-        if (counter == 3 && *foundedIndex == NOEXIST)
+        if (counter == MAX_ATTEMPTS && *foundedIndex == NOEXIST)
         {
             cout << "Cannot find entity\nToo many entries Redirecting to main menu" << endl;
             return nullptr;
@@ -192,15 +196,16 @@ char* System::InputOperation(const size_SI& type, int* foundedIndex = nullptr, c
         cout << "Please enter a member's name:" << endl;
         input = readString();
         *foundedIndex = System::findEntity(input, MEMBER);
-        while (*foundedIndex != NOEXIST && counter < 3)
+        while (*foundedIndex != NOEXIST && counter < MAX_ATTEMPTS)
         {
-            cout << "User: " << input << " Already exist in the system\nplease enter new User name: " << endl;
+            cout << input << " was not found in our system. You have " << MAX_ATTEMPTS - counter
+                << " more attempts.\nPlease enter a member's name:" << endl;
             delete[] input;
             input = readString(DEFAULT_FLUSH);
             counter++;
             *foundedIndex = System::findEntity(input, MEMBER);
         }
-        if (counter == 3)
+        if (counter == MAX_ATTEMPTS)
         {
             cout << "Too many entries Redirecting to main menu" << endl;
             return nullptr;
@@ -339,7 +344,7 @@ void System::addFan() //Adds a fan to a fan page's members array.
     {
         return;
     }
-    fanPageName = InputOperation(FAN_PAGE, &foundFanPage);
+    fanPageName = InputOperation(FAN_PAGE, &foundFanPage,true);
     if (fanPageName == nullptr)
     {
         delete[] memberName;
@@ -414,7 +419,7 @@ void System::addFanPageToArray(FanPage* page)
 
 //Status Methods
 //----------------------------------------------------------
-void System::newStatus() // not yet modified
+void System::newStatus() 
 {
     int decision = 0;
     char* name= nullptr;
@@ -431,7 +436,7 @@ void System::newStatus() // not yet modified
     }
     if (decision == 1)
     {
-        cin.ignore();
+        cin.ignore();//??????????
         name = InputOperation(MEMBER,&found,true);
         if (found != -1 && name != nullptr)
         {
@@ -612,25 +617,14 @@ void System::printAllPages() //Prints a list of a member's pages.
     char* memberName = nullptr;
     int found, attempts = 1; //First attempt is 2 rows below.
     cout << "Please enter a member who you'd like to view his pages list:" << endl;
-    memberName = readString();
-
-    found = System::findEntity(memberName, MEMBER);
-    while (found == -1 && attempts < MAX_ATTEMPTS)
-    {
-        cout << memberName << " was not found in our system. You have " << MAX_ATTEMPTS-attempts
-             << " more attempts.\nPlease enter a member's name:" << endl;
-        delete[] memberName;
-        memberName = readString();
-        attempts++;
-        found = System::findEntity(memberName, MEMBER);
-    }
+    memberName = InputOperation(FAN_PAGE, &found);
 
     if (found == -1)
         cout << memberName << " was not found in our system.\nRedirecting to main menu." << endl;
 
     else
     {
-        size_SI membersNumOfPages = members[found]->Member::getNumOfPages();
+        size_t membersNumOfPages = members[found]->Member::getNumOfPages();
         FanPage** membersArrOfPages = members[found]->Member::getPagesArr();
 
         if (membersNumOfPages == 0)
@@ -639,7 +633,7 @@ void System::printAllPages() //Prints a list of a member's pages.
         else
             cout << memberName << " is a fan of the following pages:" << endl;
 
-        for (size_SI i = 0; i < membersNumOfPages; i++)
+        for (size_t i = 0; i < membersNumOfPages; i++)
             cout << membersArrOfPages[i]->FanPage::getName() << endl;
     }
 

@@ -71,17 +71,23 @@ void FanPage::addMember(Member *member) //Adds a new member to members array.
 //-----------------------------------------------------------
 bool FanPage::findIndexAndRemoveFAN(Member * member)
 {
+
+    auto* output = new Member * [this->numOfMembers];
     bool deleted = false;
     for (size_t i = 0; i < this->numOfMembers && !deleted; i++)
     {
-        if (members[i] == member)
+        if (this->members[i] != member)
         {
-            delete members[i]; //Problem
-            members[i] = members[this->numOfMembers - 1];
-            this->numOfMembers--;
+            output[i] = this->members[i];
+        }
+        else
+        {
             deleted = true;
         }
     }
+    this->numOfMembers--;
+    delete[] this->members;
+    this->members = output;
     return deleted;
 }
 //-----------------------------------------------------------
