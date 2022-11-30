@@ -244,7 +244,8 @@ void System::createMember() //read name and birthday from the user with validati
     if (name != nullptr)
     {
         cout << "Please enter a birthday:" << endl;
-        Date Birthday = readBirthday();
+        Date Birthday = { 0,0,0 };
+        readBirthday(Birthday);
         while (!BirthdayCheck(Birthday))
         {
             cout << "Bad birthday, enter again:" << endl;

@@ -43,6 +43,6 @@ enum class STATUS_TYPE{TEXT,IMAGE,VIDEO};
 //Global Functions
 char* readString(const size_SI& type = DEFAULT_TYPE);
 void checkMem(void* ptr);
-Date& readBirthday();
+void readBirthday(Date& birthday);
 void setTimeAndDate(Time& exactTime, Date& exactDate);
 #endif

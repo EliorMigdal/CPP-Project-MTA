@@ -27,7 +27,7 @@ char* readString(const size_SI& type) //Reads a name & strings from user, using 
     return updated;
 }
 //---------------------------------------------------------------------------------
-Date& readBirthday() //Reads birthday from user.
+void readBirthday(Date& birthday) //Reads birthday from user.
 {
 	Date birthday={ 0,0,0 };
 	cout << "Day: " << flush;
@@ -37,7 +37,6 @@ Date& readBirthday() //Reads birthday from user.
 	cout << "Year: " << flush;
 	cin >> birthday.year;
 	cin.ignore();
-	return birthday;
 }
 //---------------------------------------------------------------------------------
 void setTimeAndDate(Time& exactTime, Date& exactDate) //Sets date & time for statuses.

@@ -18,6 +18,7 @@ public:
     explicit Status(const char* statusContent);
     ~Status();
 
+
     //Getters
     char* getStatus() const { return statusContent; }
     Date getStatusDate() const { return statusDate; }
