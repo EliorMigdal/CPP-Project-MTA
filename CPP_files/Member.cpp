@@ -145,11 +145,11 @@ void Member::printFriendsArr() const //Prints friends's names.
 //----------------------------------------------------------
 inline void Member::printStatus(const size_t& index) const //Prints a status.
 {
-    cout << "\tCreated in date: " << flush;
+    cout << "Created in date: \t" << flush;
     this->bulletinBoard[index - 1]->Status::printDate(
         this->bulletinBoard[index - 1]->Status::getStatusDate(),
             this->bulletinBoard[index - 1]->Status::getStatusTime());
-    cout << "\tStatus content: " << this->bulletinBoard[index - 1]->Status::getStatus() << endl;
+    cout << "Status content: \t" << this->bulletinBoard[index - 1]->Status::getStatus() << endl;
 }
 //----------------------------------------------------------
 void Member::printStatuses(const size_t& numToPrint) const //Prints member's statuses.
@@ -175,7 +175,7 @@ void Member::printStatuses(const size_t& numToPrint) const //Prints member's sta
 
         for (size_t i = _numOfStatuses; i > _numOfStatuses - logicPrintSize; i--)
         {
-            cout << "Status #" << i << ":" << endl;
+            cout << "------------------------------------\n\tStatus #" << i <<"\n------------------------------------"<< endl;
             this->Member::printStatus(i);
         }
     }

@@ -29,11 +29,11 @@ char* readString(const size_SI& type) //Reads a name & strings from user, using 
 //---------------------------------------------------------------------------------
 void readBirthday(Date& birthday) //Reads birthday from user.
 {
-	cout << "Day: " << flush;
+	cout << "\tDay: " << flush;
 	cin >> birthday.day;
-	cout << "Month: " << flush;
+	cout << "\tMonth: " << flush;
 	cin >> birthday.month;
-	cout << "Year: " << flush;
+	cout << "\tYear: " << flush;
 	cin >> birthday.year;
 	cin.ignore();
 }

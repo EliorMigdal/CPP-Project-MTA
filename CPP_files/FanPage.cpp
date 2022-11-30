@@ -103,7 +103,7 @@ void FanPage::printStatuses() const //Prints all fan page's statuses.
     cout << this->FanPage::getName() << " has posted " << _numOfStatuses << " statuses:" << endl;
     for (size_t i = 0; i < _numOfStatuses; i++)
     {
-        cout << "Status #" << i + 1 << ":" << endl;
+        cout << "\n------------------------------------Status #\n------------------------------------" << i + 1 << ":" << endl;
         cout << "\tCreated in date: " << flush;
         this->bulletinBoard[i]->Status::printDate(
             this->bulletinBoard[i]->Status::getStatusDate(),

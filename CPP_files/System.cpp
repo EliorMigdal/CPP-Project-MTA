@@ -26,7 +26,7 @@ System::~System() //Destructor.
 //----------------------------------------------------------
 inline void System::printMenu() const //Prints the menu for the user.
 {
-    cout << "1 - Create a member\t\t7 - Disconnect 2 members"
+    cout << "------------------------------------\n1 - Create a member\t\t7 - Disconnect 2 members"
         "\n2 - Create a fan page\t\t8 - Add a member to a fan page"
         "\n3 - Create a status\t\t9 - Remove a member from a fan page"
         "\n4 - Show all statuses\t\t10 - View all members and fan pages"
@@ -144,7 +144,7 @@ char* System::InputOperation(const size_SI& type, int* foundedIndex = nullptr, c
         }
         else
         {
-            cout << "Creating " << input << " Fan Page !" << endl;
+            cout << "Fan Page: " << input << " created succesfully!" << endl;
         }
         break;
     case MEMBER:
@@ -251,6 +251,7 @@ void System::createMember() //read name and birthday from the user with validati
         checkMem(m1);
       
         System::addMemberToArray(m1);
+        cout << "User " << name << "created successfully!" << endl;
     }
       delete[] name;
   
@@ -601,7 +602,7 @@ void System::printTenLastStatuses() //Prints a member's friends ten last statuse
                 size_t numOfFriends = members[found]->Member::getNumOfFriends();
                 for (size_t i = 0; i < numOfFriends; i++)
                 {
-                    cout << "------------------------------------\nFriend #" << i + 1 <<"\n------------------------------------" << endl;
+                    cout << "####################################\nFriend #" << i + 1 <<"\n####################################" << endl;
                     friendsArr[i]->Member::printStatuses(PRINT_STATUS);
                 }
             }
@@ -622,19 +623,19 @@ void System::printAllEntities() const //Prints all entities.
         cout << "Our system has no members yet." << endl;
 
     else
-        cout << "Our system's members list:" << endl;
+        cout << "------------------------------------\nOur system's members list:\n------------------------------------" << endl;
 
     for (size_t i = 0; i < numOfMembers; i++)
-        cout << members[i]->Member::getName() << endl;
+        cout << "\t" << members[i]->Member::getName() << endl;
 
     if (numOfPages == 0)
         cout << "Our system has no fan pages yet." << endl;
 
     else
-        cout << "Our system's fan pages list:" << endl;
+        cout << "------------------------------------\nOur system's fan pages list:\n------------------------------------" << endl;
 
     for (size_t i = 0; i < numOfPages; i++)
-        cout << pages[i]->FanPage::getName() << endl;
+        cout << "\t" << pages[i]->FanPage::getName() << endl;
 }
 //----------------------------------------------------------
 void System::printAllFriends() //Prints an entity's friends.
@@ -674,10 +675,10 @@ void System::printAllFans(FanPage* fanpage) const //Prints a fan page's fans lis
         cout << fanpage->FanPage::getName() << " has no fans." << endl;
 
     else
-        cout << fanpage->FanPage::getName() << "'s fans list:" << endl;
+        cout <<"------------------------------------\n" << fanpage->FanPage::getName() << "'s fans list:\n------------------------------------" << endl;
 
     for (size_t i = 0; i < numOfFans; i++)
-        cout << fansArr[i]->Member::getName() << endl;
+        cout << "\t" << fansArr[i]->Member::getName() << endl;
 }
 //----------------------------------------------------------
 void System::printAllPages() //Prints a list of a member's pages.
