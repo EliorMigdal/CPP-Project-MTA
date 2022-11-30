@@ -459,26 +459,69 @@ void System::newStatus(const char *name, const size_SI &type, const char *status
 //----------------------------------------------------------
 
 
-void System::Start()
+//----------------------------------------------------------
+void System::Start() //Hard-coded data for our system.
 {
     Date eliDay = { 24, 4, 1995 };
     Date bencoDay = { 23, 5, 1990 };
     Date benhanDay = { 5, 9, 1983 };
     Date ramezDay = { 14, 12, 2005 };
     this->createMember("Elior Migdal", eliDay);
+    this->newStatus("Elior Migdal", MEMBER, "Hi Facebook!");
     this->createMember("Ben Cohen", bencoDay);
+    this->newStatus("Elior Migdal", MEMBER, "Hi Ben :) Wassup! @Ben Cohen");
+    this->connectMembers("Elior Migdal", "Ben Cohen");
+    this->newStatus("Ben Cohen", MEMBER, "Eli ya habibi");
     this->createMember("Ben Hanover", benhanDay);
+    this->newStatus("Ben Hanover", MEMBER, "Yoooooyooooooo");
+    this->connectMembers("Elior Migdal", "Ben Hanover");
+    this->newStatus("Elior Migdal", MEMBER, "Yo Yo Ben!");
     this->createMember("Ramez Mannaa", ramezDay);
+    this->newStatus("Ben Cohen", MEMBER, "I'm the king!");
+    this->newStatus("Ben Hanover", MEMBER, "I know I'm the king bro");
+    this->newStatus("Ramez Mannaa", MEMBER, "I'm here too!");
+    this->newStatus("Ramez Mannaa", MEMBER, "Who wants to be my friend?");
+    this->connectMembers("Ben Cohen", "Ramez Mannaa");
+    this->connectMembers("Ben Cohen", "Ben Hanover");
     this->createFanPage("The Bens");
     this->createFanPage("We love Tel-Aviv");
     this->createFanPage("They were on a break!");
-    this->connectMembers("Elior Migdal", "Ben Cohen");
-    this->connectMembers("Elior Migdal", "Ben Hanover");
-    this->connectMembers("Ben Cohen", "Ramez Mannaa");
-    this->connectMembers("Ben Cohen", "Ben Hanover");
     this->connectMembers("Ramez Mannaa", "Elior Migdal");
     this->connectMembers("Ramez Mannaa", "Ben Hanover");
+    this->newStatus("The Bens", FAN_PAGE, "We are the Bens!");
+    this->addFan("The Bens", "Ben Cohen");
+    this->newStatus("Ben Cohen", MEMBER, "I JOINED THE BENS!!!");
+    this->addFan("The Bens", "Ben Hanover");
+    this->newStatus("Ben Hanover", MEMBER, "ME TOO!");
+    this->newStatus("The Bens", FAN_PAGE, "WE HAVE TWO NEW MEMBERS!!");
+    this->removeFan("The Bens", "Ben Cohen");
+    this->newStatus("Ben Cohen", MEMBER, "Now I left...");
+    this->newStatus("The Bens", FAN_PAGE, ":(");
+    this->addFan("The Bens", "Ramez Mannaa");
+    this->addFan("They were on a break!", "Elior Migdal");
+    this->addFan("They were on a break!", "Ben Cohen");
+    this->addFan("They were on a break!", "Ben Hanover");
+    this->newStatus("Elior Migdal", MEMBER, "They were on a break!!!");
+    this->newStatus("They were on a break", FAN_PAGE, "@Elior yes they were!");
+    this->newStatus("They were on a break", FAN_PAGE, "@Ben Cohen what do you think?");
+    this->newStatus("Ben Cohen", MEMBER, "Yes yes");
+    this->newStatus("They were on a break", FAN_PAGE, "Good good");
+    this->newStatus("Ben Hanover", MEMBER, "YES!!!!!!!!!");
+    this->newStatus("We love Tel-Aviv", FAN_PAGE, "We LOVE Tel Aviv!!");
+    this->addFan("We love Tel-Aviv", "Ramez Mannaa");
+    this->addFan("We love Tel-Aviv", "Ben Cohen");
+    this->addFan("We love Tel-Aviv", "Ben Hanover");
+    this->newStatus("We love Tel-Aviv", FAN_PAGE, "Welcome Tel Aviv Lovers!!");
+    this->newStatus("We love Tel-Aviv", FAN_PAGE, "Where is @Elior Migdal?");
+    this->newStatus("Ramez Mannaa", MEMBER, "@WLTLV He Hates TLV!!");
+    this->newStatus("We love Tel-Aviv", FAN_PAGE, "NO WAY!!!!%^%$^#%");
+    this->disconnectMembers("Ben Cohen", "Elior Migdal");
+    this->disconnectMembers("Ben Hanover", "Elior Migdal");
+    this->disconnectMembers("Ramez Mannaa", "Elior Migdal");
+    this->newStatus("Elior Migdal", MEMBER, "LOL you all left me!");
 }
+//----------------------------------------------------------
+
 
 //Private Global Methods
 //----------------------------------------------------------
