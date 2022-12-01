@@ -59,7 +59,7 @@ private:
     //Global methods
     inline bool BirthdayCheck(const Date& _birthday);
    
-    //Printers methods //Why private?
+    //Printers methods 
     void printAllStatuses();
     void printTenLastStatuses();
     void printAllEntities() const;
@@ -67,7 +67,7 @@ private:
     void printAllFans(FanPage* fanpage) const;
     void printAllPages();
 
-    //System-Member Methods //Why private?
+    //System-Member Methods
     void connectMembers();
     void disconnectMembers();
 

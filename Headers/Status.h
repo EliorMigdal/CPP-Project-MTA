@@ -12,7 +12,7 @@ private:
 public:
     //Constructors
     Status() = default;
-    Status(const Status& obj);
+    Status(const Status& obj) = delete;
     explicit Status(const Date& _date);
     Status(const Date& _date, const Time& _time, const Byte& _status, const char* _content);
     explicit Status(const char* statusContent);

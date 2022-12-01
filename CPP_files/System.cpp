@@ -436,7 +436,7 @@ void System::newStatus() //Creates a new status.
     }
     if (decision == 1)
     {
-        cin.ignore();//??????????
+        cin.ignore();
         name = InputOperation(MEMBER,&found,true);
         if (found != -1 && name != nullptr)
         {
@@ -446,6 +446,7 @@ void System::newStatus() //Creates a new status.
     }
     else
     {
+        cin.ignore();
         name = InputOperation(FAN_PAGE, &found,true);
         if (found != -1 && name !=nullptr)
         {

@@ -133,10 +133,10 @@ void Member::printFriendsArr() const //Prints friends's names.
         cout << this->getName() << " has no friends." << endl;
 
     else
-        cout << this->getName() << "'s friends are:" << endl;
+        cout <<"----------------------------------\n" << this->getName() << "'s friends are:\n----------------------------------" << endl;
 
     for (size_t i = 0; i < numOfFriends; i++)
-        cout << friends[i]->getName() << endl;
+        cout <<"\t" << friends[i]->getName() << endl;
 }
 //----------------------------------------------------------
 

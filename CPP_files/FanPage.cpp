@@ -100,10 +100,10 @@ bool FanPage::findIndexAndRemoveFAN(const Member * member) //Removes a member fr
 void FanPage::printStatuses() const //Prints all fan page's statuses.
 {
     size_t _numOfStatuses = this->getNumOfStatuses();
-    cout << this->FanPage::getName() << " has posted " << _numOfStatuses << " statuses:" << endl;
+    cout <<"-------------------------------------\n" << this->FanPage::getName() << " has posted " << _numOfStatuses << " statuses:" << endl;
     for (size_t i = 0; i < _numOfStatuses; i++)
     {
-        cout << "\n------------------------------------Status #\n------------------------------------" << i + 1 << ":" << endl;
+        cout << "------------------------------------\nStatus #"<< i + 1<<"\n------------------------------------"<< endl;
         cout << "\tCreated in date: " << flush;
         this->bulletinBoard[i]->Status::printDate(
             this->bulletinBoard[i]->Status::getStatusDate(),
@@ -123,6 +123,7 @@ void FanPage::addStatus() //Adds a status to a fanpage.
        FanPage::transferStatuses();
 
     bulletinBoard[numOfStatuses++] = newStatus;
+    cout << "Status uploaded successfully!" << endl;
 }
 //----------------------------------------------------------
 void FanPage::addStatus(const char *statusContent) //For hard coded data.
