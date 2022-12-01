@@ -699,6 +699,7 @@ void System::printAllFans(FanPage* fanpage) const //Prints a fan page's fans lis
         cout << "\t" << fansArr[i]->Member::getName() << endl;
 }
 //----------------------------------------------------------
+//Only implementation.
 void System::printAllPages() //Prints a list of a member's pages.
 {
     char* memberName = nullptr;
