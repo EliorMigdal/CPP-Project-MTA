@@ -71,7 +71,7 @@ void FanPage::addMember(Member *member) //Adds a new member to members array.
 //-----------------------------------------------------------
 bool FanPage::findIndexAndRemoveFAN(const Member * member) //Removes a member from a fan page's members arr.
 {
-    Member** output;
+    Member** output = nullptr;
     if (this->numOfMembers == 1)
         output = new Member * [1];
 
@@ -106,11 +106,14 @@ bool FanPage::findIndexAndRemoveFAN(const Member * member) //Removes a member fr
 //----------------------------------------------------------
 void FanPage::printStatuses() const //Prints all fan page's statuses.
 {
-    size_t _numOfStatuses = this->getNumOfStatuses();
-    cout <<"-------------------------------------\n" << this->FanPage::getName() << " has posted " << _numOfStatuses << " statuses:" << endl;
-    for (size_t i = 0; i < _numOfStatuses; i++)
+    int _numOfStatuses = this->getNumOfStatuses();
+    if (_numOfStatuses == 0)
+        cout << this->FanPage::getName() << " has not posted any statuses." << endl;
+    else
+        cout << "-------------------------------------\n" << this->FanPage::getName() << " has posted " << _numOfStatuses << " statuses:" << endl;
+    for (int i = _numOfStatuses - 1; i >= 0; i--)
     {
-        cout << "------------------------------------\nStatus #"<< i + 1<<"\n------------------------------------"<< endl;
+        cout << "------------------------------------\nStatus #"<< i+1 <<"\n------------------------------------"<< endl;
         cout << "\tCreated in date: " << flush;
         this->bulletinBoard[i]->Status::printDate(
             this->bulletinBoard[i]->Status::getStatusDate(),

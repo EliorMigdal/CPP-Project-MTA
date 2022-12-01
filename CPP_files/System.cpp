@@ -378,7 +378,7 @@ void System::removeFan() //Removes a fan from a fan page's members array.
     {
         return;
     }
-    fanPageName = InputOperation(FAN_PAGE,&foundFanPage);
+    fanPageName = InputOperation(FAN_PAGE,&foundFanPage,true);
     if (fanPageName == nullptr)
     {
         delete[] memberName;
@@ -557,7 +557,7 @@ void System::Start() //Hard-coded data for our system.
     }
 }
 //----------------------------------------------------------
-
+//fix igonres in I
 
 //Private Global Methods
 //----------------------------------------------------------
@@ -747,18 +747,27 @@ void System::connectMembers() //Connects two members.
         delete[] firstMemberName;
         return;
     }
-    if (foundFirst != -1 && foundSecond != -1)
+    if (strcmp(firstMemberName, secondMemberName) != 0)
     {
-        areFriends = members[foundFirst]->Member::checkIfFriend(members[foundSecond]);
-        if (!areFriends)
+
+        if (foundFirst != -1 && foundSecond != -1)
         {
-            members[foundFirst]->Member::addFriend(members[foundSecond]);
-            members[foundSecond]->Member::addFriend(members[foundFirst]);
-            cout << "Users: " << firstMemberName << " and " << secondMemberName << " Connected Succesfully." << endl;
+            areFriends = members[foundFirst]->Member::checkIfFriend(members[foundSecond]);
+            if (!areFriends)
+            {
+                members[foundFirst]->Member::addFriend(members[foundSecond]);
+                members[foundSecond]->Member::addFriend(members[foundFirst]);
+                cout << "Users: " << firstMemberName << " and " << secondMemberName << " Connected Succesfully." << endl;
+            }
+            else
+                cout << firstMemberName << " and " << secondMemberName << " are already friends." << endl;
         }
-        else
-            cout << firstMemberName << " and " << secondMemberName << " are already friends." << endl;
     }
+    else
+    {
+        cout << "Cannot add yourself to your friend's list\nredirecting to main menu" << endl;
+    }
+
     delete[] firstMemberName;
     delete[] secondMemberName;
 }
