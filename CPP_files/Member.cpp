@@ -91,13 +91,11 @@ void Member::removeFriend(Member* memberToRemove) //Removes a friend from the fr
 {
     Member** output;
     if (this->numOfFriends == 1)
-    {
         output = new Member * [1];
-    }
+
     else
-    {
         output = new Member * [this->numOfFriends - 1];
-    }
+
     checkMem(output);
     size_SI index = 0;
 
@@ -169,8 +167,8 @@ void Member::printStatuses(const size_t& numToPrint) const //Prints member's sta
 
         else
         {
-            logicPrintSize = PRINT_STATUS;
-            cout << this->Member::getName() << "'s last " << PRINT_STATUS << " statuses:" << endl;
+            logicPrintSize = numToPrint;
+            cout << this->Member::getName() << "'s last " << numToPrint << " statuses:" << endl;
         }
 
         for (size_t i = _numOfStatuses; i > _numOfStatuses - logicPrintSize; i--)

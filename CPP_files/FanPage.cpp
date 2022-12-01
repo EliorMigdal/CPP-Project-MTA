@@ -69,9 +69,16 @@ void FanPage::addMember(Member *member) //Adds a new member to members array.
     members[numOfMembers++] = member;
 }
 //-----------------------------------------------------------
-bool FanPage::findIndexAndRemoveFAN(const Member * member) //Removes a member from a fanpage's members arr.
+bool FanPage::findIndexAndRemoveFAN(const Member * member) //Removes a member from a fan page's members arr.
 {
-    auto* output = new Member * [this->numOfMembers - 1];
+    Member** output;
+    if (this->numOfMembers == 1)
+        output = new Member * [1];
+
+    else if (this->numOfMembers > 1)
+        output = new Member * [this->numOfMembers - 1];
+
+    checkMem(output);
     size_t index = 0;
     bool deleted = false;
 
@@ -112,7 +119,7 @@ void FanPage::printStatuses() const //Prints all fan page's statuses.
     }
 }
 //----------------------------------------------------------
-void FanPage::addStatus() //Adds a status to a fanpage.
+void FanPage::addStatus() //Adds a status to a fan page.
 {
     auto* newStatus = new Status;
     checkMem(newStatus);

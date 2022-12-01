@@ -528,6 +528,19 @@ void System::Start() //Hard-coded data for our system.
     this->disconnectMembers("Ben Hanover", "Elior Migdal");
     this->disconnectMembers("Ramez Mannaa", "Elior Migdal");
     this->newStatus("Elior Migdal", MEMBER, "LOL you all left me!");
+    this->newStatus("Elior Migdal", MEMBER, "yo GUYS");
+    this->connectMembers("Elior Migdal", "Ben Hanover");
+    this->connectMembers("Elior Migdal", "Ben Cohen");
+    this->connectMembers("Elior Migdal", "Ramez Mannaa");
+    this->newStatus("Elior Migdal", MEMBER, "yo GUYS");
+    this->newStatus("Elior Migdal", MEMBER, "yeaaaaaaa");
+    this->newStatus("Elior Migdal", MEMBER, "hello people");
+    this->newStatus("Elior Migdal", MEMBER, "wassup");
+    this->newStatus("Elior Migdal", MEMBER, "I LOVE C++");
+    this->newStatus("Elior Migdal", MEMBER, "but python is better");
+    this->newStatus("Elior Migdal", MEMBER, "just kidding");
+    this->newStatus("Elior Migdal", MEMBER, "or not....");
+    this->newStatus("Elior Migdal", MEMBER, ";)");
 
     size_SI userDecision;
     cout << "Welcome to our social network!" << endl;
@@ -613,13 +626,10 @@ void System::printTenLastStatuses() //Prints a member's friends ten last statuse
                     friendsArr[i]->Member::printStatuses(PRINT_STATUS);
                 }
             }
-
         }
 
         else
-        {
             cout << "Member " << name << " has no friends yet.\nRedirecting to main menu." << endl;
-        }
     }
 
     delete[] name;
