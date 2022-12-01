@@ -1,29 +1,7 @@
 #include "../Headers/FanPage.h"
 
 //Constructors & Destructor
-//----------------------------------------------------------
-FanPage::FanPage(const FanPage& obj): //Copy Constructor.
-   numOfMembers(obj.numOfMembers),
-   numOfStatuses(obj.numOfStatuses)
-{  
-    this->name = new char[strlen(obj.name) + 1];
-    checkMem(this->name);
-    strcpy(this->name, obj.name);
-    
-    this->members = new Member * [numOfMembers];
-    checkMem(this->members);
-    for (size_t i = 0; i < numOfMembers; i++)
-    {
-        this->members[i] = obj.members[i];
-    }
 
-    this->bulletinBoard = new Status * [numOfStatuses];
-    checkMem(this->bulletinBoard);
-    for (size_t i = 0; i < numOfStatuses; i++)
-    {
-        this->bulletinBoard[i] = obj.bulletinBoard[i];
-    }
-}
 //-----------------------------------------------------------
 FanPage::FanPage(const char* _name) //Constructor.
 {

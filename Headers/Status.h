@@ -13,6 +13,10 @@ public:
     //Constructors
     Status() = default;
     Status(const Status& obj) = delete;
+    Status& operator=(Status&& status) = delete;
+    Status& operator=(const Status& status) = delete;
+    Status(Status&& status) = delete;
+    //-
     explicit Status(const Date& _date);
     Status(const Date& _date, const Time& _time, const Byte& _status, const char* _content);
     explicit Status(const char* statusContent);

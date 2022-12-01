@@ -15,9 +15,13 @@ private:
 public:
     //Constructors & Destructor
     FanPage() = default;
-    FanPage(const FanPage& obj);
+    FanPage(const FanPage& obj) = delete;
+    FanPage& operator=(FanPage&& fanpage) = delete;
+    FanPage& operator=(const FanPage& fanpage) = delete;
+    FanPage(Member&& fanpage) = delete;
     explicit FanPage(const char* _name);
     ~FanPage();
+    
 
     //Getters
     char* getName() const { return name; }

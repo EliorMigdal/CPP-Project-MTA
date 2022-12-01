@@ -31,7 +31,7 @@ public:
 
     //General Methods
     int findEntity(const char* name, const size_SI& entityType) const;
-    char* InputOperation(const size_SI& type, int* foundIndex, const bool& readAfter);
+    char* InputOperation(const size_SI& type, int* foundIndex,  bool readAfter);
 
     //Member Methods
     void createMember();

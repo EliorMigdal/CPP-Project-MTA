@@ -89,7 +89,7 @@ void System::setDecision(size_SI& _decision) //Gets the decision from user and a
 
 //General Methods
 //---------------------------------------------------------
-char* System::InputOperation(const size_SI& type, int* foundIndex = nullptr, const bool& readAfter = false) //Returns the string according to each situation.
+char* System::InputOperation(const size_SI& type, int* foundIndex = nullptr,  bool readAfter = false) //Returns the string according to each situation.
 {
     int tempfound = -1, counter = 0;
     char* input = nullptr;
@@ -106,9 +106,9 @@ char* System::InputOperation(const size_SI& type, int* foundIndex = nullptr, con
             cout << input << " Fan Page was not found in our system. You have " << MAX_ATTEMPTS - counter
                 << " more attempts.\nPlease enter a Fan Page's name:" << endl;
             delete[] input;
-            (readAfter) ? input = readString() : input = readString(DEFAULT_FLUSH);     
+            input = readString(DEFAULT_FLUSH);     
             counter++;
-            *foundIndex = System::findEntity(input, FAN_PAGE);
+            *foundIndex = System::findEntity(input, FAN_PAGE);   
         }
 
         if (counter == MAX_ATTEMPTS && *foundIndex == NOEXIST)
@@ -155,12 +155,12 @@ char* System::InputOperation(const size_SI& type, int* foundIndex = nullptr, con
             cout << input << " was not found in our system. You have " << MAX_ATTEMPTS - counter
                 << " more attempts.\nPlease enter a member's name:" << endl;
             delete[] input;
-            (readAfter) ? input = readString() : input = readString(DEFAULT_FLUSH);
+           input = readString(DEFAULT_FLUSH);
             counter++;
             *foundIndex = System::findEntity(input, MEMBER);
         }
 
-        if (counter == MAX_ATTEMPTS )
+        if (counter == MAX_ATTEMPTS && *foundIndex == NOEXIST)
         {
             cout << "Cannot find member.\nToo many entries, redirecting to main menu." << endl;
             return nullptr;

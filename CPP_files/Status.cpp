@@ -1,16 +1,7 @@
 #include "../Headers/Status.h"
 
 //Constructors
-//------------------------------------------------------
-//////////Status::Status(const Status& obj) :
-//////////    statusDate(obj.statusDate),
-//////////    statusTime(obj.statusTime),
-//////////    statusType(obj.statusType)                           
-//////////{
-//////////    this->statusContent = new char[strlen(obj.statusContent) + 1];
-//////////    checkMem(this->statusContent);
-//////////    strcpy(this->statusContent, obj.statusContent);
-//////////}
+
 //------------------------------------------------------
 Status::Status(const Date& _date) : statusDate(_date) {}
 //------------------------------------------------------

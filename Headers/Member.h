@@ -18,7 +18,10 @@ private:
 public:
     //Constructors & Destructor
     Member() = default;
-    Member(const Member& object);
+    Member(const Member& object) = delete;
+    Member& operator=(Member&& mem) = delete;
+    Member& operator=(const Member& mem) = delete;
+    Member(Member&& mem) = delete;
     explicit Member(const char* _name);
     Member(const char* _name, Date& _birthday);
     ~Member();

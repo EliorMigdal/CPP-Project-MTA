@@ -28,40 +28,6 @@ Member::Member(const char* _name) //Constructor.
     strcpy(this->name, _name);
 
 }
-//----------------------------------------------------------
-Member::Member(const Member& obj) : //Copy Constructor.
-    birthday(obj.birthday),
-    numOfFriends(obj.numOfFriends),
-    numOfPages(obj.numOfPages),
-    numOfStatuses(obj.numOfStatuses)
-{
-    this->name = new char[strlen(obj.name) + 1];
-    checkMem(this->name);
-    strcpy(this->name, obj.name);
-
-    this->bulletinBoard = new Status * [numOfStatuses];
-    checkMem(this->bulletinBoard);
-    for (size_t i = 0; i < numOfStatuses; i++)
-    {
-        this->bulletinBoard[i] = new Status;
-        checkMem(this->bulletinBoard[i]);
-        this->bulletinBoard[i] = obj.bulletinBoard[i];
-    }
-
-    this->friends = new Member * [numOfFriends];
-    checkMem(this->friends);
-    for (size_t i = 0; i < numOfFriends; i++) //No need for allocation - Friends will be an array of pointers to objects from system.
-    {
-        this->friends[i] = obj.friends[i];
-    }
-
-    this->pages = new FanPage * [numOfPages];
-    checkMem(this->pages);
-    for (size_t i = 0; i < numOfPages; i++) //No need for allocation - Pages will be an array of pointers to objects from system.
-    {
-        this->pages[i] = obj.pages[i];
-    }
-}
 //-------------------------------------------------------------
 Member::~Member() //Destructor
 {
