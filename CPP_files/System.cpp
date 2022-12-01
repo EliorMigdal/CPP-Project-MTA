@@ -1,5 +1,6 @@
 #include "../Headers/System.h"
 
+
 //Constructor & Destructor
 //---------------------------------------------------------
 System::System() //Constructor.
@@ -20,6 +21,7 @@ System::~System() //Destructor.
         delete pages[i];
     delete[] pages;
 }
+//---------------------------------------------------------
 
 
 //System-to-user methods
@@ -87,95 +89,94 @@ void System::setDecision(size_SI& _decision) //Gets the decision from user and a
 
 //General Methods
 //---------------------------------------------------------
-char* System::InputOperation(const size_SI& type, int* foundedIndex = nullptr, const bool& readAfter = false)
+char* System::InputOperation(const size_SI& type, int* foundIndex = nullptr, const bool& readAfter = false) //Returns the string according to each situation.
 {
-    int tempfound = -1;
+    int tempfound = -1, counter = 0;
     char* input = nullptr;
-    int counter = 0;
+
     switch (type)
     {
-    case FAN_PAGE: // non temp index 
+    case FAN_PAGE: //Non-temp index
         cout << "Please enter a fan page's name:" << endl;
         (readAfter) ? input = readString(DEFAULT_FLUSH) : input = readString();
-        *foundedIndex = System::findEntity(input, FAN_PAGE);
-        while (*foundedIndex == NOEXIST && counter < MAX_ATTEMPTS)
+        *foundIndex = System::findEntity(input, FAN_PAGE);
+
+        while (*foundIndex == NOEXIST && counter < MAX_ATTEMPTS)
         {
             cout << input << " Fan Page was not found in our system. You have " << MAX_ATTEMPTS - counter
                 << " more attempts.\nPlease enter a Fan Page's name:" << endl;
             delete[] input;
             (readAfter) ? input = readString() : input = readString(DEFAULT_FLUSH);     
             counter++;
-            *foundedIndex = System::findEntity(input, FAN_PAGE);
+            *foundIndex = System::findEntity(input, FAN_PAGE);
         }
-        if (counter == MAX_ATTEMPTS && *foundedIndex == NOEXIST)
+
+        if (counter == MAX_ATTEMPTS && *foundIndex == NOEXIST)
         {
-            cout << "Cannot find entity\nToo many entries Redirecting to main menu" << endl;
+            cout << "Cannot find fan page.\nToo many entries, redirecting to main menu" << endl;
             return nullptr;
         }
-        else if (*foundedIndex != NOEXIST)
-        {
-            cout << "Fan Page: " << input << " founded!" << endl;
-        }
-        break;
 
-    case FAN_PAGE_CREATION: // temp index
+        else if (*foundIndex != NOEXIST)
+            cout << "Fan Page: " << input << " found!" << endl;
+
+        break;
+    //////////////////////////////////////////////////////////////////////////
+    case FAN_PAGE_CREATION: //Temp index
         cout << "Please enter a fan page's name:" << endl;
         input = readString();
         tempfound = System::findEntity(input, FAN_PAGE);
+
         while (tempfound != NOEXIST && counter < MAX_ATTEMPTS)
         {
             cout << input << " Already found in our system. You have " << MAX_ATTEMPTS - counter
                 << " more attempts.\nPlease enter a fan page's name:" << endl;
-         
-            delete[]input;
+            delete[] input;
             input = readString(DEFAULT_FLUSH);
             counter++;
             tempfound = System::findEntity(input, FAN_PAGE);
         }
-        if (counter == MAX_ATTEMPTS && tempfound == NOEXIST)
+
+        if (counter == MAX_ATTEMPTS && tempfound != NOEXIST)
         {
-            cout << "Cannot find entity\nToo many entries Redirecting to main menu" << endl;
+            cout << "Fan Page: " << input << " already exists.\nToo many entries, redirecting to main menu." << endl;
             return nullptr;
         }
-        else if (tempfound != NOEXIST)
-        {
-            cout << "Fan Page: " << input << " founded!" << endl;
-            cin.ignore();
-        }
-        else
-        {
-            cout << "Fan Page: " << input << " created succesfully!" << endl;
-        }
+
         break;
+    //////////////////////////////////////////////////////////////////////////
     case MEMBER:
-        
         cout << "Please enter a member's name:" << endl;
         (readAfter)? input = readString(DEFAULT_FLUSH): input = readString();
-        *foundedIndex = System::findEntity(input, MEMBER);
-        while (*foundedIndex == NOEXIST && counter < MAX_ATTEMPTS)
+        *foundIndex = System::findEntity(input, MEMBER);
+
+        while (*foundIndex == NOEXIST && counter < MAX_ATTEMPTS)
         {
             cout << input << " was not found in our system. You have " << MAX_ATTEMPTS - counter
                 << " more attempts.\nPlease enter a member's name:" << endl;
             delete[] input;
             (readAfter) ? input = readString() : input = readString(DEFAULT_FLUSH);
             counter++;
-            *foundedIndex = System::findEntity(input, MEMBER);
+            *foundIndex = System::findEntity(input, MEMBER);
         }
+
         if (counter == MAX_ATTEMPTS )
         {
-            cout << "Cannot find entity\nToo many entries Redirecting to main menu" << endl;
+            cout << "Cannot find member.\nToo many entries, redirecting to main menu." << endl;
             return nullptr;
         }
-        else if(*foundedIndex != NOEXIST)
-        {
-            cout << "User: " << input << " founded!" << endl;
-        }
+
+        else if (*foundIndex != NOEXIST)
+            cout << "User: " << input << " found!" << endl;
+
         break;
+    //////////////////////////////////////////////////////////////////////////
     case MEMBER_CREATION:
        
         cout << "Please enter a member's name:" << endl;
         input = readString();
         tempfound = System::findEntity(input, MEMBER);
+
         while (tempfound != NOEXIST && counter < MAX_ATTEMPTS)
         {
             cout << input << " was found in our system. You have " << MAX_ATTEMPTS - counter
@@ -185,15 +186,19 @@ char* System::InputOperation(const size_SI& type, int* foundedIndex = nullptr, c
             counter++;
             tempfound = System::findEntity(input, MEMBER);
         }
-        if (counter == MAX_ATTEMPTS)
+
+        if (counter == MAX_ATTEMPTS && tempfound != NOEXIST)
         {
-            cout << "Too many entries Redirecting to main menu" << endl;
+            cout << "Member: " << input << " already exists.\nToo many entries, redirecting to main menu." << endl;
             return nullptr;
         }
+
         break;
+    //////////////////////////////////////////////////////////////////////////
     default:
         break;
     }
+
     return input;
 }
 //--------------------------------------------------------------------------------------
@@ -251,7 +256,7 @@ void System::createMember() //read name and birthday from the user with validati
         checkMem(m1);
       
         System::addMemberToArray(m1);
-        cout << "User " << name << "created successfully!" << endl;
+        cout << "User " << name << " created successfully!" << endl;
     }
       delete[] name;
   
@@ -307,6 +312,7 @@ void System::createFanPage() //Creates a fan page.
         checkMem(page);
     
         System::addFanPageToArray(page);
+        cout << "Fan Page: " << name << " was created successfully!" << endl;
     }
     delete[] name; 
 }
@@ -608,12 +614,13 @@ void System::printTenLastStatuses() //Prints a member's friends ten last statuse
             }
 
         }
+
         else
         {
-            cout << "Member " << name << " Have no friends yet\nRedirecting to main menu" << endl;
-            
+            cout << "Member " << name << " has no friends yet.\nRedirecting to main menu." << endl;
         }
     }
+
     delete[] name;
 }
 //----------------------------------------------------------

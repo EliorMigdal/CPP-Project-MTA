@@ -23,6 +23,7 @@ public:
 
     //System - System methods
     void Start();
+
     //System-to-user Methods
     inline void printMenu() const;
     void setDecision(size_SI& _decision);
@@ -30,7 +31,7 @@ public:
 
     //General Methods
     int findEntity(const char* name, const size_SI& entityType) const;
-    char* InputOperation(const size_SI& type, int* foundedIndex, const bool& readAfter);
+    char* InputOperation(const size_SI& type, int* foundIndex, const bool& readAfter);
 
     //Member Methods
     void createMember();
