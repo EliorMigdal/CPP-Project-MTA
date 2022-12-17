@@ -6,44 +6,36 @@
 
 class FanPage {
 private:
-    char* name = nullptr;
-    Member** members = nullptr;
-    size_t numOfMembers = 0;
-    Status** bulletinBoard = nullptr;
-    size_t numOfStatuses = 0;
-
+    string name = "";
+    unordered_map<string, Member> members{};
+    vector<Status> bulletinBoard{};
 public:
     //Constructors & Destructor
     FanPage() = default;
-    FanPage(const FanPage& obj) = delete;
-    FanPage& operator=(FanPage&& fanpage) = delete;
-    FanPage& operator=(const FanPage& fanpage) = delete;
-    FanPage(Member&& fanpage) = delete;
-    explicit FanPage(const char* _name);
-    ~FanPage();
-    
-
+    FanPage(const FanPage& obj) = default;
+    FanPage& operator=(FanPage&& fanpage) = default;
+    FanPage& operator=(const FanPage& fanpage) = default;
+    FanPage(FanPage&& fanpage) = default;
+    explicit FanPage(const string& _name);
+    ~FanPage() = default;
     //Getters
-    char* getName() const { return name; }
-    size_t getNumOfMembers() const { return numOfMembers; }
-    size_t getNumOfStatuses() const { return numOfStatuses; }
-    Member** getMemberArr() const { return members; }
-    Status** getStatusArr() const { return bulletinBoard; }
+    string getName() const { return name; }
+    size_t getNumOfMembers() const { return members.size(); }
+    size_t getNumOfStatuses() const { return bulletinBoard.size(); }
+    unordered_map<string, Member> getMemberArr() const { return members; }
+    vector<Status> getStatusArr() const { return bulletinBoard; }
 
     //FanPage-to-Member Methods
-    bool checkIfFan(Member* member);
-    bool findIndexAndRemoveFAN(const Member* member);
-    void addMember(Member* member);
-    
+    bool checkIfFan(const string& member_name);
+    bool removeFan(const string&);
+    void addMember(const Member& );
+
     //FanPage-to-Status Methods
     void printStatuses() const;
     void addStatus();
-    void addStatus(const char* statusContent);
-
+    void addStatus(const string&);
     //Private Methods
-private:
-    void transferMembers();
-    void transferStatuses();
+
 };
 
 #endif

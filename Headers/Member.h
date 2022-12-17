@@ -2,55 +2,50 @@
 #define CPP_PROJECT_MEMBERS_H
 #include "GlobalVariables.h"
 #include "Status.h"
-class FanPage;
 
+class FanPage;
 class Member {
+public:
+
 private:
-    char* name = nullptr;
-    Date birthday = {0,0,0};
-    Status** bulletinBoard = nullptr;
-    size_t numOfStatuses = 0;
-    Member** friends = nullptr;
-    size_t numOfFriends = 0;
-    FanPage** pages = nullptr;
-    size_t numOfPages = 0;
+    string name = "";
+    Date birthday = {"0","0","0"};
+    vector<Status> bulletinBoard;
+    unordered_map<string, Member> friends{};
+    unordered_map<string,FanPage*> pages{};
 
 public:
     //Constructors & Destructor
     Member() = default;
-    Member(const Member& object) = delete;
-    Member& operator=(Member&& mem) = delete;
-    Member& operator=(const Member& mem) = delete;
-    Member(Member&& mem) = delete;
-    explicit Member(const char* _name);
-    Member(const char* _name, Date& _birthday);
-    ~Member();
+    Member(const Member& object) = default;
+    Member& operator=(Member&& mem) = default;
+    Member& operator=(const Member& mem) = default;
+    Member(Member&& mem) noexcept = default;
+    explicit Member(const string& _name);
+    Member(const string _name, Date& _birthday);
+    ~Member() = default;
 
     //Getters
-    char* getName() const { return name; }
+    string getName() const { return name; }
     Date getBirthday() const { return birthday; }
-    Status** getStatusArr() const { return bulletinBoard; }
-    size_t getNumOfStatuses() const { return numOfStatuses; }
-    Member** getFriendsArr() const { return friends; }
-    size_t getNumOfFriends() const { return numOfFriends; }
-    FanPage** getPagesArr() const { return pages; }
-    size_t getNumOfPages() const { return numOfPages; }
+    vector<Status> getStatusArr() const { return bulletinBoard; }
+    unordered_map<string, Member> getFriendsArr() const { return friends; }
+    unordered_map<string, FanPage*> getPagesArr() const { return pages; }
    
     //Member-to-Member Methods
-    void addFriend(Member* memberToAdd);
-    void removeFriend(Member* memberToRemove);
-    bool checkIfFriend(const Member* member);
+    void addFriend(const Member& );
+    void removeFriend(const string&);
+    bool checkIfFriend(const string&);
     void printFriendsArr() const;
 
     //Member-to-Status Methods
-    inline void printStatus(const size_t& index) const;
-    void printStatuses(const size_t& numToPrint = PRINT_STATUS) const;
+    void printStatuses(const size_t&) const;
     void addStatus();
-    void addStatus(const char* statusContent);
+    void addStatus(const string&);
 
     //Member-to-FanPage Methods
-    void addPage(FanPage* fanPage);
-    void removePage(FanPage* fanPage);
+    void addPage(FanPage* , const string& );
+    bool removePage(const string&);
 
 private:
     //Private Re-allocators
@@ -59,5 +54,6 @@ private:
     void transferPages();
     
 };
+
 
 #endif

@@ -5,45 +5,37 @@
 //------------------------------------------------------
 Status::Status(const Date& _date) : statusDate(_date) {}
 //------------------------------------------------------
-Status::Status(const Date& _date, const Time& _time, const Byte& _status, const char* _content)
+Status::Status(const Date& _date, const Time& _time, const Byte& _status, const string& _content)
     :
     statusDate(_date),
     statusTime(_time),
-    statusType((STATUS_TYPE)_status)
+    statusType((STATUS_TYPE)_status),
+    statusContent(_content)
 {
-    this->statusContent = new char[strlen(_content) + 1];
-    checkMem(this->statusContent);
-    strcpy(this->statusContent, _content);
-
+}
+Status::Status(const Date& _date, const Time& _time, const string& _content) 
+    :
+    statusDate(_date),
+    statusTime(_time),
+    statusContent(_content)
+{
 }
 //------------------------------------------------------
-Status::~Status() //Destructor
+Status::Status(const string& statusContent) : statusContent(statusContent) //Constructor.
 {
-    delete[] statusContent;
-}
-//------------------------------------------------------
-Status::Status(const char *statusContent) //Constructor.
-{
-    this->statusContent = new char[strlen(statusContent) + 1];
-    checkMem(this->statusContent);
-    strcpy(this->statusContent, statusContent);
     setTimeAndDate(this->statusTime, this->statusDate);
 }
 //------------------------------------------------------
-
+ostream& operator<<(ostream& os, const Status& obj)
+{
+    const Date& date = obj.getStatusDate();
+    const Time& time = obj.getStatusTime();
+    cout << "\tCreated in date: " << flush;
+    cout << date.day << "/" << date.month << "/" << date.year << " " << flush;
+    cout << time.hour << ":" << time.minutes << ":" << time.seconds << endl;
+    cout << "\tStatus content: " << obj.getStatusContent();
+    return os;
+}
 
 //General methods
-//------------------------------------------------------
-void Status::printDate(const Date& date, const Time& time) const //Prints status's date.
-{
-    cout << date.day << "/" << date.month << "/" << date.year<< " "<< flush;
-    cout << time.hour << ":" << time.minutes << ":" << time.seconds << endl;
-}
-//------------------------------------------------------
-void Status::createStatus() //Creates a new status.
-{
-   cout << "Please enter a your Status content:" << endl;
-   this->statusContent = readString(DEFAULT_FLUSH);
-   setTimeAndDate(this->statusTime, this->statusDate);
-}
 //------------------------------------------------------

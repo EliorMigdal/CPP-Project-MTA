@@ -4,33 +4,33 @@
 
 class Status {
 private:
-    Date statusDate = {0,0,0};
-    Time statusTime = {0,0,0};
+    Date statusDate = { "0","0","0" };
+    Time statusTime = { "0","0","0" };
     STATUS_TYPE statusType = STATUS_TYPE::TEXT;
-    char* statusContent = nullptr;
+    string statusContent = "";
 
 public:
     //Constructors
     Status() = default;
-    Status(const Status& obj) = delete;
-    Status& operator=(Status&& status) = delete;
-    Status& operator=(const Status& status) = delete;
-    Status(Status&& status) = delete;
+    Status(const Status& obj) = default;
+    Status& operator=(Status&& status) = default;
+    Status& operator=(const Status& status) = default;
+    Status(Status&& status) = default;
     //-
-    explicit Status(const Date& _date);
-    Status(const Date& _date, const Time& _time, const Byte& _status, const char* _content);
-    explicit Status(const char* statusContent);
-    ~Status();
-
+    explicit Status(const Date&);
+    Status(const Date&, const Time&, const string&);
+    Status(const Date&, const Time&, const Byte&, const string&);
+    explicit Status(const string&);
+    ~Status() = default;
 
     //Getters
-    char* getStatus() const { return statusContent; }
+    const string& getStatusContent() const { return statusContent; }
     Date getStatusDate() const { return statusDate; }
     Time getStatusTime() const { return statusTime; }
 
     //General Methods
-    void printDate(const Date& date, const Time& time) const;
-    void createStatus();
+    void printDate(const Date&, const Time&) const;
+    friend ostream& operator<<(ostream& os, const Status& obj);
 };
 
 #endif

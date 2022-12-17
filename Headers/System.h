@@ -3,19 +3,15 @@
 #include "Member.h"
 #include "FanPage.h"
 #include "Status.h"
-#include "Data.h"
-
 class System {
 private:
     size_SI userDecision = 0;
-    Member** members = nullptr;
-    size_t numOfMembers = 0;
-    FanPage** pages = nullptr;
-    size_t numOfPages = 0;
+    unordered_map<string, Member> members;
+    unordered_map<string, FanPage*> pages ;
 
 public:
-    System();
-    ~System();
+    System() = default;
+    ~System() = default;
     System(const System& sys) = delete;
     System(System&& sys) = delete;
     System& operator=(System&& sys) = delete;
@@ -26,54 +22,48 @@ public:
 
     //System-to-user Methods
     inline void printMenu() const;
-    void setDecision(size_SI& _decision);
+    void setDecision(size_SI&);
     inline size_SI getDecision() const { return userDecision; }
 
     //General Methods
-    int findEntity(const char* name, const size_SI& entityType) const;
-    char* InputOperation(const size_SI& type, int* foundIndex,  bool readAfter);
+    string InputOperation(const size_SI&,bool);
 
     //Member Methods
     void createMember();
-    void createMember(const char* _name, Date& _date);
-    void addMemberToArray(Member* member);
-    void connectMembers(const char* name1, const char* name2);
-    void disconnectMembers(const char* name1, const char* name2);
+    void createMember(const string&, Date&);
+    void connectMembers(const Member& , const Member& );
+    void disconnectMembers(const Member& member1, const Member& member2);
     
     //FanPage Methods
     void createFanPage();
-    void createFanPage(const char* _name);
+    void createFanPage(const string&);
     void addFan();
-    void addFan(const char* pageName, const char* fanName);
+    void addFan(const string&, const string&);
     void removeFan();
-    void removeFan(const char* pageName, const char* fanName);
-    void addFanPageToArray(FanPage* member);
+    void removeFan(const string&, const string&);
+    void addFanPageToArray(FanPage*);
 
     //Status Methods
     void newStatus();
-    void newStatus(const char* name, const size_SI& type, const char* statusContent);
+    void newStatus(const string&, const size_SI&, const string&);
 
 private:
     //System Private Methods
    
     //Global methods
-    inline bool BirthdayCheck(const Date& _birthday);
+    inline bool BirthdayCheck(const Date&);
    
     //Printers methods 
     void printAllStatuses();
     void printTenLastStatuses();
     void printAllEntities() const;
     void printAllFriends();
-    void printAllFans(FanPage* fanpage) const;
+    void printAllFans(FanPage* ) const;
     void printAllPages();
 
     //System-Member Methods
     void connectMembers();
     void disconnectMembers();
-
-    //Reallocation methods
-    void transferMembers();
-    void transferFanPages();
 };
 
 #endif //CPP_PROJECT_SYSTEM_H
