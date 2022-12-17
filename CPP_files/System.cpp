@@ -90,7 +90,7 @@ string System::InputOperation(const size_SI& type, bool readAfter = false) //Ret
         if (counter == MAX_ATTEMPTS && founded)
         {
             cout << "Cannot find fan page.\nToo many entries, redirecting to main menu" << endl;
-            return nullptr;
+            return "";
         }
         else
             cout << "Fan Page: " << input << " found!" << endl;
@@ -113,7 +113,7 @@ string System::InputOperation(const size_SI& type, bool readAfter = false) //Ret
         if (counter == MAX_ATTEMPTS && founded)
         {
             cout << "Fan Page: " << input << " already exists.\nToo many entries, redirecting to main menu." << endl;
-            return nullptr;
+            return "";
         }
         break;
         //////////////////////////////////////////////////////////////////////////
@@ -136,7 +136,7 @@ string System::InputOperation(const size_SI& type, bool readAfter = false) //Ret
         if (counter == MAX_ATTEMPTS && founded)
         {
             cout << "Cannot find member.\nToo many entries, redirecting to main menu." << endl;
-            return nullptr;
+            return "";
         }
         else 
             cout << "User: " << input << " found!" << endl;
@@ -160,7 +160,7 @@ string System::InputOperation(const size_SI& type, bool readAfter = false) //Ret
         if (counter == MAX_ATTEMPTS && founded)
         {
             cout << "Member: " << input << " already exists.\nToo many entries, redirecting to main menu." << endl;
-            return nullptr;
+            return "";
         }
         break;
         //////////////////////////////////////////////////////////////////////////
@@ -652,13 +652,13 @@ void System::printAllFans(FanPage* fanpage) const //Prints a fan page's fans lis
 void System::connectMembers() //Connects two members.
 {
     string firstMemberName, secondMemberName;
-    int foundFirst = -1, foundSecond = -1;
+   
     bool areFriends;
     firstMemberName = InputOperation(MEMBER, true);
-    if (!firstMemberName.empty() && foundFirst != -1)
+    if (!firstMemberName.empty())
     {
         secondMemberName = InputOperation(MEMBER);
-        if (!secondMemberName.empty() && foundSecond != -1)
+        if (!secondMemberName.empty())
         {
             if (firstMemberName != secondMemberName)
             {
@@ -684,13 +684,12 @@ void System::connectMembers() //Connects two members.
 void System::disconnectMembers() //Disconnects two members.
 {
     string firstMemberName, secondMemberName;
-    int foundFirst = -1, foundSecond = -1;
     bool areFriends;
     firstMemberName = InputOperation(MEMBER, true);
-    if (!firstMemberName.empty() && foundFirst != -1)
+    if (!firstMemberName.empty() )
     {
         secondMemberName = InputOperation(MEMBER);
-        if (!secondMemberName.empty() && foundSecond != -1)
+        if (!secondMemberName.empty() )
         { 
             areFriends = members[firstMemberName].Member::checkIfFriend(members[secondMemberName].getName());
             if (areFriends)

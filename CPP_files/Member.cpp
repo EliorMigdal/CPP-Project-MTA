@@ -31,9 +31,15 @@ bool Member::checkIfFriend(const string& member_name) //Searches for a member in
 //----------------------------------------------------------
 void Member::printFriendsArr() const //Prints friends's names.
 {
-    for (const auto& key : this->friends)
+    if (this->friends.empty())
+        cout << this->getName() << " has no friends." << endl;
+    else
     {
-        cout << key.first << endl;
+        cout << "----------------------------------\n" << this->getName() << "'s friends are:\n----------------------------------" << endl;
+        for (const auto& key : this->friends)
+        {
+            cout <<"\t" << key.first << endl;
+        }
     }
 }
 //----------------------------------------------------------
