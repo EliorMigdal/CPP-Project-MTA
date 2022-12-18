@@ -22,7 +22,7 @@ bool FanPage::removeFan(const string& member_to_remove)
     return false;
 }
 //-----------------------------------------------------------
-void FanPage::addMember( const Member& member) //Adds a new member to members array.
+void FanPage::addFan( const Member& member) //Adds a new member to members array.
 {
 
     this->members[member.getName()] = member;

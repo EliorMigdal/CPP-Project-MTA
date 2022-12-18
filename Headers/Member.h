@@ -48,11 +48,6 @@ public:
     bool removePage(const string&);
 
 private:
-    //Private Re-allocators
-    void transferStatuses();
-    void transferFriends();
-    void transferPages();
-    
 };
 
 

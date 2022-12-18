@@ -34,6 +34,8 @@ constexpr size_SI FAN_PAGE = 1;
 constexpr size_SI FAN_PAGE_CREATION = 2;
 constexpr int NOEXIST = -1;
 constexpr size_SI MAX_ATTEMPTS = 3;
+constexpr size_SI REMOVE_FAN = 1;
+constexpr size_SI ADD_FAN = 0;
 //Structures
 struct Date
 {

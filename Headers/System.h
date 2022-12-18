@@ -6,8 +6,8 @@
 class System {
 private:
     size_SI userDecision = 0;
-    unordered_map<string, Member> members;
-    unordered_map<string, FanPage*> pages ;
+    unordered_map<string, Member> members{};
+    unordered_map<string, FanPage*> pages{};
 
 public:
     System() = default;
@@ -31,18 +31,17 @@ public:
     //Member Methods
     void createMember();
     void createMember(const string&, Date&);
-    void connectMembers(const Member& , const Member& );
-    void disconnectMembers(const Member& member1, const Member& member2);
+    void connectMembersHardCoded(const Member& , const Member& );
+    void disconnectMembersHardCoded(const Member& , const Member& );
     
     //FanPage Methods
     void createFanPage();
+    void Add_OR_RemoveFAN(void(System::* operation)(const string&, const string&));
     void createFanPage(const string&);
-    void addFan();
+    void addFanHardCoded(const string&, const string&);
     void addFan(const string&, const string&);
-    void removeFan();
+    void removeFanHardCoded(const string&, const string&);
     void removeFan(const string&, const string&);
-    void addFanPageToArray(FanPage*);
-
     //Status Methods
     void newStatus();
     void newStatus(const string&, const size_SI&, const string&);
@@ -62,8 +61,9 @@ private:
     void printAllPages();
 
     //System-Member Methods
-    void connectMembers();
-    void disconnectMembers();
+    void connectMembers(const string& , const string& );
+    void disconnectMembers(const string& , const string& );
+    void Connect_OR_DissconnectMember(void(System::* operation)(const string&, const string&));
 };
 
 #endif //CPP_PROJECT_SYSTEM_H
