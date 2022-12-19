@@ -26,7 +26,7 @@ typedef unsigned char Byte;
 constexpr size_SI DEFAULT_TYPE = 9;
 constexpr size_SI DEFAULT_FLUSH = 22;
 constexpr size_SI MAX_CHARS_LEN = 250;
-constexpr size_SI EXIT = 12;
+constexpr size_SI EXITi = 12;
 constexpr size_SI PRINT_STATUS = 10;
 constexpr size_SI MEMBER = 0;
 constexpr size_SI MEMBER_CREATION = 5;

@@ -24,12 +24,11 @@ public:
     ~Status() = default;
 
     //Getters
-    const string& getStatusContent() const { return statusContent; }
-    Date getStatusDate() const { return statusDate; }
-    Time getStatusTime() const { return statusTime; }
+    const string getStatusContent() const { return statusContent; }
+    const Date getStatusDate() const { return statusDate; }
+    const Time getStatusTime() const { return statusTime; }
 
     //General Methods
-    void printDate(const Date&, const Time&) const;
     friend ostream& operator<<(ostream& os, const Status& obj);
 };
 

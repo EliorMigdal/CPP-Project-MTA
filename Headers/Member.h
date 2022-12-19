@@ -26,8 +26,8 @@ public:
     ~Member() = default;
 
     //Getters
-    string getName() const { return name; }
-    Date getBirthday() const { return birthday; }
+    const string getName() const { return name; }
+    const Date getBirthday() const { return birthday; }
     vector<Status> getStatusArr() const { return bulletinBoard; }
     unordered_map<string, Member> getFriendsArr() const { return friends; }
     unordered_map<string, FanPage*> getPagesArr() const { return pages; }

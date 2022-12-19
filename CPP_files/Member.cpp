@@ -67,11 +67,15 @@ void Member::printStatuses(const size_t& numToPrint = PRINT_STATUS) const //Prin
             cout << this->Member::getName() << "'s last " << numToPrint << " statuses:" << endl;
         }
         size_t to_Run = _numOfStatuses - logicPrintSize;
-        using reverseStatusIter = vector<Status>::const_reverse_iterator;
-        for (reverseStatusIter rit = this->bulletinBoard.rbegin(); rit != this->bulletinBoard.rend() && (to_Run < _numOfStatuses); ++rit)
         {
-            cout << "------------------------------------\n\tStatus #" << _numOfStatuses--  << "\n------------------------------------" <<endl<<
-                *rit << endl;
+            using reverseStatusIter = vector<Status>::const_reverse_iterator;
+            reverseStatusIter begin = this->bulletinBoard.rbegin();
+            reverseStatusIter end = this->bulletinBoard.rend();
+            for (reverseStatusIter rit = begin; rit != end && (to_Run < _numOfStatuses); ++rit)
+            {
+                cout << "------------------------------------\n\tStatus #" << _numOfStatuses-- << "\n------------------------------------" << endl <<
+                    *rit << endl;
+            }
         }
     }
 }
