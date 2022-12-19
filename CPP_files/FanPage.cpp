@@ -12,14 +12,15 @@ bool FanPage::checkIfFan(const string& member_name) //Checks whether member is a
 {
     return members.find(member_name) != members.end();
 }
-bool FanPage::removeFan(const string& member_to_remove)
+bool FanPage::removeFan(const string& member_to_remove) 
 {
     if (FanPage::checkIfFan(member_to_remove))
     {
-         members.erase(member_to_remove);
-         return true;
+       members.erase(member_to_remove);
+        return true;       
     }
     return false;
+      
 }
 //-----------------------------------------------------------
 void FanPage::addFan( const Member& member) //Adds a new member to members array.

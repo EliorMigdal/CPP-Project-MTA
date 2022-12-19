@@ -3,7 +3,26 @@
 #include "GlobalVariables.h"
 #include "Status.h"
 #include "Member.h"
-
+//class FanPageException : public std::exception
+//{
+//public:
+//    virtual const char* what() const override { return "Failed creating a Page, Already exists\n"; }
+//};
+//class RemoveAFanException : public FanPageException
+//{
+//public:
+//    virtual const char* what() const override { return "Failed because member doesn't exist!\n"; }
+//};
+//class AddAFanException : public FanPageException
+//{
+//public:
+//    virtual const char* what() const override { return "Failed because member Already exists"; }
+//};
+//class CheckIfFanException : public FanPageException
+//{
+//public:
+//    virtual const char* what() const override { return "Failed because member_name is empty!\n"; }
+//};
 class FanPage {
 private:
     string name = "";

@@ -15,7 +15,7 @@ inline void System::printMenu() const //Prints the menu for the user.
 void System::setDecision(size_SI& _decision) //Gets the decision from user and acts on it.
 {
 
-    if (_decision < 1 || _decision  > 12)
+    if (_decision < (size_SI)CREATEMEMBER || _decision  > (size_SI)EXIT)
     {
         cout << "Invalid choice. Please try again!" << endl;
         System::printMenu();
@@ -25,37 +25,37 @@ void System::setDecision(size_SI& _decision) //Gets the decision from user and a
     {
         default:
             break;
-        case 1:
+        case (size_SI)CREATEMEMBER:
             System::createMember();
             break;
-        case 2:
+        case (size_SI)CREATEFANPAGE:
             System::createFanPage();
             break;
-        case 3:
+        case (size_SI)NEWSTATUS:
             System::newStatus();
             break;
-        case 4:
+        case (size_SI)PRINTALLSTATUSES:
             System::printAllStatuses();
             break;
-        case 5:
+        case (size_SI)PRINTTENLASTSTATUSES:
             System::printTenLastStatuses();
             break;
-        case 6:
+        case (size_SI)CONNECTMEMBERS:
             System::Connect_OR_DissconnectMember(&System::connectMembers);
             break;
-        case 7:
+        case (size_SI)DISCONNECTMEMBERS:
             System::Connect_OR_DissconnectMember(&System::disconnectMembers);
             break;
-        case 8: 
+        case (size_SI)ADDFAN:
             System::Add_OR_RemoveFAN(&System::addFan);
             break;
-        case 9:
+        case (size_SI)REMOVEFAN:
             System::Add_OR_RemoveFAN(&System::removeFan);
             break;
-        case 10:
+        case (size_SI)PRINTALLENTITIES:
             System::printAllEntities();
             break;
-        case 11:
+        case (size_SI)PRINTALLFRIENDS:
             System::printAllFriends();
             break;
     }
@@ -409,7 +409,7 @@ void System::Start() //Hard-coded data for our system.
     this->addFanHardCoded("The Bens", "Ben Hanover");
     this->newStatus("Ben Hanover", MEMBER, "ME TOO!");
     this->newStatus("The Bens", FAN_PAGE, "WE HAVE TWO NEW MEMBERS!!");
-    this->removeFan("The Bens", "Ben Cohen");
+    this->removeFanHardCoded("The Bens", "Ben Cohen");
     this->newStatus("Ben Cohen", MEMBER, "Now I left...");
     this->newStatus("The Bens", FAN_PAGE, ":(");
     this->addFanHardCoded("The Bens", "Ramez Mannaa");
