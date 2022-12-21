@@ -1,31 +1,6 @@
 #include "../Headers/GlobalVariables.h"
 
 //Global functions
-//--------------------------------------------------------------------------------------
-void checkMem(void* ptr) //Verifies memory allocation.
-{
-	if (ptr == nullptr)
-	{
-        cout << "Memory allocation failed. Shutting down..." << endl;
-		exit(1);
-	}
-}
-//---------------------------------------------------------------------------------
-//string readString(const size_SI& type) //Reads a name & strings from user, using dynamic allocation.
-//{
-//	string data = new string[MAX_CHARS_LEN];
-//	checkMem(data);
-//
-//    if (type != DEFAULT_FLUSH)
-//        cin.ignore();
-//
-//    cin.getline(data, MAX_CHARS_LEN);
-//	string updated = new string[strlen(data) + 1];
-//	checkMem(updated);
-//	strcpy(updated, data);
-//	delete[] data;
-//    return updated;
-//}
 //---------------------------------------------------------------------------------
 void readBirthday(Date& birthday) //Reads birthday from user.
 {
@@ -41,7 +16,7 @@ void readBirthday(Date& birthday) //Reads birthday from user.
 void setTimeAndDate(Time& exactTime, Date& exactDate) //Sets date & time for statuses.
 {
 	time_t curr_time;
-	curr_time = time(NULL);
+	curr_time = time(nullptr);
 	tm* tm_local = localtime(&curr_time);
 	if (tm_local->tm_hour >= 0 && tm_local->tm_hour < 10)
 	{

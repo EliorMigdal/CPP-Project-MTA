@@ -16,7 +16,6 @@ public:
     Status& operator=(Status&& status) = default;
     Status& operator=(const Status& status) = default;
     Status(Status&& status) = default;
-    //-
     explicit Status(const Date&);
     Status(const Date&, const Time&, const string&);
     Status(const Date&, const Time&, const Byte&, const string&);
@@ -28,7 +27,7 @@ public:
     const Date getStatusDate() const { return statusDate; }
     const Time getStatusTime() const { return statusTime; }
 
-    //General Methods
+    //Operators
     friend ostream& operator<<(ostream& os, const Status& obj);
 };
 

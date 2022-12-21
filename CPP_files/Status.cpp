@@ -1,7 +1,6 @@
 #include "../Headers/Status.h"
 
 //Constructors
-
 //------------------------------------------------------
 Status::Status(const Date& _date) : statusDate(_date) {}
 //------------------------------------------------------
@@ -12,13 +11,16 @@ Status::Status(const Date& _date, const Time& _time, const Byte& _status, const 
     statusType((STATUS_TYPE)_status),
     statusContent(_content)
 {
+
 }
+//------------------------------------------------------
 Status::Status(const Date& _date, const Time& _time, const string& _content) 
     :
     statusDate(_date),
     statusTime(_time),
     statusContent(_content)
 {
+
 }
 //------------------------------------------------------
 Status::Status(const string& statusContent) : statusContent(statusContent) //Constructor.
@@ -26,7 +28,7 @@ Status::Status(const string& statusContent) : statusContent(statusContent) //Con
     setTimeAndDate(this->statusTime, this->statusDate);
 }
 //------------------------------------------------------
-ostream& operator<<(ostream& os, const Status& obj)
+ostream& operator<<(ostream& os, const Status& obj) //Prints operator.
 {
     const Date& date = obj.getStatusDate();
     const Time& time = obj.getStatusTime();
@@ -36,6 +38,4 @@ ostream& operator<<(ostream& os, const Status& obj)
     cout << "\tStatus content: " << obj.getStatusContent();
     return os;
 }
-
-//General methods
 //------------------------------------------------------

@@ -246,8 +246,8 @@ void System::connectMembersHardCoded(const Member& member1, const Member& member
 void System::disconnectMembersHardCoded(const Member& member1, const Member& member2) //Disconnect members for hard-coded data.
 {
 
-    this->members[member1.getName()].Member::removeFriend(member2.getName());
-    this->members[member2.getName()].Member::removeFriend(member1.getName());
+    this->members.at(member1.getName()).Member::removeFriend(member2.getName());
+    this->members.at(member2.getName()).Member::removeFriend(member1.getName());
 }
 ////----------------------------------------------------------
 //
@@ -284,23 +284,25 @@ void System::addFan(const string& fanPageName, const string& memberName) //Adds 
     else
         cout << memberName << " is already " << fanPageName << "'s fan" << endl;              
 }
-////----------------------------------------------------------
+//----------------------------------------------------------
 void System::removeFan(const string& fanPageName,const string& memberName) //Removes a fan from a fan page's members array.
 { 
    bool deletedFan = this->pages.at(fanPageName)->FanPage::removeFan(this->members.at(memberName).getName());
     if (deletedFan)
-        cout << "Succesfully deleted " << memberName << " From " << fanPageName << "!" << endl;
+    {
+        cout << "Successfully deleted " << memberName << " from " << fanPageName << "!" << endl;
+        this->members.at(memberName).removePage(fanPageName);
+    }
     else
         cout << memberName << " not a " << fanPageName << "'s fan" << endl;  
 }
-////----------------------------------------------------------
+//----------------------------------------------------------
 void System::addFanHardCoded(const string& pageName, const string& fanName) //Add fan for hard-coded data.
 {
     this->members.at(fanName).Member::addPage(this->pages.at(pageName),pageName);
     this->pages.at(pageName)->FanPage::addFan(this->members.at(fanName));
 }
-
-////----------------------------------------------------------
+//----------------------------------------------------------
 void System::Add_OR_RemoveFAN(void(System::*operation)(const string&,const string&))
 {
     string fanPageName, memberName;
@@ -503,7 +505,6 @@ void System::printAllStatuses() //Prints an entity's statuses.
             this->members.at(name).Member::printStatuses(this->members.at(name).getStatusArr().size());
         else
         {
-            cout << name << "'s statuses:" << endl;
             this->pages.at(name)->FanPage::printStatuses();
         }
     }
@@ -588,9 +589,9 @@ void System::printAllFriends() //Prints an entity's friends.
     if (!entityName.empty())
     {
         if (decision == 1)
-            members[entityName].Member::printFriendsArr();
+            members.at(entityName).Member::printFriendsArr();
         else
-            System::printAllFans(pages[entityName]);
+            System::printAllFans(pages.at(entityName));
     }
 
 }

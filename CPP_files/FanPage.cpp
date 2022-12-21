@@ -3,29 +3,31 @@
 //Constructors & Destructor
 
 //-----------------------------------------------------------
-
 FanPage::FanPage(const string& _name): name(_name) //Constructor.
-{}
+{
+
+}
+//-----------------------------------------------------------
+
 //FanPage-to-Member Methods
 //-----------------------------------------------------------
 bool FanPage::checkIfFan(const string& member_name) //Checks whether member is a fan of the page.
 {
     return members.find(member_name) != members.end();
 }
-bool FanPage::removeFan(const string& member_to_remove) 
+//-----------------------------------------------------------
+bool FanPage::removeFan(const string& member_to_remove) //Removes a fan from members array.
 {
     if (FanPage::checkIfFan(member_to_remove))
     {
-       members.erase(member_to_remove);
+       this->members.erase(member_to_remove);
         return true;       
     }
     return false;
-      
 }
 //-----------------------------------------------------------
 void FanPage::addFan( const Member& member) //Adds a new member to members array.
 {
-
     this->members[member.getName()] = member;
 }
 //----------------------------------------------------------
@@ -64,3 +66,4 @@ void FanPage::addStatus(const string& statusContent) //For hard coded data.
     setTimeAndDate(newTime, newDate);
     this->bulletinBoard.emplace_back((newDate, newTime, statusContent));
 }
+//-----------------------------------------------------------

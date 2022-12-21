@@ -5,7 +5,6 @@
 Member::Member(const string _name, Date &_birthday): name(_name),birthday(_birthday) //Constructor.
 {
 }
-
 //----------------------------------------------------------
 Member::Member(const string& _name) : name(_name) //Constructor.
 {
@@ -14,7 +13,7 @@ Member::Member(const string& _name) : name(_name) //Constructor.
 
 //Member-to-Member Methods
 //----------------------------------------------------------
-void Member::addFriend( const Member& memberToAdd) //Adds a new friends to the friends array.
+void Member::addFriend(const Member& memberToAdd) //Adds a new friends to the friends array.
 {
     this->friends[memberToAdd.getName()] = memberToAdd;
 }
@@ -29,16 +28,16 @@ bool Member::checkIfFriend(const string& member_name) //Searches for a member in
     return this->friends.find(member_name) != this->friends.end();
 }
 //----------------------------------------------------------
-void Member::printFriendsArr() const //Prints friends's names.
+void Member::printFriendsArr() const //Prints friends' names.
 {
     if (this->friends.empty())
         cout << this->getName() << " has no friends." << endl;
     else
     {
         cout << "----------------------------------\n" << this->getName() << "'s friends are:\n----------------------------------" << endl;
-        for (const auto& key : this->friends)
+        for (const auto& kv : this->friends)
         {
-            cout <<"\t" << key.first << endl;
+            cout <<"\t" << kv.first << endl;
         }
     }
 }
@@ -54,7 +53,7 @@ void Member::printStatuses(const size_t& numToPrint = PRINT_STATUS) const //Prin
     else 
     {
         size_t _numOfStatuses = this->bulletinBoard.size();
-        size_t logicPrintSize = 0;
+        size_t logicPrintSize;
         if (_numOfStatuses < PRINT_STATUS)
         {
             logicPrintSize = _numOfStatuses;
@@ -99,7 +98,7 @@ void Member::addStatus(const string& statusContent) //For hard-coded data.
     setTimeAndDate(newTime, newDate);
     this->bulletinBoard.emplace_back((newDate, newTime, statusContent));
 }
-
+//----------------------------------------------------------
 
 //Member-to-FanPage Methods
 //----------------------------------------------------------

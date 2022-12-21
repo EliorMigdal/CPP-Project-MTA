@@ -5,8 +5,6 @@
 
 class FanPage;
 class Member {
-public:
-
 private:
     string name = "";
     Date birthday = {"0","0","0"};
@@ -46,9 +44,6 @@ public:
     //Member-to-FanPage Methods
     void addPage(FanPage* , const string& );
     bool removePage(const string&);
-
-private:
 };
-
 
 #endif

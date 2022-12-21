@@ -28,15 +28,17 @@ private:
     string name = "";
     unordered_map<string, Member> members{};
     vector<Status> bulletinBoard{};
+
 public:
     //Constructors & Destructor
     FanPage() = default;
     FanPage(const FanPage& obj) = default;
     FanPage& operator=(FanPage&& fanpage) = default;
     FanPage& operator=(const FanPage& fanpage) = default;
-    FanPage(FanPage&& fanpage) = default;
+    FanPage(FanPage&& fanpage) noexcept = default;
     explicit FanPage(const string& _name);
     ~FanPage() = default;
+
     //Getters
     const string getName() const { return name; }
     const size_t getNumOfMembers() const { return members.size(); }
@@ -53,8 +55,6 @@ public:
     void printStatuses() const;
     void addStatus();
     void addStatus(const string&);
-    //Private Methods
-
 };
 
 #endif
