@@ -1,8 +1,7 @@
 #ifndef CPP_PROJECT_SYSTEM_H
 #define CPP_PROJECT_SYSTEM_H
-#include "Member.h"
 #include "FanPage.h"
-#include "Status.h"
+
 class System {
 private:
     size_SI userDecision = 0;
@@ -42,13 +41,13 @@ public:
     void addFan(const string&, const string&);
     void removeFanHardCoded(const string&, const string&);
     void removeFan(const string&, const string&);
+
     //Status Methods
     void newStatus();
     void newStatus(const string&, const size_SI&, const string&);
 
 private:
     //System Private Methods
-   
     //Global methods
     inline bool BirthdayCheck(const Date&);
    
@@ -63,7 +62,7 @@ private:
     //System-Member Methods
     void connectMembers(const string& , const string& );
     void disconnectMembers(const string& , const string& );
-    void Connect_OR_DissconnectMember(void(System::* operation)(const string&, const string&));
+    void Connect_OR_DisconnectMember(void(System::* operation)(const string&, const string&));
 };
 
 #endif //CPP_PROJECT_SYSTEM_H

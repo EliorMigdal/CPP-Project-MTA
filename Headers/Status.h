@@ -7,28 +7,33 @@ private:
     Date statusDate = { "0","0","0" };
     Time statusTime = { "0","0","0" };
     STATUS_TYPE statusType = STATUS_TYPE::TEXT;
-    string statusContent = "";
+    string statusContent;
 
 public:
     //Constructors
     Status() = default;
-    Status(const Status& obj) = default;
-    Status& operator=(Status&& status) = default;
-    Status& operator=(const Status& status) = default;
-    Status(Status&& status) = default;
-    explicit Status(const Date&);
-    Status(const Date&, const Time&, const string&);
-    Status(const Date&, const Time&, const Byte&, const string&);
+    Status(const Status&) = default;
+    Status(Status&&) = default;
+    explicit Status(Date&);
+    Status(Date&, Time&, const string&);
+    Status(Date&, Time&, Byte&, const string&);
     explicit Status(const string&);
     ~Status() = default;
 
     //Getters
-    const string getStatusContent() const { return statusContent; }
-    const Date getStatusDate() const { return statusDate; }
-    const Time getStatusTime() const { return statusTime; }
+    string getStatusContent() const { return statusContent; }
+    Date getStatusDate() const { return statusDate; }
+    Time getStatusTime() const { return statusTime; }
 
-    //Operators
-    friend ostream& operator<<(ostream& os, const Status& obj);
+    //Operators Methods
+    // << Operator
+    friend ostream& operator<<(ostream&, const Status&);
+    // = Operator
+    Status& operator=(Status&& status) = default;
+    Status& operator=(const Status& status) = default;
+    // Boolean Operators
+    bool operator==(Status&) const;
+    bool operator!=(Status&) const;
 };
 
 #endif

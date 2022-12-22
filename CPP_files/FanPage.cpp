@@ -1,12 +1,8 @@
 #include "../Headers/FanPage.h"
 
-//Constructors & Destructor
-
+//Constructors
 //-----------------------------------------------------------
-FanPage::FanPage(const string& _name): name(_name) //Constructor.
-{
-
-}
+FanPage::FanPage(const string& _name):name(_name){}
 //-----------------------------------------------------------
 
 //FanPage-to-Member Methods
@@ -16,34 +12,38 @@ bool FanPage::checkIfFan(const string& member_name) //Checks whether member is a
     return members.find(member_name) != members.end();
 }
 //-----------------------------------------------------------
-bool FanPage::removeFan(const string& member_to_remove) //Removes a fan from members array.
+bool FanPage::removeFan(const Member& _member) //Removes a fan from members array.
 {
-    if (FanPage::checkIfFan(member_to_remove))
+    if (FanPage::checkIfFan(_member.getName()))
     {
-       this->members.erase(member_to_remove);
+       this->members.erase(_member.getName());
         return true;       
     }
     return false;
 }
 //-----------------------------------------------------------
-void FanPage::addFan( const Member& member) //Adds a new member to members array.
+void FanPage::addFan(const Member& member) //Adds a new member to members array.
 {
     this->members[member.getName()] = member;
 }
 //----------------------------------------------------------
 
-// FanPage-to-Status Methods
+//FanPage-to-Status Methods
 //----------------------------------------------------------
 void FanPage::printStatuses() const //Prints all fan page's statuses.
 {
     size_t i = 0;
     if (this->bulletinBoard.empty())
         cout << this->FanPage::getName() << " has not posted any statuses." << endl;
+
     else
-        cout << "-------------------------------------\n" << this->FanPage::getName() << " has posted " << this->bulletinBoard.size() << " statuses:" << endl;
+        cout << "-------------------------------------\n" << this->FanPage::getName()
+        << " has posted " << this->bulletinBoard.size() << " statuses:" << endl;
+
     for (const auto& status: bulletinBoard)
     {
-        cout << "------------------------------------\n\tStatus #" << ++i << "\n------------------------------------" << endl << status << endl;
+        cout << "------------------------------------\n\tStatus #" << ++i <<
+        "\n------------------------------------" << endl << status << endl;
     }
 }
 //---------------------------------------------------------- 
@@ -55,7 +55,7 @@ void FanPage::addStatus() //Adds a status to a fan page.
     cout << "Please enter a your Status content:" << endl;
     getline(cin, statusContent);
     setTimeAndDate(newTime, newDate);
-    this->bulletinBoard.emplace_back((newDate,newTime,statusContent));
+    this->bulletinBoard.emplace_back((newDate, newTime, statusContent));
     cout << "Status uploaded successfully!" << endl;
 }
 //----------------------------------------------------------
@@ -65,5 +65,45 @@ void FanPage::addStatus(const string& statusContent) //For hard coded data.
     Time newTime;
     setTimeAndDate(newTime, newDate);
     this->bulletinBoard.emplace_back((newDate, newTime, statusContent));
+}
+//-----------------------------------------------------------
+
+//Operators Methods
+//-----------------------------------------------------------
+ostream& operator<<(ostream& _out, FanPage& _fanPage) //Print method.
+{
+    return _out << _fanPage.getName();
+}
+//-----------------------------------------------------------
+const FanPage &FanPage::operator+=(Member & _member) //FanPage += Member method.
+{
+    this->addFan(_member);
+    return *this;
+}
+//-----------------------------------------------------------
+const FanPage &FanPage::operator-=(Member & _member) //FanPage -= Member method.
+{
+    this->removeFan(_member);
+    return *this;
+}
+//-----------------------------------------------------------
+bool FanPage::operator<(FanPage & _fanPage) const //FanPage < FanPage operator.
+{
+    return this->getNumOfMembers() < _fanPage.getNumOfMembers();
+}
+//-----------------------------------------------------------
+bool FanPage::operator<=(FanPage & _fanPage) const //FanPage <= FanPage operator.
+{
+    return this->getNumOfMembers() <= _fanPage.getNumOfMembers();
+}
+//-----------------------------------------------------------
+bool FanPage::operator>(FanPage & _fanPage) const //FanPage > FanPage operator.
+{
+    return this->getNumOfMembers() > _fanPage.getNumOfMembers();
+}
+//-----------------------------------------------------------
+bool FanPage::operator>=(FanPage & _fanPage) const //FanPage >= FanPage operator.
+{
+    return this->getNumOfMembers() >= _fanPage.getNumOfMembers();
 }
 //-----------------------------------------------------------

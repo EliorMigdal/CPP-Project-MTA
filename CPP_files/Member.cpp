@@ -1,15 +1,11 @@
 #include "../Headers/Member.h"
 
-//Constructors & Destructor
-// ----------------------------------------------------------
-Member::Member(const string _name, Date &_birthday): name(_name),birthday(_birthday) //Constructor.
-{
-}
+//Constructors
 //----------------------------------------------------------
-Member::Member(const string& _name) : name(_name) //Constructor.
-{
-}
-//-------------------------------------------------------------
+Member::Member(const string& _name, Date& _birthday):name(_name), birthday(_birthday){}
+//----------------------------------------------------------
+Member::Member(string& _name):name(_name){}
+//----------------------------------------------------------
 
 //Member-to-Member Methods
 //----------------------------------------------------------
@@ -115,5 +111,55 @@ bool Member::removePage(const string& fanPage_name) //Removes a page from the pa
         return true;
     }
     return false;
+}
+//----------------------------------------------------------
+
+//Operators Methods
+//----------------------------------------------------------
+ostream& operator<<(ostream& out, const Member& _member) //Print operator.
+{
+    return out << _member.getName();
+}
+//----------------------------------------------------------
+const Member &Member::operator+=(const Member & _member) //Member + Member operator.
+{
+    this->addFriend(_member);
+    return *this;
+}
+//----------------------------------------------------------
+const Member &Member::operator+=(const FanPage & _fanPage) //Member + FanPage operator.
+{
+    //Fix name issue.
+}
+//----------------------------------------------------------
+const Member &Member::operator-=(const Member & _member) //Member - Member operator.
+{
+    this->removeFriend(_member.getName());
+    return *this;
+}
+//----------------------------------------------------------
+const Member &Member::operator-=(const FanPage & _fanPage) //Member - FanPage operator.
+{
+    //Fix name issue.
+}
+//----------------------------------------------------------
+bool Member::operator<(const Member & _member) const //Member < Member operator.
+{
+    return this->getNumOfFriends() < _member.getNumOfFriends();
+}
+//----------------------------------------------------------
+bool Member::operator<=(const Member & _member) const //Member <= Member operator.
+{
+    return this->getNumOfFriends() <= _member.getNumOfFriends();
+}
+//----------------------------------------------------------
+bool Member::operator>(const Member & _member) const //Member > Member operator.
+{
+    return this->getNumOfFriends() > _member.getNumOfFriends();
+}
+//----------------------------------------------------------
+bool Member::operator>=(const Member & _member) const //Member >= Member operator.
+{
+    return this->getNumOfFriends() >= _member.getNumOfFriends();
 }
 //----------------------------------------------------------

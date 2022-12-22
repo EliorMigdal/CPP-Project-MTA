@@ -1,4 +1,3 @@
-#include "../Headers/GlobalVariables.h"
 #include "../Headers/System.h"
 
 int main()

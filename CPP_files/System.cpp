@@ -1,4 +1,5 @@
 #include "../Headers/System.h"
+
 //System-to-user methods
 //----------------------------------------------------------
 inline void System::printMenu() const //Prints the menu for the user.
@@ -9,12 +10,10 @@ inline void System::printMenu() const //Prints the menu for the user.
         "\n4 - Show all statuses\t\t10 - View all members and fan pages"
         "\n5 - 10 last statuses of member\t11 - View all member's friends or Fan page's fans"
         "\n6 - Connect 2 members\t\t12 - Exit" << endl;
-          
 }
 //----------------------------------------------------------
 void System::setDecision(size_SI& _decision) //Gets the decision from user and acts on it.
 {
-
     if (_decision < (size_SI)CREATEMEMBER || _decision  > (size_SI)EXIT)
     {
         cout << "Invalid choice. Please try again!" << endl;
@@ -41,10 +40,10 @@ void System::setDecision(size_SI& _decision) //Gets the decision from user and a
             System::printTenLastStatuses();
             break;
         case (size_SI)CONNECTMEMBERS:
-            System::Connect_OR_DissconnectMember(&System::connectMembers);
+            System::Connect_OR_DisconnectMember(&System::connectMembers);
             break;
         case (size_SI)DISCONNECTMEMBERS:
-            System::Connect_OR_DissconnectMember(&System::disconnectMembers);
+            System::Connect_OR_DisconnectMember(&System::disconnectMembers);
             break;
         case (size_SI)ADDFAN:
             System::Add_OR_RemoveFAN(&System::addFan);
@@ -62,14 +61,13 @@ void System::setDecision(size_SI& _decision) //Gets the decision from user and a
 }
 //----------------------------------------------------------
 
-
 //General Methods
 //---------------------------------------------------------
 string System::InputOperation(const size_SI& type, bool readAfter = false) //Returns the string according to each situation.
 {
-    int tempfound = -1, counter = 0;
+    int counter = 0;
     string input;
-    bool founded = false;
+    bool found;
     switch (type)
     {
     case FAN_PAGE: //Non-temp index
@@ -79,16 +77,16 @@ string System::InputOperation(const size_SI& type, bool readAfter = false) //Ret
             getline(cin, input);
         }
         else getline(cin, input);
-        founded = pages.find(input) == pages.end();
-        while (founded && counter < MAX_ATTEMPTS)
+        found = pages.find(input) == pages.end();
+        while (found && counter < MAX_ATTEMPTS)
         {
             cout << input << " Fan Page was not found in our system. You have " << MAX_ATTEMPTS - counter
                 << " more attempts.\nPlease enter a Fan Page's name:" << endl;
             getline(cin, input);
             counter++;
-            founded = pages.find(input) == pages.end();
+            found = pages.find(input) == pages.end();
         }
-        if (counter == MAX_ATTEMPTS && founded)
+        if (counter == MAX_ATTEMPTS && found)
         {
             cout << "Cannot find fan page.\nToo many entries, redirecting to main menu" << endl;
             return "";
@@ -102,16 +100,16 @@ string System::InputOperation(const size_SI& type, bool readAfter = false) //Ret
         cout << "Please enter a fan page's name:" << endl;
         cin.ignore();
         getline(cin, input);
-        founded = pages.find(input) != pages.end();
-        while (founded && counter < MAX_ATTEMPTS)
+        found = pages.find(input) != pages.end();
+        while (found && counter < MAX_ATTEMPTS)
         {
             cout << input << " Already found in our system. You have " << MAX_ATTEMPTS - counter
                 << " more attempts.\nPlease enter a fan page's name:" << endl;
             getline(cin, input);
             counter++;
-            founded = pages.find(input) != pages.end();
+            found = pages.find(input) != pages.end();
         }
-        if (counter == MAX_ATTEMPTS && founded)
+        if (counter == MAX_ATTEMPTS && found)
         {
             cout << "Fan Page: " << input << " already exists.\nToo many entries, redirecting to main menu." << endl;
             return "";
@@ -125,16 +123,16 @@ string System::InputOperation(const size_SI& type, bool readAfter = false) //Ret
             getline(cin, input);
         }
         else getline(cin, input);
-        founded = members.find(input) == members.end();
-        while (founded && counter < MAX_ATTEMPTS)
+        found = members.find(input) == members.end();
+        while (found && counter < MAX_ATTEMPTS)
         {
             cout << input << " was not found in our system. You have " << MAX_ATTEMPTS - counter
                 << " more attempts.\nPlease enter a member's name:" << endl;
             getline(cin, input);
             counter++;
-            founded = members.find(input) == members.end();
+            found = members.find(input) == members.end();
         }
-        if (counter == MAX_ATTEMPTS && founded)
+        if (counter == MAX_ATTEMPTS && found)
         {
             cout << "Cannot find member.\nToo many entries, redirecting to main menu." << endl;
             return "";
@@ -149,16 +147,16 @@ string System::InputOperation(const size_SI& type, bool readAfter = false) //Ret
         cout << "Please enter a member's name:" << endl;
         cin.ignore();
         getline(cin, input);
-        founded = members.find(input) != members.end();
-        while (founded && counter < MAX_ATTEMPTS)
+        found = members.find(input) != members.end();
+        while (found && counter < MAX_ATTEMPTS)
         {
             cout << input << " was found in our system. You have " << MAX_ATTEMPTS - counter
                 << " more attempts.\nPlease enter a member's name:" << endl;
             getline(cin, input);
             counter++;
-            founded = members.find(input) != members.end();
+            found = members.find(input) != members.end();
         }
-        if (counter == MAX_ATTEMPTS && founded)
+        if (counter == MAX_ATTEMPTS && found)
         {
             cout << "Member: " << input << " already exists.\nToo many entries, redirecting to main menu." << endl;
             return "";
@@ -170,43 +168,11 @@ string System::InputOperation(const size_SI& type, bool readAfter = false) //Ret
     }
     return input;
 }
-//--------------------------------------------------------------------------------------
-//bool System::ifExist_INVector(const string& Curr_name,const string& name_to_search, const size_SI& entityType)  //Searches for a member/fan page in their array.
-//{
-//    bool found = false;
-//
-//    if (entityType == MEMBER)
-//    {
-//        vector<Member> memVec = this->members[Curr_name];
-//        for (const auto& val: memVec)
-//        {
-//            if (val.getName()== name_to_search)
-//            {
-//                found = true;
-//            }
-//        }
-//    }
-//
-//    else if (entityType == FAN_PAGE)
-//    {
-//        vector<FanPage> memVec = this->pages[Curr_name];
-//        for (const auto & val: memVec)
-//        {
-//            if (val.getName() == name_to_search)
-//            {
-//                found = true;
-//            }
-//        }
-//    }
-//
-//    return found;
-//}
-//----------------------------------------------------------
-
+//---------------------------------------------------------
 
 //Members Methods
 //----------------------------------------------------------
-void System::createMember() //read name and birthday from the user with validation checks instead of doing it in the class;
+void System::createMember() //Read name and birthday from the user with validation checks.
 {
     string name;
     name = InputOperation(MEMBER_CREATION);
@@ -220,14 +186,11 @@ void System::createMember() //read name and birthday from the user with validati
             cout << "Bad birthday, enter again:" << endl;
             readBirthday(Birthday);
         }
-        this->members[name] = Member{ name,Birthday };
- 
-        
         cout << "User " << name << " created successfully!" << endl;
-    }
-  
-}
 
+        this->members[name] = Member{ name, Birthday };
+    }
+}
 //----------------------------------------------------------
 void System::createMember(const string& _name, Date& _date) //For hard-coded data.
 {
@@ -236,24 +199,24 @@ void System::createMember(const string& _name, Date& _date) //For hard-coded dat
         this->members[_name] = Member{ _name,_date };
     }
 }
-////----------------------------------------------------------
-void System::connectMembersHardCoded(const Member& member1, const Member& member2) //Connect members for hard-coded data.
+//----------------------------------------------------------
+void System::connectMembersHardCoded(const Member& member1, const Member& member2) //Connect members for
+// hard-coded data.
 {
     this->members.at(member1.getName()).Member::addFriend(member2);
     this->members.at(member2.getName()).Member::addFriend(member1);
 }
-////----------------------------------------------------------
-void System::disconnectMembersHardCoded(const Member& member1, const Member& member2) //Disconnect members for hard-coded data.
+//----------------------------------------------------------
+void System::disconnectMembersHardCoded(const Member& member1, const Member& member2) //Disconnect members for
+// hard-coded data.
 {
-
     this->members.at(member1.getName()).Member::removeFriend(member2.getName());
     this->members.at(member2.getName()).Member::removeFriend(member1.getName());
 }
-////----------------------------------------------------------
-//
-//
-////Fan Pages Methods
-////----------------------------------------------------------
+//----------------------------------------------------------
+
+//Fan Pages Methods
+//----------------------------------------------------------
 void System::createFanPage() //Creates a fan page.
 {
     string name;
@@ -264,13 +227,12 @@ void System::createFanPage() //Creates a fan page.
         cout << "Fan Page: " << name << " was created successfully!" << endl;
     } 
 }
-////----------------------------------------------------------
+//----------------------------------------------------------
 void System::createFanPage(const string& _name) //Creates a fan page for hard-coded data.
 {
     this->pages[_name] = new FanPage(_name);
-
 }
-////----------------------------------------------------------
+//----------------------------------------------------------
 void System::addFan(const string& fanPageName, const string& memberName) //Adds a fan to a fan page's members array.
 {
     bool isFan = this->pages.at(fanPageName)->FanPage::checkIfFan(memberName);
@@ -285,9 +247,10 @@ void System::addFan(const string& fanPageName, const string& memberName) //Adds 
         cout << memberName << " is already " << fanPageName << "'s fan" << endl;              
 }
 //----------------------------------------------------------
-void System::removeFan(const string& fanPageName,const string& memberName) //Removes a fan from a fan page's members array.
+void System::removeFan(const string& fanPageName, const string& memberName) //Removes a fan from a fan page's
+// members array.
 { 
-   bool deletedFan = this->pages.at(fanPageName)->FanPage::removeFan(this->members.at(memberName).getName());
+   bool deletedFan = this->pages.at(fanPageName)->FanPage::removeFan(this->members.at(memberName));
     if (deletedFan)
     {
         cout << "Successfully deleted " << memberName << " from " << fanPageName << "!" << endl;
@@ -303,10 +266,9 @@ void System::addFanHardCoded(const string& pageName, const string& fanName) //Ad
     this->pages.at(pageName)->FanPage::addFan(this->members.at(fanName));
 }
 //----------------------------------------------------------
-void System::Add_OR_RemoveFAN(void(System::*operation)(const string&,const string&))
+void System::Add_OR_RemoveFAN(void(System::*operation)(const string&,const string&)) //Adds or removes a fan.
 {
     string fanPageName, memberName;
-    bool deletedFan = false;
     memberName = InputOperation(MEMBER, true);
     if (!memberName.empty())
     {
@@ -317,22 +279,19 @@ void System::Add_OR_RemoveFAN(void(System::*operation)(const string&,const strin
         }
     } 
 }
-////----------------------------------------------------------
+//----------------------------------------------------------
 void System::removeFanHardCoded(const string&  pageName, const string& fanName) //Remove fan for hard-coded data.
 {
-    this->pages.at(pageName)->FanPage::removeFan(this->members.at(fanName).getName());
+    this->pages.at(pageName)->FanPage::removeFan(this->members.at(fanName));
 }
-////----------------------------------------------------------
-////----------------------------------------------------------
-//
-//
-////Status Methods
-////----------------------------------------------------------
+//----------------------------------------------------------
+
+//Status Methods
+//----------------------------------------------------------
 void System::newStatus() //Creates a new status.
 {
     int decision = 0;
     string name;
-    int found = -1;
     cout << "Please choose where to add the status:"
             "\n1 - A Member"
             "\n2 - A Fan Page" << endl;
@@ -351,7 +310,6 @@ void System::newStatus() //Creates a new status.
         {
             this->members.at(name).Member::addStatus();
         }
-        
     }
     else
     {
@@ -362,8 +320,9 @@ void System::newStatus() //Creates a new status.
         }
     }
 }
-////----------------------------------------------------------
-void System::newStatus(const string& name, const size_SI& type, const string& statusContent) //Creates a new status for hard-coded data.
+//----------------------------------------------------------
+void System::newStatus(const string& name, const size_SI& type, const string& statusContent) //Creates a new status for
+// hard-coded data.
 {
     if (type == MEMBER)
         this->members.at(name).Member::addStatus(statusContent);
@@ -371,10 +330,10 @@ void System::newStatus(const string& name, const size_SI& type, const string& st
     else
         this->pages.at(name)->FanPage::addStatus(statusContent);
 }
-////----------------------------------------------------------
-//
-//
-////----------------------------------------------------------
+//----------------------------------------------------------
+
+//Start Function
+//----------------------------------------------------------
 void System::Start() //Hard-coded data for our system.
 {
     Date eliDay = { "24", "4", "1995" };
@@ -450,34 +409,33 @@ void System::Start() //Hard-coded data for our system.
     this->newStatus("Elior Migdal", MEMBER, "or not....");
     this->newStatus("Elior Migdal", MEMBER, ";)");
 
-    size_SI userDecision;
     cout << "Welcome to our social network!" << endl;
     printMenu();
     cout << "Please choose your action: " << flush;
     cin >> userDecision;
+
     while (userDecision != EXIT)
     {
-        
         setDecision(userDecision);
         printMenu();
         cout << "Please choose another action: " << flush;
         cin >> userDecision;
     }
 }
-////----------------------------------------------------------
-////Private Global Methods
-////----------------------------------------------------------
+//----------------------------------------------------------
+
+//Private Global Methods
+//----------------------------------------------------------
 inline bool System::BirthdayCheck(const Date& _birthday) //Verifies birthday inserted correctly.
 {
     return (_birthday.day > "0" && _birthday.day < "32" &&
         _birthday.month > "0" && _birthday.month < "13"
         && _birthday.year>"1900" && _birthday.year < "2023") ? true : false;
 }
-////----------------------------------------------------------
-//
-//
-////Private Printer Methods
-////----------------------------------------------------------
+//----------------------------------------------------------
+
+//Private Printer Methods
+//----------------------------------------------------------
 void System::printAllStatuses() //Prints an entity's statuses.
 {
     size_SI decision = 0;
@@ -509,7 +467,7 @@ void System::printAllStatuses() //Prints an entity's statuses.
         }
     }
 }
-////----------------------------------------------------------
+//----------------------------------------------------------
 void System::printTenLastStatuses() //Prints a member's friends ten last statuses.
 {
     string name;
@@ -538,7 +496,7 @@ void System::printTenLastStatuses() //Prints a member's friends ten last statuse
     }
 
 }
-////----------------------------------------------------------
+//----------------------------------------------------------
 void System::printAllEntities() const //Prints all entities.
 {
     if (this->members.empty())
@@ -568,7 +526,7 @@ void System::printAllEntities() const //Prints all entities.
     }
 
 }
-////----------------------------------------------------------
+//----------------------------------------------------------
 void System::printAllFriends() //Prints an entity's friends.
 {
     int decision;
@@ -595,7 +553,7 @@ void System::printAllFriends() //Prints an entity's friends.
     }
 
 }
-////----------------------------------------------------------
+//----------------------------------------------------------
 void System::printAllFans(FanPage* fanpage) const //Prints a fan page's fans list.
 {
     unordered_map<string, Member> MembersMap = fanpage->getMemberArr();
@@ -612,47 +570,16 @@ void System::printAllFans(FanPage* fanpage) const //Prints a fan page's fans lis
         }
     }
 }
-
-void System::printAllPages()
+//----------------------------------------------------------
+void System::printAllPages() //Need to re-implement.
 {
 }
-        
+//----------------------------------------------------------
 
-    
-////----------------------------------------------------------
-////Only implementation.
-//void System::printAllPages() //Prints a list of a member's pages.
-//{
-//    string memberName;
-//    int found, attempts = 1; //First attempt is 2 rows below.
-//    cout << "Please enter a member who you'd like to view his pages list:" << endl;
-//    memberName = InputOperation(FAN_PAGE, &found);
-//
-//    if (found == -1)
-//        cout << memberName << " was not found in our system.\nRedirecting to main menu." << endl;
-//
-//    else
-//    {
-//        size_t membersNumOfPages = members[found]->Member::getNumOfPages();
-//        FanPage** membersArrOfPages = members[found]->Member::getPagesArr();
-//
-//        if (membersNumOfPages == 0)
-//            cout << memberName << " isn't a fan of any page." << endl;
-//
-//        else
-//            cout << memberName << " is a fan of the following pages:" << endl;
-//
-//        for (size_t i = 0; i < membersNumOfPages; i++)
-//            cout << membersArrOfPages[i]->FanPage::getName() << endl;
-//    }
-//
-//}
-////----------------------------------------------------------
-//
-//
-////Private System-Member Methods
-
-void System::Connect_OR_DissconnectMember(void(System::* operation)(const string&, const string&))
+//Private System-Member Methods
+//----------------------------------------------------------
+void System::Connect_OR_DisconnectMember(void(System::* operation)(const string&, const string&)) //Connects or
+// Disconnects Members.
 {
     string firstMemberName, secondMemberName;
     firstMemberName = InputOperation(MEMBER, true);
@@ -665,7 +592,7 @@ void System::Connect_OR_DissconnectMember(void(System::* operation)(const string
         }
     }
 }
-////----------------------------------------------------------
+//----------------------------------------------------------
 void System::connectMembers(const string& firstMemberName, const string& secondMemberName) //Connects two members.
 {
     if (firstMemberName != secondMemberName)
@@ -675,18 +602,18 @@ void System::connectMembers(const string& firstMemberName, const string& secondM
         {
             members[firstMemberName].Member::addFriend(members[secondMemberName]);
             members[secondMemberName].Member::addFriend(members[firstMemberName]);
-            cout << "Users: " << firstMemberName << " and " << secondMemberName << " Connected Succesfully." << endl;
+            cout << "Users: " << firstMemberName << " and " << secondMemberName << " Connected Successfully." << endl;
         }
         else
             cout << firstMemberName << " and " << secondMemberName << " are already friends." << endl;           
     }
     else
     {
-        cout << "Cannot add yourself to your friend's list\nredirecting to main menu" << endl;
+        cout << "Cannot add yourself to your friend's list\nRedirecting to main menu" << endl;
     }
     
 }
-////----------------------------------------------------------
+//----------------------------------------------------------
 void System::disconnectMembers(const string& firstMemberName, const string& secondMemberName) //Disconnects two members.
 {
     bool areFriends = members[firstMemberName].Member::checkIfFriend(members[secondMemberName].getName());
@@ -694,9 +621,9 @@ void System::disconnectMembers(const string& firstMemberName, const string& seco
     {
         members[firstMemberName].Member::removeFriend(members[secondMemberName].getName());
         members[secondMemberName].Member::removeFriend(members[firstMemberName].getName());
-        cout << "Users: " << firstMemberName << " and " << secondMemberName << " Disconnected Succesfully." << endl;
+        cout << "Users: " << firstMemberName << " and " << secondMemberName << " Disconnected Successfully." << endl;
     }
     else
         cout << firstMemberName << " and " << secondMemberName << " are not friends." << endl;      
 }
-////----------------------------------------------------------
+//----------------------------------------------------------
