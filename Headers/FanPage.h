@@ -61,9 +61,9 @@ public:
     FanPage& operator=(const FanPage& fan_page) = default;
     FanPage& operator=(FanPage&& fan_page) = default;
     // += Operator
-    const FanPage& operator+=(Member&);
+    const FanPage& operator+=(const Member&);
     // -= Operator
-    const FanPage& operator-=(Member&);
+    const FanPage& operator-=(const Member&);
     //Boolean Operators
     bool operator<(FanPage&) const;
     bool operator<=(FanPage&) const;

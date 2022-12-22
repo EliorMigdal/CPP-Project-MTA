@@ -1,5 +1,4 @@
 #include "../Headers/FanPage.h"
-
 //Constructors
 //-----------------------------------------------------------
 FanPage::FanPage(const string& _name):name(_name){}
@@ -75,13 +74,13 @@ ostream& operator<<(ostream& _out, FanPage& _fanPage) //Print method.
     return _out << _fanPage.getName();
 }
 //-----------------------------------------------------------
-const FanPage &FanPage::operator+=(Member & _member) //FanPage += Member method.
+const FanPage& FanPage::operator+=(const Member& _member) //FanPage += Member method.
 {
     this->addFan(_member);
     return *this;
 }
 //-----------------------------------------------------------
-const FanPage &FanPage::operator-=(Member & _member) //FanPage -= Member method.
+const FanPage &FanPage::operator-=(const Member & _member) //FanPage -= Member method.
 {
     this->removeFan(_member);
     return *this;

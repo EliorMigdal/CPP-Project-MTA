@@ -51,10 +51,10 @@ public:
     Member& operator=(const Member& mem) = default;
     // += Operator
     const Member& operator+=(const Member&);
-    const Member& operator+=(const FanPage&);
+    const Member& operator+=(FanPage*);
     // -= Operator
     const Member& operator-=(const Member&);
-    const Member& operator-=(const FanPage&);
+    const Member& operator-=(FanPage*);
     // Boolean Operators
     bool operator>(const Member&) const;
     bool operator>=(const Member&) const;

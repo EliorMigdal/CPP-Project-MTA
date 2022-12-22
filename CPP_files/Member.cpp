@@ -1,5 +1,5 @@
 #include "../Headers/Member.h"
-
+#include "../Headers/FanPage.h"
 //Constructors
 //----------------------------------------------------------
 Member::Member(const string& _name, Date& _birthday):name(_name), birthday(_birthday){}
@@ -127,9 +127,10 @@ const Member &Member::operator+=(const Member & _member) //Member + Member opera
     return *this;
 }
 //----------------------------------------------------------
-const Member &Member::operator+=(const FanPage & _fanPage) //Member + FanPage operator.
+const Member &Member::operator+=(FanPage* _fanPage) //Member + FanPage operator.
 {
-    //Fix name issue.
+    this->addPage(_fanPage, _fanPage->getName());
+    return *this;
 }
 //----------------------------------------------------------
 const Member &Member::operator-=(const Member & _member) //Member - Member operator.
@@ -138,10 +139,12 @@ const Member &Member::operator-=(const Member & _member) //Member - Member opera
     return *this;
 }
 //----------------------------------------------------------
-const Member &Member::operator-=(const FanPage & _fanPage) //Member - FanPage operator.
+const Member &Member::operator-=( FanPage* _fanPage) //Member - FanPage operator.
 {
-    //Fix name issue.
+    this->removePage(_fanPage->getName());
+    return *this;
 }
+
 //----------------------------------------------------------
 bool Member::operator<(const Member & _member) const //Member < Member operator.
 {
