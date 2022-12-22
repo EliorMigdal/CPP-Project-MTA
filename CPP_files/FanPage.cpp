@@ -33,7 +33,7 @@ void FanPage::printStatuses() const //Prints all fan page's statuses.
 {
     size_t i = 0;
     if (this->bulletinBoard.empty())
-        cout << this->FanPage::getName() << " has not posted any statuses." << endl;
+        throw std::invalid_argument("Fan page has not posted any statuses.");
 
     else
         cout << "-------------------------------------\n" << this->FanPage::getName()

@@ -35,7 +35,7 @@ public:
     void printFriendsArr() const;
 
     //Member-to-Status Methods
-    void printStatuses(const size_t&) const;
+    void printStatuses(const size_t& numToPrint = PRINT_STATUS) const;
     void addStatus();
     void addStatus(const string&);
 

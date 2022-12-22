@@ -1,5 +1,6 @@
 #include "../Headers/Member.h"
 #include "../Headers/FanPage.h"
+
 //Constructors
 //----------------------------------------------------------
 Member::Member(const string& _name, Date& _birthday):name(_name), birthday(_birthday){}
@@ -27,10 +28,12 @@ bool Member::checkIfFriend(const string& member_name) //Searches for a member in
 void Member::printFriendsArr() const //Prints friends' names.
 {
     if (this->friends.empty())
-        cout << this->getName() << " has no friends." << endl;
+        throw std::exception();
+
     else
     {
-        cout << "----------------------------------\n" << this->getName() << "'s friends are:\n----------------------------------" << endl;
+        cout << "----------------------------------\n" << this->getName() <<
+        "'s friends are:\n----------------------------------" << endl;
         for (const auto& kv : this->friends)
         {
             cout <<"\t" << kv.first << endl;
@@ -41,10 +44,10 @@ void Member::printFriendsArr() const //Prints friends' names.
 
 //Member-to-Status Methods
 //----------------------------------------------------------
-void Member::printStatuses(const size_t& numToPrint = PRINT_STATUS) const //Prints member's statuses.
+void Member::printStatuses(const size_t& numToPrint) const //Prints member's statuses.
 {
     if (this->bulletinBoard.empty())
-        cout << this->Member::getName() << " has not posted any statuses." << endl;
+        throw std::invalid_argument("User has not posted any statuses.");
 
     else 
     {
@@ -68,8 +71,8 @@ void Member::printStatuses(const size_t& numToPrint = PRINT_STATUS) const //Prin
             reverseStatusIter end = this->bulletinBoard.rend();
             for (reverseStatusIter rit = begin; rit != end && (to_Run < _numOfStatuses); ++rit)
             {
-                cout << "------------------------------------\n\tStatus #" << _numOfStatuses-- << "\n------------------------------------" << endl <<
-                    *rit << endl;
+                cout << "------------------------------------\n\tStatus #"
+                << _numOfStatuses-- << "\n------------------------------------" << endl << *rit << endl;
             }
         }
     }

@@ -33,7 +33,7 @@ public:
     //Constructors & Destructor
     FanPage() = default;
     FanPage(const FanPage& obj) = default;
-    FanPage(FanPage&& fanpage) noexcept = default;
+    FanPage(FanPage&& fanPage) noexcept = default;
     explicit FanPage(const string& _name);
     ~FanPage() = default;
 

@@ -19,6 +19,7 @@ using std::unordered_map;
 using std::map;
 using std::ostream;
 using std::move;
+using namespace std::string_literals;
 typedef unsigned short int size_SI;
 typedef unsigned char Byte;
 

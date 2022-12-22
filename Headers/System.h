@@ -18,6 +18,7 @@ public:
 
     //System - System methods
     void Start();
+    void initialData();
 
     //System-to-user Methods
     inline void printMenu() const;
@@ -25,13 +26,13 @@ public:
     inline size_SI getDecision() const { return userDecision; }
 
     //General Methods
-    string InputOperation(const size_SI&,bool);
+    string InputOperation(const size_SI&, bool);
 
     //Member Methods
     void createMember();
     void createMember(const string&, Date&);
-    void connectMembersHardCoded(const Member& , const Member& );
-    void disconnectMembersHardCoded(const Member& , const Member& );
+    void connectMembersHardCoded(const Member& , const Member&);
+    void disconnectMembersHardCoded(const Member& , const Member&);
     
     //FanPage Methods
     void createFanPage();
@@ -56,12 +57,12 @@ private:
     void printTenLastStatuses();
     void printAllEntities() const;
     void printAllFriends();
-    void printAllFans(FanPage* ) const;
+    void printAllFans(FanPage*) const;
     void printAllPages();
 
     //System-Member Methods
-    void connectMembers(const string& , const string& );
-    void disconnectMembers(const string& , const string& );
+    void connectMembers(const string&, const string& );
+    void disconnectMembers(const string&, const string& );
     void Connect_OR_DisconnectMember(void(System::* operation)(const string&, const string&));
 };
 
