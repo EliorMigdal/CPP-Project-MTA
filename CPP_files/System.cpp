@@ -179,6 +179,24 @@ void System::setDecision(size_SI& _decision) //Gets the decision from user and a
     }
 }
 //----------------------------------------------------------
+int System::memberOrFanPage() //Gets user decision for specific functions.
+{
+    int decision = 0;
+    cout << "\n1 - A Member\n2 - A Fan Page" << endl;
+    cin >> decision;
+    cin.ignore();
+
+    if (decision != 1 && decision != 2)
+        throw std::invalid_argument("Decision must be 1 or 2.");
+
+    if (decision == 1)
+        cout << "Please enter a member's name: ";
+
+    else if (decision == 2)
+        cout << "Please enter a fan page's name: ";
+
+    return decision;
+}
 
 //General Methods
 //---------------------------------------------------------
@@ -421,22 +439,13 @@ void System::removeFanHardCoded(const string&  pageName, const string& fanName) 
 //----------------------------------------------------------
 void System::newStatus() //Creates a new status.
 {
-    int decision = 0;
     string name;
-    cout << "Please choose the entity which you would like to add a status to:"
-            "\n1 - A Member"
-            "\n2 - A Fan Page" << endl;
-    cin >> decision;
-    cin.ignore();
+    int decision;
+    cout << "Please choose the entity which you would like to add a status to:";
 
-    if (decision != 1 && decision != 2)
-        throw std::invalid_argument("Decision must be 1 or 2.");
-
-    if (decision == 1)
-        cout << "Please enter a member's name: ";
-
-    else if (decision == 2)
-        cout << "Please enter a fan page's name: ";
+    try {decision = memberOrFanPage();}
+    catch(std::invalid_argument& error) {throw std::invalid_argument(error.what());}
+    catch(...) {throw std::exception();}
 
     getline(cin, name);
 
@@ -484,22 +493,13 @@ inline bool System::BirthdayCheck(const Date& _birthday) //Verifies birthday ins
 //----------------------------------------------------------
 void System::printAllStatuses() //Prints an entity's statuses.
 {
-    int decision = 0;
+    int decision;
     string name;
-    cout << "Please choose the entity of which you want to view statuses:"
-            "\n1 - A Member"
-            "\n2 - A Fan Page" << endl;
-    cin >> decision;
-    cin.ignore();
+    cout << "Please choose the entity of which you want to view statuses:";
 
-    if (decision != 1 && decision != 2)
-        throw std::invalid_argument("Decision must be 1 or 2.");
-
-    else if (decision == 1)
-        cout << "Please enter a Member's name:" << endl;
-
-    else if (decision == 2)
-        cout << "Please enter a Fan Page's name:" << endl;
+    try {decision = memberOrFanPage();}
+    catch(std::invalid_argument& error) {throw std::invalid_argument(error.what());}
+    catch(...) {throw std::exception();}
 
     getline(cin, name);
 
@@ -601,20 +601,11 @@ void System::printAllFriends() //Prints an entity's friends.
 {
     int decision;
     string entityName;
-    cout << "Please enter the entity of which you want to view its friends:"
-            "\n1 - A Member"
-            "\n2 - A Fan Page" << endl;
-    cin >> decision;
-    cin.ignore();
+    cout << "Please enter the entity of which you want to view its friends:";
 
-    if (decision != 1 && decision != 2)
-        throw std::invalid_argument("Decision must be 1 or 2.");
-
-    else if (decision == 1)
-        cout << "Please enter a Member's name:" << endl;
-
-    else if (decision == 2)
-        cout << "Please enter a Fan Page's name:" << endl;
+    try {decision = memberOrFanPage();}
+    catch(std::invalid_argument& error) {throw std::invalid_argument(error.what());}
+    catch(...) {throw std::exception();}
 
     getline(cin, entityName);
 

@@ -24,6 +24,7 @@ public:
     inline void printMenu() const;
     void setDecision(size_SI&);
     inline size_SI getDecision() const { return userDecision; }
+    int memberOrFanPage();
 
     //General Methods
     string InputOperation(const size_SI&, bool);
