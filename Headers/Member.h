@@ -24,6 +24,7 @@ public:
     const string& getName() const { return name; }
     const Date& getBirthday() const { return birthday; }
     size_t getNumOfFriends() const { return friends.size(); }
+    size_t getNumOfStatuses() const { return bulletinBoard.size(); }
     const vector<Status>& getStatusArr() const { return bulletinBoard; }
     const unordered_map<string, Member>& getFriendsArr() const { return friends; }
     const unordered_map<string, FanPage*>& getPagesArr() const { return pages; }
@@ -41,7 +42,8 @@ public:
 
     //Member-to-FanPage Methods
     void addPage(FanPage*, const string&);
-    bool removePage(const string&);
+    void removePage(const string&);
+    void printAllPages() const;
 
     //Operators Methods
     // << Operator

@@ -1,4 +1,5 @@
 #include "../Headers/FanPage.h"
+
 //Constructors
 //-----------------------------------------------------------
 FanPage::FanPage(const string& _name):name(_name){}
@@ -11,14 +12,9 @@ bool FanPage::checkIfFan(const string& member_name) //Checks whether member is a
     return members.find(member_name) != members.end();
 }
 //-----------------------------------------------------------
-bool FanPage::removeFan(const Member& _member) //Removes a fan from members array.
+void FanPage::removeFan(const Member& _member) //Removes a fan from members array.
 {
-    if (FanPage::checkIfFan(_member.getName()))
-    {
-       this->members.erase(_member.getName());
-        return true;       
-    }
-    return false;
+    this->members.erase(_member.getName());
 }
 //-----------------------------------------------------------
 void FanPage::addFan(const Member& member) //Adds a new member to members array.
@@ -55,7 +51,6 @@ void FanPage::addStatus() //Adds a status to a fan page.
     getline(cin, statusContent);
     setTimeAndDate(newTime, newDate);
     this->bulletinBoard.emplace_back((newDate, newTime, statusContent));
-    cout << "Status uploaded successfully!" << endl;
 }
 //----------------------------------------------------------
 void FanPage::addStatus(const string& statusContent) //For hard coded data.
@@ -65,7 +60,7 @@ void FanPage::addStatus(const string& statusContent) //For hard coded data.
     setTimeAndDate(newTime, newDate);
     this->bulletinBoard.emplace_back((newDate, newTime, statusContent));
 }
-//-----------------------------------------------------------
+//----------------------------------------------------------
 
 //Operators Methods
 //-----------------------------------------------------------

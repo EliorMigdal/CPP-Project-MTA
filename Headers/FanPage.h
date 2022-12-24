@@ -46,7 +46,7 @@ public:
 
     //FanPage-to-Member Methods
     bool checkIfFan(const string&);
-    bool removeFan(const Member&);
+    void removeFan(const Member&);
     void addFan(const Member&);
 
     //FanPage-to-Status Methods

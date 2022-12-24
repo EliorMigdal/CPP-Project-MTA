@@ -28,16 +28,14 @@ bool Member::checkIfFriend(const string& member_name) //Searches for a member in
 void Member::printFriendsArr() const //Prints friends' names.
 {
     if (this->friends.empty())
-        throw std::exception();
+        throw std::invalid_argument("User has no friends.");
 
     else
     {
         cout << "----------------------------------\n" << this->getName() <<
         "'s friends are:\n----------------------------------" << endl;
         for (const auto& kv : this->friends)
-        {
             cout <<"\t" << kv.first << endl;
-        }
     }
 }
 //----------------------------------------------------------
@@ -64,6 +62,7 @@ void Member::printStatuses(const size_t& numToPrint) const //Prints member's sta
             logicPrintSize = numToPrint;
             cout << this->Member::getName() << "'s last " << numToPrint << " statuses:" << endl;
         }
+
         size_t to_Run = _numOfStatuses - logicPrintSize;
         {
             using reverseStatusIter = vector<Status>::const_reverse_iterator;
@@ -87,7 +86,6 @@ void Member::addStatus() //Creates a new status.
     getline(cin, statusContent);
     setTimeAndDate(newTime, newDate);
     this->bulletinBoard.emplace_back((newDate, newTime, statusContent));
-    cout << "Status uploaded successfully!" << endl;
 }
 //----------------------------------------------------------
 void Member::addStatus(const string& statusContent) //For hard-coded data.
@@ -106,14 +104,18 @@ void Member::addPage(FanPage* fanPage_obj, const string& page_name) //Adds a new
     this->pages[page_name] = fanPage_obj;
 }
 //----------------------------------------------------------
-bool Member::removePage(const string& fanPage_name) //Removes a page from the page array.
+void Member::removePage(const string& fanPage_name) //Removes a page from the page array.
 {
-    if (this->pages.find(fanPage_name) != this->pages.end())
-    {
-        this->pages.erase(fanPage_name);
-        return true;
-    }
-    return false;
+    this->pages.erase(fanPage_name);
+}
+//----------------------------------------------------------
+void Member::printAllPages() const
+{
+    if (this->getPagesArr().empty())
+        throw std::invalid_argument("Member is not a fan of any page.");
+
+    for (const auto& kv : this->getPagesArr())
+        cout << kv.first << endl;
 }
 //----------------------------------------------------------
 
@@ -147,7 +149,6 @@ const Member &Member::operator-=( FanPage* _fanPage) //Member - FanPage operator
     this->removePage(_fanPage->getName());
     return *this;
 }
-
 //----------------------------------------------------------
 bool Member::operator<(const Member & _member) const //Member < Member operator.
 {
