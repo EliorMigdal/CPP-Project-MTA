@@ -6,7 +6,7 @@ class System {
 private:
     size_SI userDecision = 0;
     unordered_map<string, Member> members{};
-    unordered_map<string, FanPage*> pages{};
+    unordered_map<string, FanPage> pages{};
 
 public:
     //Constructors & Destructor
@@ -19,9 +19,9 @@ public:
 
     //Start Methods
     void Start();
+private:
     void initialData();
 
-private:
 
     //System-to-user Methods
     static inline void printMenu();
@@ -35,8 +35,8 @@ private:
     //Member Methods
     void createMember();
     void createMember(const string&, Date&);
-    void connectMembersHardCoded(Member&, Member&);
-    void disconnectMembersHardCoded(Member&, Member&);
+    void connectMembersHardCoded(Member*, Member*);
+    void disconnectMembersHardCoded(Member*, Member*);
     
     //FanPage Methods
     void createFanPage();
@@ -59,7 +59,7 @@ private:
     void printTenLastStatuses() const;
     void printAllEntities() const;
     void printAllFriends() const;
-    void printAllFans(FanPage*) const;
+    void printAllFans(const FanPage& ) const;
 
     //System-Member Methods
     void connectMembers(const string&, const string& );

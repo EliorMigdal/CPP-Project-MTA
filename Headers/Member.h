@@ -8,7 +8,7 @@ private:
     string name;
     Date birthday = {"0","0","0"};
     vector<Status> bulletinBoard{};
-    unordered_map<string, Member> friends{};
+    unordered_map<string, Member*> friends{};
     unordered_map<string, FanPage*> pages{};
 
 public:
@@ -26,11 +26,11 @@ public:
     const size_t getNumOfFriends() const { return friends.size(); }
     const size_t getNumOfStatuses() const { return bulletinBoard.size(); }
     const vector<Status>& getStatusArr() const { return bulletinBoard; }
-    const unordered_map<string, Member>& getFriendsArr() const { return friends; }
+    const unordered_map<string, Member*>& getFriendsArr() const { return friends; }
     const unordered_map<string, FanPage*>& getPagesArr() const { return pages; }
    
     //Member-to-Member Methods
-    void addFriend(const Member&);
+    void addFriend(Member*);
     void removeFriend(const string&);
     bool checkIfFriend(const string&);
     void printFriendsArr() const;
@@ -41,21 +41,21 @@ public:
     void addStatus(const string&);
 
     //Member-to-FanPage Methods
-    void addPage(FanPage*, const string&);
+    void addPage(FanPage*);
     void removePage(const string&);
     void printAllPages() const;
 
     //Operators Methods
     // << Operator
-    friend ostream& operator<<(ostream&, const Member&);
+    friend ostream& operator<<(ostream&, Member*);
     // = Operator
     Member& operator=(Member&& mem) = default;
     Member& operator=(const Member& mem) = default;
     // += Operator
-    const Member& operator+=(const Member&);
+    const Member& operator+=(Member*);
     const Member& operator+=(FanPage*);
     // -= Operator
-    const Member& operator-=(const Member&);
+    const Member& operator-=(Member*);
     const Member& operator-=(FanPage*);
     // Boolean Operators
     bool operator>(const Member&) const;

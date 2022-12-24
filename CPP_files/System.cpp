@@ -33,24 +33,24 @@ void System::initialData() //Inserts hard-coded data.
     this->newStatus("Elior Migdal", MEMBER, "Hi Facebook!");
     this->createMember("Ben Cohen", bencoDay);
     this->newStatus("Elior Migdal", MEMBER, "Hi Ben :) Wassup! @Ben Cohen");
-    this->connectMembersHardCoded(this->members.at("Elior Migdal"), this->members.at("Ben Cohen"));
+    this->connectMembersHardCoded(&this->members.at("Elior Migdal"), &this->members.at("Ben Cohen"));
     this->newStatus("Ben Cohen", MEMBER, "Eli ya habibi");
     this->createMember("Ben Hanover", benhanDay);
     this->newStatus("Ben Hanover", MEMBER, "Yoooooyooooooo");
-    this->connectMembersHardCoded(this->members.at("Elior Migdal"), this->members.at("Ben Hanover"));
+    this->connectMembersHardCoded(&this->members.at("Elior Migdal"), &this->members.at("Ben Hanover"));
     this->newStatus("Elior Migdal", MEMBER, "Yo Yo Ben!");
     this->createMember("Ramez Mannaa", ramezDay);
     this->newStatus("Ben Cohen", MEMBER, "I'm the king!");
     this->newStatus("Ben Hanover", MEMBER, "I know I'm the king bro");
     this->newStatus("Ramez Mannaa", MEMBER, "I'm here too!");
     this->newStatus("Ramez Mannaa", MEMBER, "Who wants to be my friend?");
-    this->connectMembersHardCoded(this->members.at("Ben Cohen"), this->members.at("Ramez Mannaa"));
-    this->connectMembersHardCoded(this->members.at("Ben Cohen"), this->members.at("Ben Hanover"));
+    this->connectMembersHardCoded(&this->members.at("Ben Cohen"), &this->members.at("Ramez Mannaa"));
+    this->connectMembersHardCoded(&this->members.at("Ben Cohen"), &this->members.at("Ben Hanover"));
     this->createFanPage("The Bens");
     this->createFanPage("We love Tel-Aviv");
     this->createFanPage("They were on a break!");
-    this->connectMembersHardCoded(this->members.at("Ramez Mannaa"), this->members.at("Elior Migdal"));
-    this->connectMembersHardCoded(this->members.at("Ramez Mannaa"), this->members.at("Ben Hanover"));
+    this->connectMembersHardCoded(&this->members.at("Ramez Mannaa"), &this->members.at("Elior Migdal"));
+    this->connectMembersHardCoded(&this->members.at("Ramez Mannaa"), &this->members.at("Ben Hanover"));
     this->newStatus("The Bens", FAN_PAGE, "We are the Bens!");
     this->addFanHardCoded("The Bens", "Ben Cohen");
     this->newStatus("Ben Cohen", MEMBER, "I JOINED THE BENS!!!");
@@ -78,14 +78,14 @@ void System::initialData() //Inserts hard-coded data.
     this->newStatus("We love Tel-Aviv", FAN_PAGE, "Where is @Elior Migdal?");
     this->newStatus("Ramez Mannaa", MEMBER, "@WLTLV He Hates TLV!!");
     this->newStatus("We love Tel-Aviv", FAN_PAGE, "NO WAY!!!!%^%$^#%");
-    this->disconnectMembersHardCoded(this->members.at("Ben Cohen"), this->members.at("Elior Migdal"));
-    this->disconnectMembersHardCoded(this->members.at("Ben Hanover"), this->members.at("Elior Migdal"));
-    this->disconnectMembersHardCoded(this->members.at("Ramez Mannaa"), this->members.at("Elior Migdal"));
+    this->disconnectMembersHardCoded(&this->members.at("Ben Cohen"), &this->members.at("Elior Migdal"));
+    this->disconnectMembersHardCoded(&this->members.at("Ben Hanover"), &this->members.at("Elior Migdal"));
+    this->disconnectMembersHardCoded(&this->members.at("Ramez Mannaa"), &this->members.at("Elior Migdal"));
     this->newStatus("Elior Migdal", MEMBER, "LOL you all left me!");
     this->newStatus("Elior Migdal", MEMBER, "yo GUYS");
-    this->connectMembersHardCoded(this->members.at("Elior Migdal"), this->members.at("Ben Hanover"));
-    this->connectMembersHardCoded(this->members.at("Elior Migdal"), this->members.at("Ben Cohen"));
-    this->connectMembersHardCoded(this->members.at("Elior Migdal"), this->members.at("Ramez Mannaa"));
+    this->connectMembersHardCoded(&this->members.at("Elior Migdal"), &this->members.at("Ben Hanover"));
+    this->connectMembersHardCoded(&this->members.at("Elior Migdal"), &this->members.at("Ben Cohen"));
+    this->connectMembersHardCoded(&this->members.at("Elior Migdal"), &this->members.at("Ramez Mannaa"));
     this->newStatus("Elior Migdal", MEMBER, "yo GUYS");
     this->newStatus("Elior Migdal", MEMBER, "yeaaaaaaa");
     this->newStatus("Elior Migdal", MEMBER, "hello people");
@@ -120,67 +120,67 @@ void System::setDecision(size_SI& _decision) //Gets the decision from user and a
         default:
             break;
         //////////////////////////////////////////////////////////////////////////////////////////
-        case (size_SI)CREATEMEMBER:
+        case (size_SI)CREATEMEMBER: //1
             try { System::createMember(); }
             catch (std::invalid_argument &error) { throw std::invalid_argument(error.what()); }
             catch(...) { cout << "General error." << endl; }
             break;
         //////////////////////////////////////////////////////////////////////////////////////////
-        case (size_SI)CREATEFANPAGE:
+        case (size_SI)CREATEFANPAGE://2
             try { System::createFanPage(); }
             catch (std::invalid_argument &error) { throw std::invalid_argument(error.what()); }
             catch(...) { cout << "General error." << endl; }
             break;
         //////////////////////////////////////////////////////////////////////////////////////////
-        case (size_SI)NEWSTATUS:
+        case (size_SI)NEWSTATUS://3
             try { System::newStatus(); }
             catch (std::invalid_argument &error) { throw std::invalid_argument(error.what()); }
             catch(...) { cout << "General error." << endl; }
             break;
         //////////////////////////////////////////////////////////////////////////////////////////
-        case (size_SI)PRINTALLSTATUSES:
+        case (size_SI)PRINTALLSTATUSES://4
             try { System::printAllStatuses(); }
             catch (std::invalid_argument &error) { throw std::invalid_argument(error.what()); }
             catch(...) { cout << "General error." << endl; }
             break;
         //////////////////////////////////////////////////////////////////////////////////////////
-        case (size_SI)PRINTTENLASTSTATUSES:
+        case (size_SI)PRINTTENLASTSTATUSES://5
             try{ System::printTenLastStatuses(); }
             catch (std::invalid_argument &error) { throw std::invalid_argument(error.what()); }
             catch(...) { cout << "General error." << endl; }
             break;
             //////////////////////////////////////////////////////////////////////////////////////////
-        case (size_SI)CONNECTMEMBERS:
+        case (size_SI)CONNECTMEMBERS://6
             try{ System::Connect_OR_DisconnectMember(&System::connectMembers); }
             catch (std::invalid_argument &error) { throw std::invalid_argument(error.what()); }
             catch(...) { cout << "General error." << endl; }
             break;
         //////////////////////////////////////////////////////////////////////////////////////////
-        case (size_SI)DISCONNECTMEMBERS:
+        case (size_SI)DISCONNECTMEMBERS://7
             try{ System::Connect_OR_DisconnectMember(&System::disconnectMembers); }
             catch (std::invalid_argument &error) { throw std::invalid_argument(error.what()); }
             catch(...) { cout << "General error." << endl; }
             break;
         //////////////////////////////////////////////////////////////////////////////////////////
-        case (size_SI)ADDFAN:
+        case (size_SI)ADDFAN://8
             try{ System::Add_OR_RemoveFAN(&System::addFan); }
             catch (std::invalid_argument &error) { throw std::invalid_argument(error.what()); }
             catch(...) { cout << "General error." << endl; }
             break;
         //////////////////////////////////////////////////////////////////////////////////////////
-        case (size_SI)REMOVEFAN:
+        case (size_SI)REMOVEFAN://9
             try{ System::Add_OR_RemoveFAN(&System::removeFan); }
             catch (std::invalid_argument &error) { throw std::invalid_argument(error.what()); }
             catch(...) { cout << "General error." << endl; }
             break;
         //////////////////////////////////////////////////////////////////////////////////////////
-        case (size_SI)PRINTALLENTITIES:
+        case (size_SI)PRINTALLENTITIES://10
             try{System::printAllEntities();}
             catch (std::invalid_argument &error) { throw std::invalid_argument(error.what()); }
             catch(...) { cout << "General error." << endl; }
             break;
         //////////////////////////////////////////////////////////////////////////////////////////
-        case (size_SI)PRINTALLFRIENDS:
+        case (size_SI)PRINTALLFRIENDS://11
             try { System::printAllFriends(); }
             catch (std::invalid_argument &error) { throw std::invalid_argument(error.what()); }
             catch(...) { cout << "General error." << endl; }
@@ -350,18 +350,18 @@ void System::createMember(const string& _name, Date& _date) //For hard-coded dat
         this->members[_name] = Member{ _name,_date };
 }
 //----------------------------------------------------------
-void System::connectMembersHardCoded(Member& member1, Member& member2) //Connect members for
+void System::connectMembersHardCoded(Member* member1, Member* member2) //Connect members for
 // hard-coded data.
 {
-    member1 += member2;
-    member2 += member1;
+    *member1 += member2;
+    *member2 += member1;
 }
 //----------------------------------------------------------
-void System::disconnectMembersHardCoded(Member& member1, Member& member2) //Disconnect members for
+void System::disconnectMembersHardCoded(Member* member1, Member* member2) //Disconnect members for
 // hard-coded data.
 {
-    member1 -= member2;
-    member2 -= member1;
+    *member1 -= member2;
+    *member2 -= member1;
 }
 //----------------------------------------------------------
 
@@ -377,9 +377,9 @@ void System::createFanPage() //Creates a fan page.
 
     if (this->pages.find(name) == this->pages.end())
     {
-        try {this->pages[name] = new FanPage(name);}
-        catch (std::bad_alloc& error) {throw std::bad_alloc(error);}
+        try { this->pages[name] = FanPage(name); }
         catch (...) {throw std::exception();}
+       /* catch (std::bad_alloc& error) {throw std::bad_alloc(error);}*/
     }
 
     else
@@ -388,19 +388,20 @@ void System::createFanPage() //Creates a fan page.
 //----------------------------------------------------------
 void System::createFanPage(const string& _name) //Creates a fan page for hard-coded data.
 {
-    try {this->pages[_name] = new FanPage(_name);}
-    catch (std::bad_alloc& error) {throw std::bad_alloc(error);}
+    try {this->pages[_name] = FanPage(_name);}
     catch (...) {throw std::exception();}
+    /*catch (std::bad_alloc& error) {throw std::bad_alloc(error);}*/
 }
 //----------------------------------------------------------
 void System::Add_OR_RemoveFAN(void(System::*operation)(const string&,const string&)) //Adds or removes a fan.
 {
     string fanPageName, memberName;
-    cout << "Enter a member's name and a fan page's name (by that order): ";
+    cout << "Enter a member's and a fan page's name: " << endl;
     cin.ignore();
+    cout << "Member name: ";
     getline(cin, memberName);
+    cout << "Fan-page name: " << flush;
     getline(cin, fanPageName);
-
     /*memberName = InputOperation(MEMBER, true);*/
     if (members.find(memberName) != members.end() && pages.find(fanPageName) != pages.end())
     {
@@ -416,11 +417,12 @@ void System::Add_OR_RemoveFAN(void(System::*operation)(const string&,const strin
 //----------------------------------------------------------
 void System::addFan(const string& fanPageName, const string& memberName) //Adds a fan to a fan page's members array.
 {
-    bool isFan = this->pages.at(fanPageName)->FanPage::checkIfFan(memberName);
+    bool isFan = this->pages.at(fanPageName).FanPage::checkIfFan(memberName);
     if (!isFan)
     {
-        this->members.at(memberName) += this->pages.at(fanPageName);
-        *this->pages.at(fanPageName) += this->members.at(memberName);
+        this->members.at(memberName) += &this->pages.at(fanPageName);
+        this->pages.at(fanPageName) += &this->members.at(memberName);
+        //cout << "Succesfully added!" << endl;
     }
     else
         throw std::invalid_argument("Member is already a fan of this fan page.");
@@ -429,11 +431,12 @@ void System::addFan(const string& fanPageName, const string& memberName) //Adds 
 void System::removeFan(const string& fanPageName, const string& memberName) //Removes a fan from a fan page's
 // members array.
 {
-    bool isFan = this->pages.at(fanPageName)->FanPage::checkIfFan(memberName);
+    bool isFan = this->pages.at(fanPageName).FanPage::checkIfFan(memberName);
     if (isFan)
     {
-        *this->pages.at(fanPageName) -= this->members.at(memberName);
-        this->members.at(memberName) -= this->pages.at(fanPageName);
+        this->pages.at(fanPageName) -= &this->members.at(memberName);
+        this->members.at(memberName) -= &this->pages.at(fanPageName);
+        //cout << "Succesfully removed!" << endl;
     }
 
     else
@@ -442,14 +445,14 @@ void System::removeFan(const string& fanPageName, const string& memberName) //Re
 //----------------------------------------------------------
 void System::addFanHardCoded(const string& pageName, const string& fanName) //Add fan for hard-coded data.
 {
-    this->members.at(fanName) += this->pages.at(pageName);
-    *this->pages.at(pageName) += this->members.at(fanName);
+    this->members.at(fanName) += &this->pages.at(pageName);
+    this->pages.at(pageName) += &this->members.at(fanName);
 }
 //----------------------------------------------------------
 void System::removeFanHardCoded(const string& pageName, const string& fanName) //Remove fan for hard-coded data.
 {
-    *this->pages.at(pageName) -= this->members.at(fanName);
-    this->members.at(fanName) -= this->pages.at(pageName);
+    this->pages.at(pageName) -= &this->members.at(fanName);
+    this->members.at(fanName) -= &this->pages.at(pageName);
 }
 //----------------------------------------------------------
 
@@ -477,7 +480,7 @@ void System::newStatus() //Creates a new status.
 
         else if (decision == FAN_PAGE_CHOOSE)
         {
-            try { this->pages.at(name)->FanPage::addStatus(); }
+            try { this->pages.at(name).FanPage::addStatus(); }
             catch (...) { throw std::exception(); }
         }
     }
@@ -498,7 +501,7 @@ void System::newStatus(const string& name, const size_SI& type, const string& st
 
     else
     {
-        try { this->pages.at(name)->FanPage::addStatus(statusContent); }
+        try { this->pages.at(name).FanPage::addStatus(statusContent); }
         catch(...) {throw std::exception();}
     }
 }
@@ -508,7 +511,7 @@ void System::newStatus(const string& name, const size_SI& type, const string& st
 //----------------------------------------------------------
 inline bool System::BirthdayCheck(const Date& _birthday) //Verifies birthday inserted correctly.
 {
-    return (_birthday.day > "0" && _birthday.day < "32" &&
+    return (_birthday.day > "0" && (_birthday.day < "32") &&
         _birthday.month > "0" && _birthday.month < "13"
         && _birthday.year > ("1900") && _birthday.year < "2023") ? true : false;
 }
@@ -543,7 +546,7 @@ void System::printAllStatuses() const //Prints an entity's statuses.
 
         else //if (decision == FAN_PAGE_CHOOSE)
         {
-            try { this->pages.at(name)->FanPage::printStatuses(); }
+            try { this->pages.at(name).FanPage::printStatuses(); }
             catch (std::invalid_argument& error) { throw std::invalid_argument(error.what()); }
             catch (...) { throw std::exception(); }
         }
@@ -564,7 +567,7 @@ void System::printTenLastStatuses() const //Prints a member's friends ten last s
 
     if (this->members.find(name) != this->members.end())
     {
-        unordered_map<string, Member> u_memberMap = this->members.at(name).Member::getFriendsArr();
+        unordered_map<string, Member*> u_memberMap = this->members.at(name).Member::getFriendsArr();
         if (!u_memberMap.empty())
         {
             for (const auto& kv : u_memberMap)
@@ -575,7 +578,7 @@ void System::printTenLastStatuses() const //Prints a member's friends ten last s
                 {
                     cout << "####################################\nFriend #" << ++i
                     << "\n####################################" << endl;
-                    try {value.Member::printStatuses(PRINT_STATUS);}
+                    try {value->Member::printStatuses(PRINT_STATUS);}
                     catch (std::invalid_argument& error) {cout << key << ": "
                     << error.what() << endl;}
                     catch (...) {cout << "General error." << endl;}
@@ -659,16 +662,16 @@ void System::printAllFriends() const //Prints an entity's friends.
         throw std::invalid_argument("Entity was not found in our system!");
 }
 //----------------------------------------------------------
-void System::printAllFans(FanPage* fanPage) const //Prints a fan page's fans list.
+void System::printAllFans(const FanPage& fanPage) const //Prints a fan page's fans list.
 {
-    unordered_map<string, Member> MembersMap = fanPage->getMemberArr();
+    unordered_map<string, Member*> MembersMap = fanPage.getMemberArr();
     if (MembersMap.empty())
         throw std::invalid_argument("Page has no fans.");
 
     else
     {
         cout << "------------------------------------\n"
-        << fanPage->FanPage::getName() << "'s fans list:\n------------------------------------" << endl;
+        << fanPage.FanPage::getName() << "'s fans list:\n------------------------------------" << endl;
         for (const auto& kv : MembersMap)
         {
             const auto& key = kv.first;
@@ -684,9 +687,11 @@ void System::Connect_OR_DisconnectMember(void(System::* operation)(const string&
 // Disconnects Members.
 {
     string firstMemberName, secondMemberName;
-    cout << "Please enter two member names: ";
+    cout << "Please enter two member names: "<< endl;
     cin.ignore();
+    cout << "first member: ";
     getline(cin, firstMemberName);
+    cout << "second member: " <<flush;
     getline(cin, secondMemberName);
     /*firstMemberName = InputOperation(MEMBER, true);*/
     if (this->members.find(firstMemberName) != this->members.end() && this->members.find(secondMemberName) != this->members.end())
@@ -708,8 +713,9 @@ void System::connectMembers(const string& firstMemberName, const string& secondM
         bool areFriends = this->members[firstMemberName].Member::checkIfFriend(this->members[secondMemberName].getName());
         if (!areFriends)
         {
-            this->members[firstMemberName] += this->members[secondMemberName];
-            this->members[secondMemberName] += this->members[firstMemberName];
+            this->members[firstMemberName] += &this->members[secondMemberName];
+            this->members[secondMemberName] += &this->members[firstMemberName];
+           // cout << "Succesfully connected!" << endl;
         }
         else
             throw std::invalid_argument("Members are already friends.");
@@ -726,8 +732,9 @@ void System::disconnectMembers(const string& firstMemberName, const string& seco
         bool areFriends = this->members[firstMemberName].Member::checkIfFriend(this->members[secondMemberName].getName());
         if (areFriends)
         {
-            this->members[firstMemberName] -= this->members[secondMemberName];
-            this->members[secondMemberName] -= this->members[firstMemberName];
+            this->members[firstMemberName] -= &this->members[secondMemberName];
+            this->members[secondMemberName] -= &this->members[firstMemberName];
+            //cout << "Succesfully disconnected!" << endl;
         }
         else
             throw std::invalid_argument("Members are already not friends.");

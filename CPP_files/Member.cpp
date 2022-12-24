@@ -10,9 +10,9 @@ Member::Member(string& _name):name(_name){}
 
 //Member-to-Member Methods
 //----------------------------------------------------------
-void Member::addFriend(const Member& memberToAdd) //Adds a new friends to the friends array.
+void Member::addFriend(Member* memberToAdd) //Adds a new friends to the friends array.
 {
-    this->friends[memberToAdd.Member::getName()] = memberToAdd;
+    this->friends[memberToAdd->Member::getName()] = memberToAdd;
 }
 //----------------------------------------------------------
 void Member::removeFriend(const string& memberToRemove) //Removes a friend from the friends array.
@@ -99,9 +99,9 @@ void Member::addStatus(const string& statusContent) //For hard-coded data.
 
 //Member-to-FanPage Methods
 //----------------------------------------------------------
-void Member::addPage(FanPage* fanPage_obj, const string& page_name) //Adds a new page to the pages array.
+void Member::addPage(FanPage* fanPage_obj) //Adds a new page to the pages array.
 {
-    this->pages[page_name] = fanPage_obj;
+    this->pages[fanPage_obj->getName()] = fanPage_obj;
 }
 //----------------------------------------------------------
 void Member::removePage(const string& fanPage_name) //Removes a page from the page array.
@@ -122,12 +122,12 @@ void Member::printAllPages() const
 
 //Operators Methods
 //----------------------------------------------------------
-ostream& operator<<(ostream& out, const Member& _member) //Print operator.
+ostream& operator<<(ostream& out, Member* _member) //Print operator.
 {
-    return out << _member.Member::getName();
+    return out << _member->Member::getName();
 }
 //----------------------------------------------------------
-const Member &Member::operator+=(const Member& _member) //Member + Member operator.
+const Member &Member::operator+=(Member* _member) //Member + Member operator.
 {
     this->Member::addFriend(_member);
     return *this;
@@ -135,13 +135,13 @@ const Member &Member::operator+=(const Member& _member) //Member + Member operat
 //----------------------------------------------------------
 const Member &Member::operator+=(FanPage* _fanPage) //Member + FanPage operator.
 {
-    this->Member::addPage(_fanPage, _fanPage->FanPage::getName());
+    this->Member::addPage(_fanPage);
     return *this;
 }
 //----------------------------------------------------------
-const Member &Member::operator-=(const Member& _member) //Member - Member operator.
+const Member &Member::operator-=(Member* _member) //Member - Member operator.
 {
-    this->Member::removeFriend(_member.Member::getName());
+    this->Member::removeFriend(_member->Member::getName());
     return *this;
 }
 //----------------------------------------------------------

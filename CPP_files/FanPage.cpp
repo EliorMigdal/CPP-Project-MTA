@@ -12,14 +12,14 @@ bool FanPage::checkIfFan(const string& member_name) //Checks whether member is a
     return members.find(member_name) != members.end();
 }
 //-----------------------------------------------------------
-void FanPage::removeFan(const Member& _member) //Removes a fan from members array.
+void FanPage::removeFan(Member* _member) //Removes a fan from members array.
 {
-    this->members.erase(_member.getName());
+    this->members.erase(_member->getName());
 }
 //-----------------------------------------------------------
-void FanPage::addFan(const Member& member) //Adds a new member to members array.
+void FanPage::addFan(Member* _member) //Adds a new member to members array.
 {
-    this->members[member.getName()] = member;
+    this->members[_member->getName()] = _member;
 }
 //----------------------------------------------------------
 
@@ -64,39 +64,39 @@ void FanPage::addStatus(const string& statusContent) //For hard coded data.
 
 //Operators Methods
 //-----------------------------------------------------------
-ostream& operator<<(ostream& _out, FanPage& _fanPage) //Print method.
+ostream& operator<<(ostream& _out, FanPage* _fanPage) //Print method.
 {
-    return _out << _fanPage.FanPage::getName();
+    return _out << _fanPage->FanPage::getName();
 }
 //-----------------------------------------------------------
-const FanPage& FanPage::operator+=(const Member& _member) //FanPage += Member method.
+const FanPage& FanPage::operator+=(Member* _member) //FanPage += Member method.
 {
     this->FanPage::addFan(_member);
     return *this;
 }
 //-----------------------------------------------------------
-const FanPage &FanPage::operator-=(const Member & _member) //FanPage -= Member method.
+const FanPage &FanPage::operator-=(Member* _member) //FanPage -= Member method.
 {
     this->FanPage::removeFan(_member);
     return *this;
 }
 //-----------------------------------------------------------
-bool FanPage::operator<(FanPage & _fanPage) const //FanPage < FanPage operator.
+bool FanPage::operator<(FanPage& _fanPage) const //FanPage < FanPage operator.
 {
     return this->FanPage::getNumOfMembers() < _fanPage.FanPage::getNumOfMembers();
 }
 //-----------------------------------------------------------
-bool FanPage::operator<=(FanPage & _fanPage) const //FanPage <= FanPage operator.
+bool FanPage::operator<=(FanPage& _fanPage) const //FanPage <= FanPage operator.
 {
     return this->FanPage::getNumOfMembers() <= _fanPage.FanPage::getNumOfMembers();
 }
 //-----------------------------------------------------------
-bool FanPage::operator>(FanPage & _fanPage) const //FanPage > FanPage operator.
+bool FanPage::operator>(FanPage& _fanPage) const //FanPage > FanPage operator.
 {
     return this->FanPage::getNumOfMembers() > _fanPage.FanPage::getNumOfMembers();
 }
 //-----------------------------------------------------------
-bool FanPage::operator>=(FanPage & _fanPage) const //FanPage >= FanPage operator.
+bool FanPage::operator>=(FanPage& _fanPage) const //FanPage >= FanPage operator.
 {
     return this->FanPage::getNumOfMembers() >= _fanPage.FanPage::getNumOfMembers();
 }

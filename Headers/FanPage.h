@@ -26,7 +26,7 @@ public:
 class FanPage {
 private:
     string name;
-    unordered_map<string, Member> members{};
+    unordered_map<string, Member*> members{};
     vector<Status> bulletinBoard{};
 
 public:
@@ -41,13 +41,13 @@ public:
     const string& getName() const { return name; }
     const size_t getNumOfMembers() const { return members.size(); }
     const size_t  getNumOfStatuses() const { return bulletinBoard.size(); }
-    const unordered_map<string, Member>& getMemberArr() const { return members; }
+    const unordered_map<string, Member*>& getMemberArr() const { return members; }
     const vector<Status>& getStatusArr() const { return bulletinBoard; }
 
     //FanPage-to-Member Methods
     bool checkIfFan(const string&);
-    void removeFan(const Member&);
-    void addFan(const Member&);
+    void removeFan(Member*);
+    void addFan(Member*);
 
     //FanPage-to-Status Methods
     void printStatuses() const;
@@ -56,14 +56,14 @@ public:
 
     //Operators Methods
     // << Operator
-    friend ostream& operator<<(ostream&, FanPage&);
+    friend ostream& operator<<(ostream&, FanPage*);
     // = Operator
     FanPage& operator=(const FanPage& fan_page) = default;
     FanPage& operator=(FanPage&& fan_page) = default;
     // += Operator
-    const FanPage& operator+=(const Member&);
+    const FanPage& operator+=(Member*);
     // -= Operator
-    const FanPage& operator-=(const Member&);
+    const FanPage& operator-=(Member*);
     //Boolean Operators
     bool operator<(FanPage&) const;
     bool operator<=(FanPage&) const;
