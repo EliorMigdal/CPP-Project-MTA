@@ -7,7 +7,7 @@ class Member {
 private:
     string name;
     Date birthday = {"0","0","0"};
-    vector<Status> bulletinBoard;
+    vector<Status> bulletinBoard{};
     unordered_map<string, Member> friends{};
     unordered_map<string, FanPage*> pages{};
 
@@ -23,8 +23,8 @@ public:
     //Getters
     const string& getName() const { return name; }
     const Date& getBirthday() const { return birthday; }
-    size_t getNumOfFriends() const { return friends.size(); }
-    size_t getNumOfStatuses() const { return bulletinBoard.size(); }
+    const size_t getNumOfFriends() const { return friends.size(); }
+    const size_t getNumOfStatuses() const { return bulletinBoard.size(); }
     const vector<Status>& getStatusArr() const { return bulletinBoard; }
     const unordered_map<string, Member>& getFriendsArr() const { return friends; }
     const unordered_map<string, FanPage*>& getPagesArr() const { return pages; }

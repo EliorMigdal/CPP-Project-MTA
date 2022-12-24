@@ -12,7 +12,7 @@ Member::Member(string& _name):name(_name){}
 //----------------------------------------------------------
 void Member::addFriend(const Member& memberToAdd) //Adds a new friends to the friends array.
 {
-    this->friends[memberToAdd.getName()] = memberToAdd;
+    this->friends[memberToAdd.Member::getName()] = memberToAdd;
 }
 //----------------------------------------------------------
 void Member::removeFriend(const string& memberToRemove) //Removes a friend from the friends array.
@@ -32,7 +32,7 @@ void Member::printFriendsArr() const //Prints friends' names.
 
     else
     {
-        cout << "----------------------------------\n" << this->getName() <<
+        cout << "----------------------------------\n" << this->Member::getName() <<
         "'s friends are:\n----------------------------------" << endl;
         for (const auto& kv : this->friends)
             cout <<"\t" << kv.first << endl;
@@ -111,10 +111,11 @@ void Member::removePage(const string& fanPage_name) //Removes a page from the pa
 //----------------------------------------------------------
 void Member::printAllPages() const
 {
-    if (this->getPagesArr().empty())
+    unordered_map<string, FanPage*> u_fanMap = this->Member::getPagesArr();
+    if (u_fanMap.empty())
         throw std::invalid_argument("Member is not a fan of any page.");
 
-    for (const auto& kv : this->getPagesArr())
+    for (const auto& kv : u_fanMap)
         cout << kv.first << endl;
 }
 //----------------------------------------------------------
@@ -123,50 +124,50 @@ void Member::printAllPages() const
 //----------------------------------------------------------
 ostream& operator<<(ostream& out, const Member& _member) //Print operator.
 {
-    return out << _member.getName();
+    return out << _member.Member::getName();
 }
 //----------------------------------------------------------
-const Member &Member::operator+=(const Member & _member) //Member + Member operator.
+const Member &Member::operator+=(const Member& _member) //Member + Member operator.
 {
-    this->addFriend(_member);
+    this->Member::addFriend(_member);
     return *this;
 }
 //----------------------------------------------------------
 const Member &Member::operator+=(FanPage* _fanPage) //Member + FanPage operator.
 {
-    this->addPage(_fanPage, _fanPage->getName());
+    this->Member::addPage(_fanPage, _fanPage->FanPage::getName());
     return *this;
 }
 //----------------------------------------------------------
-const Member &Member::operator-=(const Member & _member) //Member - Member operator.
+const Member &Member::operator-=(const Member& _member) //Member - Member operator.
 {
-    this->removeFriend(_member.getName());
+    this->Member::removeFriend(_member.Member::getName());
     return *this;
 }
 //----------------------------------------------------------
 const Member &Member::operator-=( FanPage* _fanPage) //Member - FanPage operator.
 {
-    this->removePage(_fanPage->getName());
+    this->Member::removePage(_fanPage->FanPage::getName());
     return *this;
 }
 //----------------------------------------------------------
-bool Member::operator<(const Member & _member) const //Member < Member operator.
+bool Member::operator<(const Member& _member) const //Member < Member operator.
 {
-    return this->getNumOfFriends() < _member.getNumOfFriends();
+    return this->Member::getNumOfFriends() < _member.Member::getNumOfFriends();
 }
 //----------------------------------------------------------
-bool Member::operator<=(const Member & _member) const //Member <= Member operator.
+bool Member::operator<=(const Member& _member) const //Member <= Member operator.
 {
-    return this->getNumOfFriends() <= _member.getNumOfFriends();
+    return this->Member::getNumOfFriends() <= _member.Member::getNumOfFriends();
 }
 //----------------------------------------------------------
-bool Member::operator>(const Member & _member) const //Member > Member operator.
+bool Member::operator>(const Member& _member) const //Member > Member operator.
 {
-    return this->getNumOfFriends() > _member.getNumOfFriends();
+    return this->Member::getNumOfFriends() > _member.Member::getNumOfFriends();
 }
 //----------------------------------------------------------
-bool Member::operator>=(const Member & _member) const //Member >= Member operator.
+bool Member::operator>=(const Member& _member) const //Member >= Member operator.
 {
-    return this->getNumOfFriends() >= _member.getNumOfFriends();
+    return this->Member::getNumOfFriends() >= _member.Member::getNumOfFriends();
 }
 //----------------------------------------------------------

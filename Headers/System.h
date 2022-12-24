@@ -21,6 +21,8 @@ public:
     void Start();
     void initialData();
 
+private:
+
     //System-to-user Methods
     static inline void printMenu();
     void setDecision(size_SI&);
@@ -48,18 +50,16 @@ public:
     //Status Methods
     void newStatus();
     void newStatus(const string&, const size_SI&, const string&);
-
-private:
-    //System Private Methods
+    
     //Global Methods
     static inline bool BirthdayCheck(const Date&);
    
     //Printers Methods
-    void printAllStatuses();
-    void printTenLastStatuses();
+    void printAllStatuses() const;
+    void printTenLastStatuses() const;
     void printAllEntities() const;
-    void printAllFriends();
-    static void printAllFans(FanPage*);
+    void printAllFriends() const;
+    void printAllFans(FanPage*) const;
 
     //System-Member Methods
     void connectMembers(const string&, const string& );

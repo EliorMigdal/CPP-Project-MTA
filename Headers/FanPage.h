@@ -39,8 +39,8 @@ public:
 
     //Getters
     const string& getName() const { return name; }
-    size_t getNumOfMembers() const { return members.size(); }
-    size_t getNumOfStatuses() const { return bulletinBoard.size(); }
+    const size_t getNumOfMembers() const { return members.size(); }
+    const size_t  getNumOfStatuses() const { return bulletinBoard.size(); }
     const unordered_map<string, Member>& getMemberArr() const { return members; }
     const vector<Status>& getStatusArr() const { return bulletinBoard; }
 

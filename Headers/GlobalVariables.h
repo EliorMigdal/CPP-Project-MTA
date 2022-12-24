@@ -31,6 +31,8 @@ constexpr size_SI MEMBER_CREATION = 5;
 constexpr size_SI FAN_PAGE = 1;
 constexpr size_SI FAN_PAGE_CREATION = 2;
 constexpr size_SI MAX_ATTEMPTS = 3;
+constexpr size_SI MEMBER_CHOOSE = 1;
+constexpr size_SI FAN_PAGE_CHOOSE = 2;
 
 //Structures
 struct Date

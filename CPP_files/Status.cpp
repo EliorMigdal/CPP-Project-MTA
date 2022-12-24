@@ -21,22 +21,22 @@ Status::Status(const string& _statusContent):statusContent(_statusContent)
 //------------------------------------------------------
 ostream& operator<<(ostream& os, const Status& obj) //Print operator.
 {
-    const Date& date = obj.getStatusDate();
-    const Time& time = obj.getStatusTime();
+    const Date& date = obj.Status::getStatusDate();
+    const Time& time = obj.Status::getStatusTime();
     cout << "\tCreated in date: " << flush;
     cout << date.day << "/" << date.month << "/" << date.year << " " << flush;
     cout << time.hour << ":" << time.minutes << ":" << time.seconds << endl;
-    cout << "\tStatus content: " << obj.getStatusContent();
+    cout << "\tStatus content: " << obj.Status::getStatusContent();
     return os;
 }
 //------------------------------------------------------
-bool Status::operator==(Status & _status) const //Status == Status operator.
+bool Status::operator==(const Status& _status) const //Status == Status operator.
 {
-    return this->getStatusContent() == _status.getStatusContent();
+    return this->Status::getStatusContent() == _status.Status::getStatusContent();
 }
 //------------------------------------------------------
-bool Status::operator!=(Status & _status) const //Status != Status operator.
+bool Status::operator!=(const Status& _status) const //Status != Status operator.
 {
-    return this->getStatusContent() != _status.getStatusContent();
+    return this->Status::getStatusContent() != _status.Status::getStatusContent();
 }
 //------------------------------------------------------

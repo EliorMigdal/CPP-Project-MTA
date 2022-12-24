@@ -4,18 +4,18 @@
 //----------------------------------------------------------
 void System::Start() //Hard-coded data for our system.
 {
-    this->initialData();
+    this->System::initialData();
     cout << "Welcome to our social network!" << endl;
-    printMenu();
+    System::printMenu();
     cout << "Please choose your action: " << flush;
     cin >> userDecision;
 
     while (userDecision != EXIT)
     {
-        try {setDecision(userDecision);}
+        try { System::setDecision(userDecision);}
         catch (std::invalid_argument &error) {cout << error.what() << endl;}
         catch (...) {cout << "General Error" << endl;}
-        printMenu();
+        System::printMenu();
         cout << "Please choose another action: " << flush;
         cin >> userDecision;
     }
@@ -196,13 +196,13 @@ int System::memberOrFanPage() //Gets user decision for specific functions.
     cin >> decision;
     cin.ignore();
 
-    if (decision != 1 && decision != 2)
+    if (decision != MEMBER_CHOOSE && decision != FAN_PAGE_CHOOSE)
         throw std::invalid_argument("Decision must be 1 or 2.");
 
-    if (decision == 1)
+    if (decision == MEMBER_CHOOSE)
         cout << "Please enter a member's name: ";
 
-    else if (decision == 2)
+    else if (decision == FAN_PAGE_CHOOSE)
         cout << "Please enter a fan page's name: ";
 
     return decision;
@@ -375,7 +375,7 @@ void System::createFanPage() //Creates a fan page.
     getline(cin, name);
     /*name = InputOperation(FAN_PAGE_CREATION);*/
 
-    if (pages.find(name) == pages.end())
+    if (this->pages.find(name) == this->pages.end())
     {
         try {this->pages[name] = new FanPage(name);}
         catch (std::bad_alloc& error) {throw std::bad_alloc(error);}
@@ -461,23 +461,23 @@ void System::newStatus() //Creates a new status.
     int decision;
     cout << "Please choose the entity which you would like to add a status to:";
 
-    try {decision = memberOrFanPage();}
+    try {decision = System::memberOrFanPage();}
     catch(std::invalid_argument& error) {throw std::invalid_argument(error.what());}
     catch(...) {throw std::exception();}
 
     getline(cin, name);
 
-    if (pages.find(name) != pages.end() || members.find(name) != members.end())
+    if (this->pages.find(name) != this->pages.end() || this->members.find(name) != this->members.end())
     {
-        if (decision == 1)
+        if (decision == MEMBER_CHOOSE)
         {
-            try { members.at(name).Member::addStatus(); }
+            try { this->members.at(name).Member::addStatus(); }
             catch (...) { throw std::exception(); }
         }
 
-        else if (decision == 2)
+        else if (decision == FAN_PAGE_CHOOSE)
         {
-            try { pages.at(name)->FanPage::addStatus(); }
+            try { this->pages.at(name)->FanPage::addStatus(); }
             catch (...) { throw std::exception(); }
         }
     }
@@ -510,19 +510,19 @@ inline bool System::BirthdayCheck(const Date& _birthday) //Verifies birthday ins
 {
     return (_birthday.day > "0" && _birthday.day < "32" &&
         _birthday.month > "0" && _birthday.month < "13"
-        && _birthday.year>"1900" && _birthday.year < "2023") ? true : false;
+        && _birthday.year > ("1900") && _birthday.year < "2023") ? true : false;
 }
 //----------------------------------------------------------
 
 //Private Printer Methods
 //----------------------------------------------------------
-void System::printAllStatuses() //Prints an entity's statuses.
+void System::printAllStatuses() const //Prints an entity's statuses.
 {
     int decision;
     string name;
     cout << "Please choose the entity of which you want to view statuses:";
 
-    try {decision = memberOrFanPage();}
+    try {decision = System::memberOrFanPage();}
     catch(std::invalid_argument& error) {throw std::invalid_argument(error.what());}
     catch(...) {throw std::exception();}
     getline(cin, name);
@@ -532,18 +532,18 @@ void System::printAllStatuses() //Prints an entity's statuses.
                      :
             name = InputOperation(FAN_PAGE);*/
 
-    if (pages.find(name) != pages.end() || members.find(name) != members.end())
+    if (this->pages.find(name) != this->pages.end() || this->members.find(name) != this->members.end())
     {
-        if (decision == 1)
+        if (decision == MEMBER_CHOOSE)
         {
-            try { members.at(name).Member::printStatuses(members.at(name).getNumOfStatuses()); }
+            try { this->members.at(name).Member::printStatuses(this->members.at(name).Member::getNumOfStatuses()); }
             catch (std::invalid_argument& error) { throw std::invalid_argument(error.what()); }
             catch (...) { throw std::exception(); }
         }
 
-        else if (decision == 2)
+        else //if (decision == FAN_PAGE_CHOOSE)
         {
-            try { pages.at(name)->printStatuses(); }
+            try { this->pages.at(name)->FanPage::printStatuses(); }
             catch (std::invalid_argument& error) { throw std::invalid_argument(error.what()); }
             catch (...) { throw std::exception(); }
         }
@@ -553,7 +553,7 @@ void System::printAllStatuses() //Prints an entity's statuses.
         throw std::invalid_argument("Entity was not found in our system!");
 }
 //----------------------------------------------------------
-void System::printTenLastStatuses() //Prints a member's friends ten last statuses.
+void System::printTenLastStatuses() const //Prints a member's friends ten last statuses.
 {
     string name;
     int i = 0;
@@ -562,11 +562,12 @@ void System::printTenLastStatuses() //Prints a member's friends ten last statuse
     getline(cin, name);
     /*name = InputOperation(MEMBER,true);*/
 
-    if (members.find(name) != members.end())
+    if (this->members.find(name) != this->members.end())
     {
-        if (!this->members[name].Member::getFriendsArr().empty())
+        unordered_map<string, Member> u_memberMap = this->members.at(name).Member::getFriendsArr();
+        if (!u_memberMap.empty())
         {
-            for (const auto& kv : this->members[name].Member::getFriendsArr())
+            for (const auto& kv : u_memberMap)
             {
                 auto& key = kv.first;
                 auto& value = kv.second;
@@ -600,7 +601,7 @@ void System::printAllEntities() const //Prints all entities.
         cout << "------------------------------------\nOur system's "
                 "members list:\n------------------------------------" << endl;
     
-        for (const auto& kv:this->members)
+        for (const auto& kv: this->members)
         {
             const auto& key = kv.first;
             cout << "\t" << key << endl;
@@ -623,7 +624,7 @@ void System::printAllEntities() const //Prints all entities.
 
 }
 //----------------------------------------------------------
-void System::printAllFriends() //Prints an entity's friends.
+void System::printAllFriends() const //Prints an entity's friends.
 {
     int decision;
     string entityName;
@@ -637,18 +638,18 @@ void System::printAllFriends() //Prints an entity's friends.
     /*(decision == 1) ? entityName = InputOperation(MEMBER,true):
             entityName = InputOperation(FAN_PAGE, true);*/
 
-    if (pages.find(entityName) != pages.end() || members.find(entityName) != members.end())
+    if (this->pages.find(entityName) != this->pages.end() || this->members.find(entityName) != this->members.end())
     {
-        if (decision == 1)
+        if (decision == MEMBER_CHOOSE)
         {
-            try { members.at(entityName).Member::printFriendsArr(); }
+            try { this->members.at(entityName).Member::printFriendsArr(); }
             catch (std::invalid_argument& error) { throw std::invalid_argument(error.what()); }
             catch (...) { throw std::exception(); }
         }
 
-        else if (decision == 2)
+        else //if (decision == 2)
         {
-            try { System::printAllFans(pages.at(entityName)); }
+            try { System::printAllFans(this->pages.at(entityName)); }
             catch (std::invalid_argument& error) { throw std::invalid_argument(error.what()); }
             catch (...) { throw std::exception(); }
         }
@@ -658,7 +659,7 @@ void System::printAllFriends() //Prints an entity's friends.
         throw std::invalid_argument("Entity was not found in our system!");
 }
 //----------------------------------------------------------
-void System::printAllFans(FanPage* fanPage) //Prints a fan page's fans list.
+void System::printAllFans(FanPage* fanPage) const //Prints a fan page's fans list.
 {
     unordered_map<string, Member> MembersMap = fanPage->getMemberArr();
     if (MembersMap.empty())
@@ -688,7 +689,7 @@ void System::Connect_OR_DisconnectMember(void(System::* operation)(const string&
     getline(cin, firstMemberName);
     getline(cin, secondMemberName);
     /*firstMemberName = InputOperation(MEMBER, true);*/
-    if (members.find(firstMemberName) != members.end() && members.find(secondMemberName) != members.end())
+    if (this->members.find(firstMemberName) != this->members.end() && this->members.find(secondMemberName) != this->members.end())
     {
         /*secondMemberName = InputOperation(MEMBER);*/
         try {(this->*operation)(firstMemberName, secondMemberName);}
@@ -704,11 +705,11 @@ void System::connectMembers(const string& firstMemberName, const string& secondM
 {
     if (firstMemberName != secondMemberName)
     {
-        bool areFriends = members[firstMemberName].Member::checkIfFriend(members[secondMemberName].getName());
+        bool areFriends = this->members[firstMemberName].Member::checkIfFriend(this->members[secondMemberName].getName());
         if (!areFriends)
         {
-            members[firstMemberName] += members[secondMemberName];
-            members[secondMemberName] += members[firstMemberName];
+            this->members[firstMemberName] += this->members[secondMemberName];
+            this->members[secondMemberName] += this->members[firstMemberName];
         }
         else
             throw std::invalid_argument("Members are already friends.");
@@ -722,11 +723,11 @@ void System::disconnectMembers(const string& firstMemberName, const string& seco
 {
     if (firstMemberName != secondMemberName)
     {
-        bool areFriends = members[firstMemberName].Member::checkIfFriend(members[secondMemberName].getName());
+        bool areFriends = this->members[firstMemberName].Member::checkIfFriend(this->members[secondMemberName].getName());
         if (areFriends)
         {
-            members[firstMemberName] -= members[secondMemberName];
-            members[secondMemberName] -= members[firstMemberName];
+            this->members[firstMemberName] -= this->members[secondMemberName];
+            this->members[secondMemberName] -= this->members[firstMemberName];
         }
         else
             throw std::invalid_argument("Members are already not friends.");

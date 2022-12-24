@@ -21,9 +21,9 @@ public:
     ~Status() = default;
 
     //Getters
-    string getStatusContent() const { return statusContent; }
-    Date getStatusDate() const { return statusDate; }
-    Time getStatusTime() const { return statusTime; }
+    const string& getStatusContent() const { return statusContent; }
+    const Date& getStatusDate() const { return statusDate; }
+    const Time& getStatusTime() const { return statusTime; }
 
     //Operators Methods
     // << Operator
@@ -32,8 +32,8 @@ public:
     Status& operator=(Status&& status) = default;
     Status& operator=(const Status& status) = default;
     // Boolean Operators
-    bool operator==(Status&) const;
-    bool operator!=(Status&) const;
+    bool operator==(const Status&) const;
+    bool operator!=(const Status&) const;
 };
 
 #endif
