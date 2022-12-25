@@ -33,16 +33,16 @@ void setTimeAndDate(Time& exactTime, Date& exactDate) //Sets date & time for sta
 		exactTime.seconds = "0" + std::to_string(tm_local->tm_sec);
 	}
 	else exactTime.seconds = std::to_string(tm_local->tm_sec);
-	exactDate.year = std::to_string(tm_local->tm_year + 1900);
+	exactDate.year = tm_local->tm_year + 1900;
 	if (tm_local->tm_mon >= 0 && tm_local->tm_mon < 10)
 	{
-		exactDate.month = "0" + std::to_string(tm_local->tm_mon + 1);
+		exactDate.month = tm_local->tm_mon + 1;
 	}
-	else exactDate.month = std::to_string(tm_local->tm_mon + 1);
+	else exactDate.month = tm_local->tm_mon + 1;
 	if (tm_local->tm_mday >= 0 && tm_local->tm_mday < 10)
 	{
-		exactDate.day = "0" + std::to_string(tm_local->tm_mday);
+		exactDate.day = tm_local->tm_mday;
 	}
-	else exactDate.day = std::to_string(tm_local->tm_mday);
+	else exactDate.day = tm_local->tm_mday;
 }
 //---------------------------------------------------------------------------------

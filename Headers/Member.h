@@ -6,7 +6,7 @@ class FanPage;
 class Member {
 private:
     string name;
-    Date birthday = {"0","0","0"};
+    Date birthday = {0, 0, 0};
     vector<Status> bulletinBoard{};
     unordered_map<string, Member*> friends{};
     unordered_map<string, FanPage*> pages{};
@@ -23,27 +23,28 @@ public:
     //Getters
     const string& getName() const { return name; }
     const Date& getBirthday() const { return birthday; }
-    const size_t getNumOfFriends() const { return friends.size(); }
-    const size_t getNumOfStatuses() const { return bulletinBoard.size(); }
+    size_t getNumOfFriends() const { return friends.size(); }
+    size_t getNumOfStatuses() const { return bulletinBoard.size(); }
     const vector<Status>& getStatusArr() const { return bulletinBoard; }
     const unordered_map<string, Member*>& getFriendsArr() const { return friends; }
     const unordered_map<string, FanPage*>& getPagesArr() const { return pages; }
    
     //Member-to-Member Methods
-    void addFriend(Member*);
-    void removeFriend(const string&);
-    bool checkIfFriend(const string&);
-    void printFriendsArr() const;
+    void addFriend(Member*) noexcept(false);
+    void removeFriend(const string&) noexcept(false);
+    bool isFriend(const string&);
+    void printFriendsArr() const noexcept(false);
 
     //Member-to-Status Methods
-    void printStatuses(const size_t& numToPrint = PRINT_STATUS) const;
+    void printStatuses(const size_t& numToPrint = PRINT_STATUS) const noexcept(false);
     void addStatus();
     void addStatus(const string&);
 
     //Member-to-FanPage Methods
     void addPage(FanPage*);
     void removePage(const string&);
-    void printAllPages() const;
+    bool isFan(const string&);
+    void printAllPages() const noexcept(false);
 
     //Operators Methods
     // << Operator
@@ -62,6 +63,46 @@ public:
     bool operator>=(const Member&) const;
     bool operator<(const Member&) const;
     bool operator<=(const Member&) const;
+};
+
+class memberExceptions : public std::exception {
+public:
+    const char* what() const noexcept override { return "Error handling member."; }
+};
+
+class addAFriendException : public memberExceptions {
+public:
+    const char* what() const noexcept override { return "Members are already friends."; }
+};
+
+class removeAFriendException : public memberExceptions {
+public:
+    const char* what() const noexcept override { return "Members are already not friends."; }
+};
+
+class printFriendsException : public memberExceptions {
+public:
+    const char* what() const noexcept override { return "Member has no friends yet."; }
+};
+
+class memberPrintStatusesException : public memberExceptions {
+public:
+    const char* what() const noexcept override { return "Member has not posted any statuses yet."; }
+};
+
+class addPageException : public memberExceptions {
+public:
+    const char* what() const noexcept override { return "Member is already a fan of this page."; }
+};
+
+class removePageException : public memberExceptions {
+public:
+    const char* what() const noexcept override { return "Member is already not a fan of this page."; }
+};
+
+class printPagesException : public memberExceptions {
+public:
+    const char* what() const noexcept override { return "Member is not a fan of any page."; }
 };
 
 #endif

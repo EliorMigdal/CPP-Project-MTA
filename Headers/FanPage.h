@@ -1,27 +1,7 @@
 #ifndef CPP_PROJECT_FANPAGE_H
 #define CPP_PROJECT_FANPAGE_H
-#include "Member.h"
-
-/*class FanPageException : public std::exception
-{
-public:
-    virtual const char* what() const override { return "Failed creating a Page, Already exists\n"; }
-};
-class RemoveAFanException : public FanPageException
-{
-public:
-    virtual const char* what() const override { return "Failed because member doesn't exist!\n"; }
-};
-class AddAFanException : public FanPageException
-{
-public:
-    virtual const char* what() const override { return "Failed because member Already exists"; }
-};
-class CheckIfFanException : public FanPageException
-{
-public:
-    virtual const char* what() const override { return "Failed because member_name is empty!\n"; }
-};*/
+#include "Status.h"
+class Member;
 
 class FanPage {
 private:
@@ -39,18 +19,19 @@ public:
 
     //Getters
     const string& getName() const { return name; }
-    const size_t getNumOfMembers() const { return members.size(); }
-    const size_t  getNumOfStatuses() const { return bulletinBoard.size(); }
+    size_t getNumOfMembers() const { return members.size(); }
+    size_t  getNumOfStatuses() const { return bulletinBoard.size(); }
     const unordered_map<string, Member*>& getMemberArr() const { return members; }
     const vector<Status>& getStatusArr() const { return bulletinBoard; }
 
     //FanPage-to-Member Methods
     bool checkIfFan(const string&);
-    void removeFan(Member*);
-    void addFan(Member*);
+    void addFan(Member*) noexcept(false);
+    void removeFan(Member*) noexcept(false);
+    void printFans()const noexcept(false);
 
     //FanPage-to-Status Methods
-    void printStatuses() const;
+    void printStatuses() const noexcept(false);
     void addStatus();
     void addStatus(const string&);
 
@@ -61,14 +42,39 @@ public:
     FanPage& operator=(const FanPage& fan_page) = default;
     FanPage& operator=(FanPage&& fan_page) = default;
     // += Operator
-    const FanPage& operator+=(Member*);
+    const FanPage& operator+=(Member*) noexcept(false);
     // -= Operator
-    const FanPage& operator-=(Member*);
+    const FanPage& operator-=(Member*) noexcept(false);
     //Boolean Operators
     bool operator<(FanPage&) const;
     bool operator<=(FanPage&) const;
     bool operator>(FanPage&) const;
     bool operator>=(FanPage&) const;
+};
+
+class fanPageExceptions : public std::exception {
+public:
+    const char* what() const noexcept override { return "Error handling fan page."; }
+};
+
+class addAFanException : public fanPageExceptions {
+public:
+    const char* what() const noexcept override { return "Member is already a fan of this page."; }
+};
+
+class removeAFanException : public fanPageExceptions {
+public:
+    const char* what() const noexcept override { return "Member is already not a fan of this fan page."; }
+};
+
+class fanPagePrintStatusesException : public fanPageExceptions {
+public:
+    const char* what() const noexcept override { return "Fan page has not posted any statuses yet."; }
+};
+
+class printFansException : public fanPageExceptions {
+public:
+    const char* what() const noexcept override { return "This fan page has no fans yet."; }
 };
 
 #endif

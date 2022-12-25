@@ -4,7 +4,7 @@
 
 class Status {
 private:
-    Date statusDate = { "0","0","0" };
+    Date statusDate = { 0, 0, 0 };
     Time statusTime = { "0","0","0" };
     STATUS_TYPE statusType = STATUS_TYPE::TEXT;
     string statusContent;
@@ -13,7 +13,7 @@ public:
     //Constructors
     Status() = default;
     Status(const Status&) = default;
-    Status(Status&&) = default;
+    Status(Status&&) noexcept = default;
     explicit Status(Date&);
     Status(Date&, Time&, const string&);
     Status(Date&, Time&, Byte&, const string&);

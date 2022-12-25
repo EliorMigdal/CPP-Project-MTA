@@ -27,17 +27,14 @@ typedef unsigned char Byte;
 //Const Variables
 constexpr size_SI PRINT_STATUS = 10;
 constexpr size_SI MEMBER = 0;
-constexpr size_SI MEMBER_CREATION = 5;
 constexpr size_SI FAN_PAGE = 1;
-constexpr size_SI FAN_PAGE_CREATION = 2;
-constexpr size_SI MAX_ATTEMPTS = 3;
 constexpr size_SI MEMBER_CHOOSE = 1;
 constexpr size_SI FAN_PAGE_CHOOSE = 2;
 
 //Structures
 struct Date
 {
-    string day ="0", month = "0", year = "0";
+    unsigned short int day = 0, month = 0, year = 0;
 };
 
 struct Time
