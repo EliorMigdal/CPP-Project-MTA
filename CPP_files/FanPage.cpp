@@ -5,7 +5,6 @@
 //-----------------------------------------------------------
 FanPage::FanPage(const string& _name):name(_name){}
 //-----------------------------------------------------------
-
 //FanPage-to-Member Methods
 //-----------------------------------------------------------
 bool FanPage::checkIfFan(const string& member_name) //Checks whether member is a fan of the page.
@@ -48,7 +47,6 @@ void FanPage::printFans() const //Prints a fan page's fans.
     }
 }
 //-----------------------------------------------------------
-
 //FanPage-to-Status Methods
 //----------------------------------------------------------
 void FanPage::printStatuses() const //Prints all fan page's statuses.
@@ -75,8 +73,13 @@ void FanPage::addStatus() //Adds a status to a fan page.
     string statusContent;
     cout << "Please enter a your Status content:" << endl;
     getline(cin, statusContent);
-    setTimeAndDate(newTime, newDate);
-    this->bulletinBoard.emplace_back((newDate, newTime, statusContent));
+    if (!statusContent.empty())
+    {
+        setTimeAndDate(newTime, newDate);
+        this->bulletinBoard.emplace_back((newDate, newTime, statusContent));
+    }
+    else
+        throw EmptyStatus();
 }
 //----------------------------------------------------------
 void FanPage::addStatus(const string& statusContent) //For hard coded data.
@@ -87,7 +90,6 @@ void FanPage::addStatus(const string& statusContent) //For hard coded data.
     this->bulletinBoard.emplace_back((newDate, newTime, statusContent));
 }
 //----------------------------------------------------------
-
 //Operators Methods
 //-----------------------------------------------------------
 ostream& operator<<(ostream& _out, FanPage* _fanPage) //Print method.
@@ -99,7 +101,7 @@ const FanPage& FanPage::operator+=(Member* _member) //FanPage += Member method.
 {
     try{this->FanPage::addFan(_member);}
     catch(addAFanException& error) {throw addAFanException(error);}
-    catch(...) {throw fanPageExceptions();}
+    catch(...) {throw GlobalExceptions();}
     return *this;
 }
 //-----------------------------------------------------------
@@ -107,7 +109,7 @@ const FanPage &FanPage::operator-=(Member* _member) //FanPage -= Member method.
 {
     try{ this->FanPage::removeFan(_member); }
     catch (removeAFanException& error) { throw removeAFanException(error);}
-    catch (...) {throw fanPageExceptions();}
+    catch (...) {throw GlobalExceptions();}
     return *this;
 }
 //-----------------------------------------------------------

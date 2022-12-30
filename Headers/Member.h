@@ -90,17 +90,7 @@ public:
     const char* what() const noexcept override { return "Member has not posted any statuses yet."; }
 };
 
-class addPageException : public memberExceptions {
-public:
-    const char* what() const noexcept override { return "Member is already a fan of this page."; }
-};
-
-class removePageException : public memberExceptions {
-public:
-    const char* what() const noexcept override { return "Member is already not a fan of this page."; }
-};
-
-class printPagesException : public memberExceptions {
+class printPagesException : public memberExceptions { //exception for the implemented uncategorized function.
 public:
     const char* what() const noexcept override { return "Member is not a fan of any page."; }
 };

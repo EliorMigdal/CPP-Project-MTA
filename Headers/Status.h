@@ -36,4 +36,12 @@ public:
     bool operator!=(const Status&) const;
 };
 
+class StatusExceptions : public std::exception {
+public:
+    const char* what() const noexcept override { return "Status error"; }
+};
+class EmptyStatus :public StatusExceptions {
+public:
+    const char* what() const noexcept override { return "Cannot enter an empty status."; }
+};
 #endif

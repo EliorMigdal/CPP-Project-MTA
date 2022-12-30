@@ -103,12 +103,25 @@ class entityNotFound : public systemExceptions {
     const char* what() const noexcept override { return "Entity was not found in our system."; }
 };
 
-class noMembersInSystem : public systemExceptions {
+class EmptyName : public systemExceptions {
+
+    const char* what() const noexcept override { return "Cannot enter an empty name."; }
+};
+
+
+
+class EmptySystemExceptions : public std::exception {
+public:
+    const char* what() const noexcept override { return "System is empty."; }
+};
+
+class noMembersInSystem : public EmptySystemExceptions {
     const char* what() const noexcept override { return "System has no members yet."; }
 };
 
-class noPagesInSystem : public systemExceptions {
+class noPagesInSystem : public EmptySystemExceptions {
     const char* what() const noexcept override { return "System has no pages yet."; }
 };
+
 
 #endif //CPP_PROJECT_SYSTEM_H

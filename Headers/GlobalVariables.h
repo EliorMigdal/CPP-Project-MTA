@@ -7,7 +7,6 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
-#include <map>
 using std::cout;
 using std::cin;
 using std::endl;
@@ -16,14 +15,11 @@ using std::getline;
 using std::string;
 using std::vector;
 using std::unordered_map;
-using std::map;
 using std::ostream;
-using std::move;
-using namespace std::string_literals;
+
 typedef unsigned short int size_SI;
 typedef unsigned char Byte;
 
-//HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE); // colorize console.
 //Const Variables
 constexpr size_SI PRINT_STATUS = 10;
 constexpr size_SI MEMBER = 0;
@@ -34,7 +30,7 @@ constexpr size_SI FAN_PAGE_CHOOSE = 2;
 //Structures
 struct Date
 {
-    unsigned short int day = 0, month = 0, year = 0;
+    size_SI day = 0, month = 0, year = 0;
 };
 
 struct Time
@@ -51,4 +47,21 @@ enum DECISION_TYPE { CREATEMEMBER = 1, CREATEFANPAGE, NEWSTATUS,
 //Global Functions
 void readBirthday(Date& birthday);
 void setTimeAndDate(Time& exactTime, Date& exactDate);
+
+
+class GlobalExceptions : public std::exception {
+public:
+    const char* what() const noexcept override { return "Global error."; }
+};
+
+class addAFanException : public GlobalExceptions {
+public:
+    const char* what() const noexcept override { return "Member is already a fan of this page."; }
+};
+
+class removeAFanException : public GlobalExceptions {
+public:
+    const char* what() const noexcept override { return "Member is already not a fan of this page."; }
+};
+
 #endif

@@ -57,16 +57,6 @@ public:
     const char* what() const noexcept override { return "Error handling fan page."; }
 };
 
-class addAFanException : public fanPageExceptions {
-public:
-    const char* what() const noexcept override { return "Member is already a fan of this page."; }
-};
-
-class removeAFanException : public fanPageExceptions {
-public:
-    const char* what() const noexcept override { return "Member is already not a fan of this fan page."; }
-};
-
 class fanPagePrintStatusesException : public fanPageExceptions {
 public:
     const char* what() const noexcept override { return "Fan page has not posted any statuses yet."; }

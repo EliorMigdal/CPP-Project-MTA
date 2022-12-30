@@ -92,8 +92,13 @@ void Member::addStatus() //Creates a new status.
     string statusContent;
     cout << "Please enter a your Status content:" << endl;
     getline(cin, statusContent);
-    setTimeAndDate(newTime, newDate);
-    this->bulletinBoard.emplace_back((newDate, newTime, statusContent));
+    if (!statusContent.empty())
+    {
+        setTimeAndDate(newTime, newDate);
+        this->bulletinBoard.emplace_back((newDate, newTime, statusContent));
+    }
+    else
+        throw EmptyStatus();
 }
 //----------------------------------------------------------
 void Member::addStatus(const string& statusContent) //For hard-coded data.
@@ -113,7 +118,7 @@ void Member::addPage(FanPage* fanPage_obj) //Adds a new page to the pages array.
         this->pages[fanPage_obj->getName()] = fanPage_obj;
 
     else
-        throw addPageException();
+        throw addAFanException();
 }
 //----------------------------------------------------------
 void Member::removePage(const string& fanPage_name) //Removes a page from the page array.
@@ -122,10 +127,10 @@ void Member::removePage(const string& fanPage_name) //Removes a page from the pa
         this->pages.erase(fanPage_name);
 
     else
-        throw removePageException();
+        throw removeAFanException();
 }
 //----------------------------------------------------------
-bool Member::isFan(const std::string & _pageName) //Searches for fan page in member's pages.
+bool Member::isFan(const string & _pageName) //Searches for fan page in member's pages.
 {
     return this->pages.find(_pageName) != this->pages.end();
 }
@@ -159,8 +164,8 @@ const Member &Member::operator+=(Member* _member) //Member + Member operator.
 const Member &Member::operator+=(FanPage* _fanPage) //Member + FanPage operator.
 {
     try {this->Member::addPage(_fanPage);}
-    catch (addPageException& error) { throw addPageException(error); }
-    catch (...) {throw memberExceptions();}
+    catch (addAFanException& error) { throw addAFanException(error); }
+    catch (...) {throw GlobalExceptions();}
     return *this;
 }
 //----------------------------------------------------------
@@ -175,8 +180,8 @@ const Member &Member::operator-=(Member* _member) //Member - Member operator.
 const Member &Member::operator-=( FanPage* _fanPage) //Member - FanPage operator.
 {
     try {this->Member::removePage(_fanPage->FanPage::getName());}
-    catch (removePageException& error) {throw removePageException(error);}
-    catch (...) {throw memberExceptions();}
+    catch (removeAFanException& error) {throw removeAFanException(error);}
+    catch (...) {throw GlobalExceptions();}
     return *this;
 }
 //----------------------------------------------------------

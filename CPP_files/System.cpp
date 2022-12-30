@@ -13,7 +13,10 @@ void System::Start() //Hard-coded data for our system.
     while (userDecision != EXIT)
     {
         try { System::setDecision(userDecision);}
-        catch (systemExceptions &error) {cout << error.what() << endl;}
+        catch (EmptySystemExceptions& error) { cout << error.what() << endl; }
+        catch (StatusExceptions& error) { cout << error.what() << endl; }
+        catch (GlobalExceptions& error) { cout << error.what() << endl; }
+        catch (systemExceptions& error) {cout << error.what() << endl;}
         catch (memberExceptions& error) {cout << error.what() << endl;}
         catch (fanPageExceptions& error) {cout << error.what() << endl;}
         catch (...) {cout << "General Error." << endl;}
@@ -126,18 +129,22 @@ void System::setDecision(size_SI& _decision) //Gets the decision from user and a
             try {System::createMember();}
             catch (userAlreadyExists& error) {throw userAlreadyExists(error);}
             catch (invalidBirthday& error) {throw invalidBirthday(error);}
+            catch (EmptyName& error) { throw EmptyName(error); }
             catch(...) {throw systemExceptions();}
             break;
         //////////////////////////////////////////////////////////////////////////////////////////
         case (size_SI)CREATEFANPAGE: //2
             try {System::createFanPage();}
             catch (pageAlreadyExists& error) {throw pageAlreadyExists(error);}
+            catch (EmptyName& error) { throw EmptyName(error); }
             catch(...) {throw systemExceptions();}
             break;
         //////////////////////////////////////////////////////////////////////////////////////////
         case (size_SI)NEWSTATUS: //3
             try {System::newStatus();}
             catch(invalidUserDecision& error) {throw invalidUserDecision(error);}
+            catch (EmptyStatus& error) { throw EmptyStatus(error); }
+            catch (StatusExceptions& error) { throw StatusExceptions(error); }
             catch(entityNotFound& error) {throw entityNotFound(error);}
             catch(...) {throw systemExceptions();}
             break;
@@ -182,29 +189,23 @@ void System::setDecision(size_SI& _decision) //Gets the decision from user and a
         //////////////////////////////////////////////////////////////////////////////////////////
         case (size_SI)ADDFAN: //8
             try{System::Add_OR_RemoveFAN(&System::addFan);}
-            catch(addPageException& error) {throw addPageException(error);}
-            catch(addAFanException& error) {throw addAFanException(error);}
-            catch(memberExceptions& error) {throw memberExceptions(error);}
-            catch(fanPageExceptions& error) {throw fanPageExceptions(error);}
+            catch (addAFanException& error) { throw addAFanException(error); }
             catch(entityNotFound& error) {throw entityNotFound(error);}
-            catch(...) {throw systemExceptions();}
+            catch(...) {throw GlobalExceptions();}
             break;
         //////////////////////////////////////////////////////////////////////////////////////////
         case (size_SI)REMOVEFAN: //9
             try{System::Add_OR_RemoveFAN(&System::removeFan);}
-            catch(removeAFanException& error) {throw removeAFanException(error);}
-            catch(removePageException& error) {throw removePageException(error);}
-            catch(memberExceptions& error) {throw memberExceptions(error);}
-            catch(fanPageExceptions& error) {throw fanPageExceptions(error);}
+            catch (removeAFanException& error) { throw removeAFanException(error); }
             catch(entityNotFound& error) {throw entityNotFound(error);}
-            catch(...) {throw systemExceptions();}
+            catch(...) {throw GlobalExceptions();}
             break;
         //////////////////////////////////////////////////////////////////////////////////////////
         case (size_SI)PRINTALLENTITIES: //10
             try{System::printAllEntities();}
             catch(noMembersInSystem& error) {throw noMembersInSystem(error);}
             catch(noPagesInSystem& error) {throw noPagesInSystem(error);}
-            catch(...) {throw systemExceptions();}
+            catch(...) {throw EmptySystemExceptions();}
             break;
         //////////////////////////////////////////////////////////////////////////////////////////
         case (size_SI)PRINTALLFRIENDS: //11
@@ -249,20 +250,24 @@ void System::createMember() //Read name and birthday from the user with validati
     cout << "Please enter a member's name: ";
     cin.ignore();
     getline(cin, name);
-
-    if (members.find(name) == members.end())
+    if (!name.empty())
     {
-        cout << "Please enter member's birthday:" << endl;
-        Date Birthday = { 0, 0, 0 };
-        readBirthday(Birthday);
-        if (!BirthdayCheck(Birthday)) //not good need to change
-            throw invalidBirthday();
+        if (members.find(name) == members.end())
+        {
+            cout << "Please enter member's birthday:" << endl;
+            Date Birthday = { 0, 0, 0 };
+            readBirthday(Birthday);
+            if (!BirthdayCheck(Birthday)) //not good need to change
+                throw invalidBirthday();
 
-        this->members[name] = Member{ name, Birthday };
+            this->members[name] = Member{ name, Birthday };
+        }
+        else
+            throw userAlreadyExists();
     }
-
     else
-        throw userAlreadyExists();
+        throw EmptyName();
+
 }
 //----------------------------------------------------------
 void System::createMember(const string& _name, Date& _date) //For hard-coded data.
@@ -349,12 +354,16 @@ void System::createFanPage() //Creates a fan page.
     cout << "Please enter a fan page's name: ";
     cin.ignore();
     getline(cin, name);
+    if (!name.empty())
+    {
+        if (this->pages.find(name) == this->pages.end())
+            this->pages[name] = FanPage(name);
 
-    if (this->pages.find(name) == this->pages.end())
-        this->pages[name] = FanPage(name);
-
+        else
+            throw pageAlreadyExists();
+    }
     else
-        throw pageAlreadyExists();
+        throw EmptyName();
 }
 //----------------------------------------------------------
 void System::createFanPage(const string& _name) //Creates a fan page for hard-coded data.
@@ -376,12 +385,11 @@ void System::Add_OR_RemoveFAN(void(System::*operation)(const string&,const strin
     if (members.find(memberName) != members.end() && pages.find(fanPageName) != pages.end())
     {
         try {(this->*operation)(fanPageName, memberName);}
-        catch(addPageException& error) {throw addPageException(error);}
+        
         catch(addAFanException& error) {throw addAFanException(error);}
         catch(removeAFanException& error) {throw removeAFanException(error);}
-        catch(removePageException& error) {throw removePageException(error);}
-        catch(memberExceptions& error) {throw memberExceptions(error);}
-        catch(fanPageExceptions& error) {throw fanPageExceptions(error);}
+        catch(GlobalExceptions& error) {throw GlobalExceptions(error);}
+
     }
 
     else
@@ -390,23 +398,25 @@ void System::Add_OR_RemoveFAN(void(System::*operation)(const string&,const strin
 //----------------------------------------------------------
 void System::addFan(const string& fanPageName, const string& memberName) //Adds a fan to a fan page's members array.
 {
-    try{this->members.at(memberName) += &this->pages.at(fanPageName);}
-    catch(addPageException& error) {throw addPageException(error);}
-    catch (...) {throw memberExceptions();}
-    try{this->pages.at(fanPageName) += &this->members.at(memberName);}
-    catch(addAFanException& error) {throw addAFanException(error);}
-    catch(...) {throw fanPageExceptions();}
+    try 
+    {
+        this->members.at(memberName) += &this->pages.at(fanPageName);
+        this->pages.at(fanPageName) += &this->members.at(memberName);
+    }
+     catch (addAFanException& error) { throw addAFanException(error); }
+     catch(...) {throw GlobalExceptions();}
 }
 //----------------------------------------------------------
 void System::removeFan(const string& fanPageName, const string& memberName) //Removes a fan from a fan page's
 // members array.
 {
-    try{this->pages.at(fanPageName) -= &this->members.at(memberName);}
+    try 
+    {
+        this->pages.at(fanPageName) -= &this->members.at(memberName);
+        this->members.at(memberName) -= &this->pages.at(fanPageName);
+    }
     catch(removeAFanException& error) {throw removeAFanException(error);}
-    catch(...) {throw fanPageExceptions();}
-    try{this->members.at(memberName) -= &this->pages.at(fanPageName);}
-    catch(removePageException& error) {throw removePageException(error);}
-    catch (...) {throw memberExceptions();}
+    catch (...) {throw GlobalExceptions();}
 }
 //----------------------------------------------------------
 void System::addFanHardCoded(const string& pageName, const string& fanName) //Add fan for hard-coded data.
@@ -434,18 +444,28 @@ void System::newStatus() //Creates a new status.
     catch(invalidUserDecision& error) {throw invalidUserDecision(error);}
     catch(...) {throw systemExceptions();}
     getline(cin, name);
-
+   
     if (this->pages.find(name) != this->pages.end() || this->members.find(name) != this->members.end())
     {
         if (decision == MEMBER_CHOOSE)
-            this->members.at(name).Member::addStatus();
+        {
+            try { this->members.at(name).Member::addStatus(); }
+            catch (EmptyStatus& error) { throw EmptyStatus(error); }
+            catch (...) { throw StatusExceptions(); }
+
+        }
+
 
         else if (decision == FAN_PAGE_CHOOSE)
-            this->pages.at(name).FanPage::addStatus();
+        {
+            try { this->pages.at(name).FanPage::addStatus(); }
+            catch (EmptyStatus& error) { throw EmptyStatus(error); }
+            catch (...) { throw StatusExceptions(); }    
+        }
     }
-
     else
         throw entityNotFound();
+   
 }
 //----------------------------------------------------------
 void System::newStatus(const string& name, const size_SI& type, const string& statusContent) //Creates a new status for
@@ -543,34 +563,36 @@ void System::printTenLastStatuses() const //Prints a member's friends ten last s
 //----------------------------------------------------------
 void System::printAllEntities() const //Prints all entities.
 {
-    if (this->members.empty())
-        throw noMembersInSystem();
-
+    if (this->members.empty() && this->pages.empty())
+        throw EmptySystemExceptions();
     else
     {
-        cout << "------------------------------------\nOur system's "
-                "members list:\n------------------------------------" << endl;
-    
-        for (const auto& kv: this->members)
+        if (!this->members.empty())
         {
-            const auto& key = kv.first;
-            cout << "\t" << key << endl;
+            cout << "------------------------------------\nOur system's "
+                    "members list:\n------------------------------------" << endl;
+    
+            for (const auto& kv: this->members)
+            {
+                const auto& key = kv.first;
+                cout << "\t" << key << endl;
+            }
         }
-    }
-
-    if (this->pages.empty())
-        throw noPagesInSystem();
-
-    else
-    {
-        cout << "------------------------------------\nOur system's "
+        if (!this->pages.empty())
+        {
+            cout << "------------------------------------\nOur system's "
                 "fan pages list:\n------------------------------------" << endl;
 
-        for (const auto& kv : this->pages)
-        {
-            const auto& key = kv.first;
-            cout << "\t" << key << endl;
+            for (const auto& kv : this->pages)
+            {
+                const auto& key = kv.first;
+                cout << "\t" << key << endl;
+            }
         }
+        if (this->members.empty())
+            throw noMembersInSystem();
+        else if (this->pages.empty())
+            throw noPagesInSystem();
     }
 }
 //----------------------------------------------------------
