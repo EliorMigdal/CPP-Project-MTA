@@ -6,9 +6,9 @@ class FanPage;
 class Member {
 private:
     string name;
-    Date birthday = {0, 0, 0};
     vector<Status> bulletinBoard{};
     unordered_map<string, Member*> friends{};
+    Date birthday = {0, 0, 0};
     unordered_map<string, FanPage*> pages{};
 
 public:
