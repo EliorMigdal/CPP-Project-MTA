@@ -16,6 +16,7 @@ public:
     Status(Status&&) noexcept = default;
     explicit Status(Date&);
     Status(Date&, Time&, const string&);
+    Status(Date&, Time&, const string&, STATUS_TYPE&);
     Status(Date&, Time&, Byte&, const string&);
     explicit Status(const string&);
     ~Status() = default;

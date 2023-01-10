@@ -1,13 +1,11 @@
 #ifndef CPP_PROJECT_MEMBERS_H
 #define CPP_PROJECT_MEMBERS_H
-#include "Status.h"
+#include "Entity.h"
 class FanPage;
+class Entity;
 
-class Member {
+class Member : public Entity {
 private:
-    string name;
-    vector<Status> bulletinBoard{};
-    unordered_map<string, Member*> friends{};
     Date birthday = {0, 0, 0};
     unordered_map<string, FanPage*> pages{};
 
@@ -17,52 +15,45 @@ public:
     Member(const Member&) = default;
     Member(Member&&) noexcept = default;
     explicit Member(string&);
-    Member(const string&, Date&);
-    ~Member() = default;
-
-    //Getters
-    const string& getName() const { return name; }
-    const Date& getBirthday() const { return birthday; }
-    size_t getNumOfFriends() const { return friends.size(); }
-    size_t getNumOfStatuses() const { return bulletinBoard.size(); }
-    const vector<Status>& getStatusArr() const { return bulletinBoard; }
-    const unordered_map<string, Member*>& getFriendsArr() const { return friends; }
-    const unordered_map<string, FanPage*>& getPagesArr() const { return pages; }
-   
-    //Member-to-Member Methods
-    void addFriend(Member*) noexcept(false);
-    void removeFriend(const string&) noexcept(false);
-    bool isFriend(const string&);
-    void printFriendsArr() const noexcept(false);
-
-    //Member-to-Status Methods
-    void printStatuses(const size_t& numToPrint = PRINT_STATUS) const noexcept(false);
-    void addStatus();
-    void addStatus(const string&);
-
-    //Member-to-FanPage Methods
-    void addPage(FanPage*);
-    void removePage(const string&);
-    bool isFan(const string&);
-    void printAllPages() const noexcept(false);
-
-    //Operators Methods
-    // << Operator
-    friend ostream& operator<<(ostream&, Member*);
-    // = Operator
+    Member(string&, Date&);
     Member& operator=(Member&& mem) = default;
     Member& operator=(const Member& mem) = default;
-    // += Operator
-    const Member& operator+=(Member*);
-    const Member& operator+=(FanPage*);
-    // -= Operator
-    const Member& operator-=(Member*);
-    const Member& operator-=(FanPage*);
-    // Boolean Operators
-    bool operator>(const Member&) const;
-    bool operator>=(const Member&) const;
-    bool operator<(const Member&) const;
-    bool operator<=(const Member&) const;
+    ~Member() override = default;
+
+    //Getters
+    const Date& getBirthday() const {return birthday;}
+    const unordered_map<string, FanPage*>& getPagesArr() const {return pages;}
+    size_t getNumOfPages() const {return pages.size();}
+
+    //Methods
+    virtual void addFanPage(FanPage&) noexcept(false);
+    virtual void removeFanPage(FanPage&) noexcept(false);
+    virtual void printTenLastStatuses() noexcept(false);
+    virtual void printPages() noexcept(false);
+    virtual const Member& operator+=(Member&) noexcept(false);
+    virtual const Member& operator-=(Member&) noexcept(false);
+    virtual const Member& operator+=(FanPage&) noexcept(false);
+    virtual const Member& operator-=(FanPage&) noexcept(false);
+    bool isFan(const string&);
+
+//    Commented methods
+//    void addFriend(Member*) noexcept(false);
+//    void removeFriend(const string&) noexcept(false);
+//    bool isFriend(const string&);
+//    void printFriendsArr() const noexcept(false);
+//    void printStatuses(const size_t& numToPrint = PRINT_STATUS) const noexcept(false);
+//    void addStatus();
+//    void addStatus(const string&);
+//    void addPage(FanPage*);
+//    void removePage(const string&);
+//    void printAllPages() const noexcept(false);
+//    friend ostream& operator<<(ostream&, Member*);
+//    const Member& operator+=(FanPage*);
+//    const Member& operator-=(FanPage*);
+//    bool operator>(const Member&) const;
+//    bool operator>=(const Member&) const;
+//    bool operator<(const Member&) const;
+//    bool operator<=(const Member&) const;
 };
 
 class memberExceptions : public std::exception {
