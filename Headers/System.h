@@ -1,13 +1,10 @@
 #ifndef CPP_PROJECT_SYSTEM_H
 #define CPP_PROJECT_SYSTEM_H
-#include "FanPage.h"
-#include "Member.h"
-
+#include "Entity.h"
 class System {
 private:
     size_SI userDecision = 0;
-    unordered_map<string, Member> members{};
-    unordered_map<string, FanPage> pages{};
+    unordered_map<std::type_index, unordered_map<string, Entity*>> Entities{};
 
 public:
     //Constructors & Destructor
@@ -71,6 +68,10 @@ public:
     const char* what() const noexcept override { return "Invalid user decision."; }
 };
 
+class EntityAlreadyExists : public systemExceptions {
+public:
+    const char* what() const noexcept override { return "Entity already exists in out system."; }
+};
 class userAlreadyExists : public systemExceptions {
 public:
     const char* what() const noexcept override { return "User already exists in our system."; }

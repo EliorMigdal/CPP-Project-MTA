@@ -7,6 +7,8 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <typeindex>
+#include <typeinfo>
 using std::cout;
 using std::cin;
 using std::endl;
@@ -19,7 +21,6 @@ using std::ostream;
 
 typedef unsigned short int size_SI;
 typedef unsigned char Byte;
-
 //Const Variables
 constexpr size_SI PRINT_STATUS = 10;
 constexpr size_SI MEMBER = 0;
