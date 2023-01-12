@@ -38,9 +38,9 @@ private:
     //FanPage Methods
     void createFanPage() noexcept(false);
     void createFanPage(const string&);
-    void Add_OR_RemoveFAN(void(System::* operation)(const string&, const string&)) noexcept(false);
-    void addFan(const string&, const string&) noexcept(false);
-    void removeFan(const string&, const string&) noexcept(false);
+    void Add_OR_RemoveFAN(void(System::* operation)(Member*,FanPage*)) noexcept(false);
+    void addFan(Member*, FanPage*) noexcept(false);
+    void removeFan(Member*, FanPage*) noexcept(false);
     void addFanHardCoded(const string&, const string&);
     void removeFanHardCoded(const string&, const string&);
 
@@ -54,8 +54,8 @@ private:
     //Printers Methods
     void printAllStatuses() const noexcept(false);
     void printTenLastStatuses() const noexcept(false);
-    void printAllEntities() const noexcept(false);
-    void printAllFriends() const noexcept(false);
+    void printAllEntities()  noexcept(false);
+    void printAllFriends()  noexcept(false);
 };
 
 class systemExceptions : public std::exception {

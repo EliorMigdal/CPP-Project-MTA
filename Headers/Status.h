@@ -4,8 +4,8 @@
 
 class Status {
 private:
-    Date statusDate = { 0, 0, 0 };
-    Time statusTime = { "0","0","0" };
+    Date statusDate;
+    Time statusTime;
     STATUS_TYPE statusType = STATUS_TYPE::TEXT;
     string statusContent;
 
@@ -19,23 +19,44 @@ public:
     Status(Date&, Time&, const string&, STATUS_TYPE&);
     Status(Date&, Time&, Byte&, const string&);
     explicit Status(const string&);
-    ~Status() = default;
+    virtual ~Status() = default;
 
     //Getters
     const string& getStatusContent() const { return statusContent; }
     const Date& getStatusDate() const { return statusDate; }
     const Time& getStatusTime() const { return statusTime; }
 
+   /* virtual void showContent() const;*/
     //Operators Methods
     // << Operator
     friend ostream& operator<<(ostream&, const Status&);
     // = Operator
-    Status& operator=(Status&& status) = default;
-    Status& operator=(const Status& status) = default;
+    virtual Status& operator=(Status&& status) = default;
+    virtual Status& operator=(const Status& status) = default;
     // Boolean Operators
-    bool operator==(const Status&) const;
-    bool operator!=(const Status&) const;
+    virtual bool operator==(const Status&) const;
+    virtual bool operator!=(const Status&) const;
 };
+//class VideoStatus :public Status {
+//
+//public:
+//    VideoStatus() = default;
+//    ~VideoStatus() override = default;
+//    virtual void showContent() const override;
+//
+//
+//
+//};
+//class ImageStatus :public Status {
+//
+//public:
+//    ImageStatus() = default;
+//    ~ImageStatus() override = default;
+//
+//
+//
+//
+//};
 
 class StatusExceptions : public std::exception {
 public:

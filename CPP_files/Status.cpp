@@ -43,3 +43,8 @@ bool Status::operator!=(const Status& _status) const //Status != Status operator
     return this->Status::getStatusContent() != _status.Status::getStatusContent();
 }
 //------------------------------------------------------
+//
+//void VideoStatus::showContent() const
+//{
+//   
+//}

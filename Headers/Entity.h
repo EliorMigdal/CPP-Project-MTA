@@ -9,7 +9,7 @@ class Entity {
 protected:
     string name;
     unordered_map<string, Member*> members{};
-    vector<Status> bulletinBoard{};
+    vector<Status*> bulletinBoard{};
 public:
     Entity() = default;
     explicit Entity(string _name):name(std::move(_name)){}
@@ -18,7 +18,7 @@ public:
     const string& getName() const {return name;}
     const unordered_map<string, Member*>& getMembers() const {return members;}
     size_t getNumOfMembers() const {return members.size();}
-    const vector<Status>& getBulletinBoard() const {return bulletinBoard;}
+    const vector<Status*>& getBulletinBoard() const {return bulletinBoard;}
     size_t getNumOfStatuses() const {return bulletinBoard.size();}
 
     virtual bool checkIfMember(const string&) const;
@@ -30,6 +30,7 @@ public:
 
     friend ostream& operator<<(ostream&, Entity&);
     virtual Entity& operator=(const Entity&);
+    //virtual Entity& operator+=(Entity&) = 0;
     virtual Entity& operator=(Entity&&) noexcept = default;
     virtual bool operator>(const Entity&) const;
     virtual bool operator>=(const Entity&) const;

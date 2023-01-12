@@ -31,11 +31,13 @@ constexpr size_SI FAN_PAGE_CHOOSE = 2;
 //Structures
 struct Date
 {
+    Date() = default;
     size_SI day = 0, month = 0, year = 0;
 };
 
 struct Time
 {
+    Time() = default;
    string hour = "0", minutes = "0", seconds = "0";
 };
 

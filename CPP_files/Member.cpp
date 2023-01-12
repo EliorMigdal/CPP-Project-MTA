@@ -48,9 +48,9 @@ void Member::printTenLastStatuses() noexcept(false)
 
         size_t to_Run = _numOfStatuses - logicPrintSize;
         {
-            using reverseStatusIter = vector<Status>::const_reverse_iterator;
-            reverseStatusIter begin = this->bulletinBoard.rbegin();
-            reverseStatusIter end = this->bulletinBoard.rend();
+            using reverseStatusIter = vector<Status*>::const_reverse_iterator;
+            reverseStatusIter begin = this->bulletinBoard.crbegin();
+            reverseStatusIter end = this->bulletinBoard.crend();
             for (reverseStatusIter rit = begin; rit != end && (to_Run < _numOfStatuses); ++rit)
             {
                 cout << "------------------------------------\n\tStatus #"

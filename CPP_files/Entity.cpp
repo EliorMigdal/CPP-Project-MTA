@@ -35,9 +35,9 @@ void Entity::printAllStatuses() const //Prints all object's statuses.
     {
         cout << this->getName() << " has posted " << this->bulletinBoard.size() << " statuses:" << endl;
         size_t _numOfStatuses = this->bulletinBoard.size();
-        using reverseStatusIter = vector<Status>::const_reverse_iterator;
-        reverseStatusIter begin = this->bulletinBoard.rbegin();
-        reverseStatusIter end = this->bulletinBoard.rend();
+        using reverseStatusIter = vector<Status*>::const_reverse_iterator;
+        reverseStatusIter begin = this->bulletinBoard.crbegin();
+        reverseStatusIter end = this->bulletinBoard.crend();
         for (reverseStatusIter rit = begin; rit != end; ++rit)
         {
             cout << "------------------------------------\n\tStatus #"
@@ -68,7 +68,7 @@ void Entity::addStatus() //Adds a new status to entity's bulletin board.
     if (!statusContent.empty())
     {
         setTimeAndDate(newTime, newDate);
-        this->bulletinBoard.emplace_back(Status(newDate, newTime, statusContent, newType));
+        this->bulletinBoard.emplace_back(new Status(newDate, newTime, statusContent, newType));
     }
 
     else

@@ -14,7 +14,7 @@ void System::Start() //Hard-coded data for our system.
     while (userDecision != EXIT)
     {
         try { System::setDecision(userDecision);}
-        /*catch (EmptySystemExceptions& error) { cout << error.what() << endl; }*/
+        catch (EmptySystemExceptions& error) { cout << error.what() << endl; }
         catch (StatusExceptions& error) { cout << error.what() << endl; }
         catch (GlobalExceptions& error) { cout << error.what() << endl; }
         catch (systemExceptions& error) {cout << error.what() << endl;}
@@ -173,57 +173,57 @@ void System::setDecision(size_SI& _decision) //Gets the decision from user and a
         //    catch(memberNotFound& error) {throw memberNotFound(error);}
         //    catch(...) {throw systemExceptions();}
         //    break;
-        ////////////////////////////////////////////////////////////////////////////////////////////
-        //case (size_SI)CONNECTMEMBERS: //6
-        //    try{System::Connect_OR_DisconnectMember(&System::connectMembers);}
-        //    catch(addAFriendException& error) {throw addAFriendException(error);}
-        //    catch(connectSameMember& error) {throw connectSameMember(error);}
-        //    catch(memberExceptions& error) {throw memberExceptions(error);}
-        //    catch(memberNotFound& error) {throw memberNotFound(error);}
-        //    catch(...) {throw systemExceptions();}
-        //    break;
-        ////////////////////////////////////////////////////////////////////////////////////////////
-        //case (size_SI)DISCONNECTMEMBERS: //7
-        //    try{System::Connect_OR_DisconnectMember(&System::disconnectMembers);}
-        //    catch(removeAFriendException& error) {throw removeAFriendException(error);}
-        //    catch(removeSameMember& error) {throw removeSameMember(error);}
-        //    catch(memberExceptions& error) {throw memberExceptions(error);}
-        //    catch(memberNotFound& error) {throw memberNotFound(error);}
-        //    catch(...) {throw systemExceptions();}
-        //    break;
-        ////////////////////////////////////////////////////////////////////////////////////////////
-        //case (size_SI)ADDFAN: //8
-        //    try{System::Add_OR_RemoveFAN(&System::addFan);}
-        //    catch (addAFanException& error) { throw addAFanException(error); }
-        //    catch(entityNotFound& error) {throw entityNotFound(error);}
-        //    catch(...) {throw GlobalExceptions();}
-        //    break;
-        ////////////////////////////////////////////////////////////////////////////////////////////
-        //case (size_SI)REMOVEFAN: //9
-        //    try{System::Add_OR_RemoveFAN(&System::removeFan);}
-        //    catch (removeAFanException& error) { throw removeAFanException(error); }
-        //    catch(entityNotFound& error) {throw entityNotFound(error);}
-        //    catch(...) {throw GlobalExceptions();}
-        //    break;
-        ////////////////////////////////////////////////////////////////////////////////////////////
-        //case (size_SI)PRINTALLENTITIES: //10
-        //    try{System::printAllEntities();}
-        //    catch(noMembersInSystem& error) {throw noMembersInSystem(error);}
-        //    catch(noPagesInSystem& error) {throw noPagesInSystem(error);}
-        //    catch(...) {throw EmptySystemExceptions();}
-        //    break;
-        ////////////////////////////////////////////////////////////////////////////////////////////
-        //case (size_SI)PRINTALLFRIENDS: //11
-        //    try {System::printAllFriends();}
-        //    catch(invalidUserDecision& error) {throw invalidUserDecision(error);}
-        //    catch(printFriendsException& error) {throw printFriendsException(error);}
-        //    catch(printFansException& error) {throw printFansException(error);}
-        //    catch(memberExceptions& error) {throw memberExceptions(error);}
-        //    catch(fanPageExceptions& error) {throw fanPageExceptions(error);}
-        //    catch(entityNotFound& error) {throw entityNotFound(error);}
-        //    catch(...) {throw systemExceptions();}
-        //    break;
         //////////////////////////////////////////////////////////////////////////////////////////
+        case (size_SI)CONNECTMEMBERS: //6
+            try{System::Connect_OR_DisconnectMember(&System::connectMembers);}
+            catch(addAFriendException& error) {throw addAFriendException(error);}
+            catch(connectSameMember& error) {throw connectSameMember(error);}
+            catch(memberExceptions& error) {throw memberExceptions(error);}
+            catch(memberNotFound& error) {throw memberNotFound(error);}
+            catch(...) {throw systemExceptions();}
+            break;
+        //////////////////////////////////////////////////////////////////////////////////////////
+        case (size_SI)DISCONNECTMEMBERS: //7
+            try{System::Connect_OR_DisconnectMember(&System::disconnectMembers);}
+            catch(removeAFriendException& error) {throw removeAFriendException(error);}
+            catch(removeSameMember& error) {throw removeSameMember(error);}
+            catch(memberExceptions& error) {throw memberExceptions(error);}
+            catch(memberNotFound& error) {throw memberNotFound(error);}
+            catch(...) {throw systemExceptions();}
+            break;
+        //////////////////////////////////////////////////////////////////////////////////////////
+        case (size_SI)ADDFAN: //8
+            try{System::Add_OR_RemoveFAN(&System::addFan);}
+            catch (addAFanException& error) { throw addAFanException(error); }
+            catch(entityNotFound& error) {throw entityNotFound(error);}
+            catch(...) {throw GlobalExceptions();}
+            break;
+        //////////////////////////////////////////////////////////////////////////////////////////
+        case (size_SI)REMOVEFAN: //9
+            try{System::Add_OR_RemoveFAN(&System::removeFan);}
+            catch (removeAFanException& error) { throw removeAFanException(error); }
+            catch(entityNotFound& error) {throw entityNotFound(error);}
+            catch(...) {throw GlobalExceptions();}
+            break;
+        //////////////////////////////////////////////////////////////////////////////////////////
+        case (size_SI)PRINTALLENTITIES: //10
+            try{System::printAllEntities();}
+            catch(noMembersInSystem& error) {throw noMembersInSystem(error);}
+            catch(noPagesInSystem& error) {throw noPagesInSystem(error);}
+            catch(...) {throw EmptySystemExceptions();}
+            break;
+        //////////////////////////////////////////////////////////////////////////////////////////
+        case (size_SI)PRINTALLFRIENDS: //11
+            try {System::printAllFriends();}
+            catch(invalidUserDecision& error) {throw invalidUserDecision(error);}
+            catch(printFriendsException& error) {throw printFriendsException(error);}
+            catch(printFansException& error) {throw printFansException(error);}
+            catch(memberExceptions& error) {throw memberExceptions(error);}
+            catch(fanPageExceptions& error) {throw fanPageExceptions(error);}
+            catch(entityNotFound& error) {throw entityNotFound(error);}
+            catch(...) {throw systemExceptions();}
+            break;
+        ////////////////////////////////////////////////////////////////////////////////////////
     }
 }
 //----------------------------------------------------------
@@ -327,60 +327,81 @@ void System::createMember() //Read name and birthday from the user with validati
 //        this->members[_name] = Member{ _name,_date };
 //}
 ////----------------------------------------------------------
-//void System::Connect_OR_DisconnectMember(void(System::* operation)(const string&, const string&)) //Connects or
-//// Disconnects Members.
-//{
-//    string firstMemberName, secondMemberName;
-//    cout << "Please enter two member names:\nFirst member: ";
-//    cin.ignore();
-//    getline(cin, firstMemberName);
-//    cout << "Second member: " << flush;
-//    getline(cin, secondMemberName);
-//
-//    if (this->members.find(firstMemberName) != this->members.end() &&
-//        this->members.find(secondMemberName) != this->members.end())
-//    {
-//        try {(this->*operation)(firstMemberName, secondMemberName);}
-//        catch(addAFriendException& error) {throw addAFriendException(error);}
-//        catch(removeAFriendException& error) {throw removeAFriendException(error);}
-//        catch(connectSameMember& error) {throw connectSameMember(error);}
-//        catch(removeSameMember& error) {throw removeSameMember(error);}
-//        catch(...) {throw memberExceptions();}
-//    }
-//
-//    else
-//        throw memberNotFound();
-//}
-////----------------------------------------------------------
-//void System::connectMembers(const string& firstMemberName, const string& secondMemberName) //Connects two members.
-//{
-//    if (firstMemberName != secondMemberName)
-//    {
-//        try{this->members[firstMemberName] += &this->members[secondMemberName];}
-//        catch (addAFriendException& error) {throw addAFriendException(error);}
-//        catch (...) {throw memberExceptions();}
-//        try{this->members[secondMemberName] += &this->members[firstMemberName];}
-//        catch (addAFriendException& error) {throw addAFriendException(error);}
-//        catch (...) {throw memberExceptions();}
-//    }
-//    else
-//        throw connectSameMember();
-//}
-////----------------------------------------------------------
-//void System::disconnectMembers(const string& firstMemberName, const string& secondMemberName) //Disconnects two members.
-//{
-//    if (firstMemberName != secondMemberName)
-//    {
-//        try{this->members[firstMemberName] -= &this->members[secondMemberName];}
-//        catch (removeAFriendException& error) {throw removeAFriendException(error);}
-//        catch(...) {throw memberExceptions();}
-//        try{this->members[secondMemberName] -= &this->members[firstMemberName];}
-//        catch (removeAFriendException& error) {throw removeAFriendException(error);}
-//        catch(...) {throw memberExceptions();}
-//    }
-//    else
-//        throw removeSameMember();
-//}
+void System::Connect_OR_DisconnectMember(void(System::* operation)(const string&, const string&)) //Connects or
+// Disconnects Members.
+{
+    string firstMemberName, secondMemberName;
+    cout << "Please enter two member names:\nFirst member: ";
+    cin.ignore();
+    getline(cin, firstMemberName);
+    cout << "Second member: " << flush;
+    getline(cin, secondMemberName);
+
+    if (!firstMemberName.empty() && !secondMemberName.empty())
+    {
+        const unordered_map<string, Entity*> placeHolder = Entities[std::type_index(typeid(Member*))];
+        if (placeHolder.find(firstMemberName) != placeHolder.end() &&
+            placeHolder.find(secondMemberName) != placeHolder.end())
+        {
+            try { (this->*operation)(firstMemberName, secondMemberName); }
+            catch (addAFriendException& error) { throw addAFriendException(error); }
+            catch (removeAFriendException& error) { throw removeAFriendException(error); }
+            catch (connectSameMember& error) { throw connectSameMember(error); }
+            catch (removeSameMember& error) { throw removeSameMember(error); }
+            catch (...) { throw memberExceptions(); }
+        }
+
+        else
+            throw memberNotFound();
+
+    }
+    else
+        throw EmptyName();
+}
+//----------------------------------------------------------
+void System::connectMembers(const string& firstMemberName, const string& secondMemberName) //Connects two members.
+{
+    if (firstMemberName != secondMemberName)
+    {
+        const unordered_map<string, Entity*>& placeHolder = Entities[std::type_index(typeid(Member*))];
+        Member* firstMemberPTR = dynamic_cast<Member*>(placeHolder.at(firstMemberName));
+        Member* secondMemberPTR = dynamic_cast<Member*>(placeHolder.at(secondMemberName));
+        try
+        {
+            *firstMemberPTR += *secondMemberPTR;
+        }
+        catch (addAFriendException& error) {throw addAFriendException(error);}
+        catch (...) {throw memberExceptions();}
+        try
+        {
+
+            *secondMemberPTR += *firstMemberPTR;
+        
+        }
+        catch (addAFriendException& error) {throw addAFriendException(error);}
+        catch (...) {throw memberExceptions();}
+    }
+    else
+        throw connectSameMember();
+}
+//----------------------------------------------------------
+void System::disconnectMembers(const string& firstMemberName, const string& secondMemberName) //Disconnects two members.
+{
+    if (firstMemberName != secondMemberName)
+    {
+        const unordered_map<string, Entity*>& placeHolder = Entities[std::type_index(typeid(Member*))];
+        Member* firstMemberPTR = dynamic_cast<Member*>(placeHolder.at(firstMemberName));
+        Member* secondMemberPTR = dynamic_cast<Member*>(placeHolder.at(secondMemberName));
+        try{ *firstMemberPTR -= *secondMemberPTR; }
+        catch (removeAFriendException& error) {throw removeAFriendException(error);}
+        catch(...) {throw memberExceptions();}
+        try{ *secondMemberPTR -= *firstMemberPTR; }
+        catch (removeAFriendException& error) {throw removeAFriendException(error);}
+        catch(...) {throw memberExceptions();}
+    }
+    else
+        throw removeSameMember();
+}
 ////----------------------------------------------------------
 //void System::connectMembersHardCoded(Member* member1, Member* member2) //Connect members for
 //// hard-coded data.
@@ -432,52 +453,56 @@ void System::createFanPage() //Creates a fan page.
 //        this->pages[_name] = FanPage(_name);
 //}
 ////----------------------------------------------------------
-//void System::Add_OR_RemoveFAN(void(System::*operation)(const string&,const string&)) //Adds or removes a fan.
-//{
-//    string fanPageName, memberName;
-//    cout << "Enter a member's and a fan page's name: " << endl;
-//    cin.ignore();
-//    cout << "Member name: ";
-//    getline(cin, memberName);
-//    cout << "Fan Page name: " << flush;
-//    getline(cin, fanPageName);
-//
-//    if (members.find(memberName) != members.end() && pages.find(fanPageName) != pages.end())
-//    {
-//        try {(this->*operation)(fanPageName, memberName);}
-//        
-//        catch(addAFanException& error) {throw addAFanException(error);}
-//        catch(removeAFanException& error) {throw removeAFanException(error);}
-//        catch(GlobalExceptions& error) {throw GlobalExceptions(error);}
-//
-//    }
-//
-//    else
-//        throw entityNotFound();
-//}
-////----------------------------------------------------------
-//void System::addFan(const string& fanPageName, const string& memberName) //Adds a fan to a fan page's members array.
-//{
-//    try 
-//    {
-//        this->members.at(memberName) += &this->pages.at(fanPageName);
-//        this->pages.at(fanPageName) += &this->members.at(memberName);
-//    }
-//     catch (addAFanException& error) { throw addAFanException(error); }
-//     catch(...) {throw GlobalExceptions();}
-//}
-////----------------------------------------------------------
-//void System::removeFan(const string& fanPageName, const string& memberName) //Removes a fan from a fan page's
-//// members array.
-//{
-//    try 
-//    {
-//        this->pages.at(fanPageName) -= &this->members.at(memberName);
-//        this->members.at(memberName) -= &this->pages.at(fanPageName);
-//    }
-//    catch(removeAFanException& error) {throw removeAFanException(error);}
-//    catch (...) {throw GlobalExceptions();}
-//}
+void System::Add_OR_RemoveFAN(void(System::*operation)(Member*,FanPage*)) //Adds or removes a fan.
+{
+    string fanPageName, memberName;
+    cout << "Enter a member's and a fan page's name: " << endl;
+    cin.ignore();
+    cout << "Member name: ";
+    getline(cin, memberName);
+    cout << "Fan Page name: " << flush;
+    getline(cin, fanPageName);
+     const unordered_map<string, Entity*>& placeHolderFanPage = Entities[std::type_index(typeid(FanPage*))];
+     const unordered_map<string, Entity*>& placeHolderMember = Entities[std::type_index(typeid(Member*))];
+    if (!memberName.empty() && !fanPageName.empty())
+    {
+        if (placeHolderMember.find(memberName) != placeHolderMember.end() && 
+            placeHolderFanPage.find(fanPageName) != placeHolderFanPage.end())
+        {
+            try { (this->*operation)(dynamic_cast<Member*>(placeHolderMember.at(memberName)), dynamic_cast<FanPage*>(placeHolderFanPage.at(fanPageName))); }
+            catch (addAFanException& error) { throw addAFanException(error); }
+            catch (removeAFanException& error) { throw removeAFanException(error); }
+            catch (GlobalExceptions& error) { throw GlobalExceptions(error); }
+        }
+        else
+            throw entityNotFound();
+    }
+    else
+        throw EmptyName();
+}
+//----------------------------------------------------------
+void System::addFan(Member* MemberPTR , FanPage* FanPagePTR) //Adds a fan to a fan page's members array.
+{
+    try 
+    {
+        *MemberPTR += *FanPagePTR;
+        *FanPagePTR += *MemberPTR;
+    }
+     catch (addAFanException& error) { throw addAFanException(error); }
+     catch(...) {throw GlobalExceptions();}
+}
+//----------------------------------------------------------
+void System::removeFan(Member* MemberPTR, FanPage* FanPagePTR) //Removes a fan from a fan page's
+// members array.
+{
+    try 
+    {
+        *MemberPTR -= *FanPagePTR;
+        *FanPagePTR -= *MemberPTR;
+    }
+    catch(removeAFanException& error) {throw removeAFanException(error);}
+    catch (...) {throw GlobalExceptions();}
+}
 ////----------------------------------------------------------
 //void System::addFanHardCoded(const string& pageName, const string& fanName) //Add fan for hard-coded data.
 //{
@@ -494,6 +519,7 @@ void System::createFanPage() //Creates a fan page.
 //
 ////Status Methods
 ////----------------------------------------------------------
+
 //void System::newStatus() //Creates a new status.
 //{
 //    string name;
@@ -527,6 +553,7 @@ void System::createFanPage() //Creates a fan page.
 //        throw entityNotFound();
 //   
 //}
+
 ////----------------------------------------------------------
 //void System::newStatus(const string& name, const size_SI& type, const string& statusContent) //Creates a new status for
 //// hard-coded data.
@@ -621,71 +648,84 @@ inline bool System::BirthdayCheck(const Date& _birthday) //Verifies birthday ins
 //
 //}
 ////----------------------------------------------------------
-//void System::printAllEntities() const //Prints all entities.
-//{
-//    if (this->members.empty() && this->pages.empty())
-//        throw EmptySystemExceptions();
-//    else
-//    {
-//        if (!this->members.empty())
-//        {
-//            cout << "------------------------------------\nOur system's "
-//                    "members list:\n------------------------------------" << endl;
-//    
-//            for (const auto& kv: this->members)
-//            {
-//                const auto& key = kv.first;
-//                cout << "\t" << key << endl;
-//            }
-//        }
-//        if (!this->pages.empty())
-//        {
-//            cout << "------------------------------------\nOur system's "
-//                "fan pages list:\n------------------------------------" << endl;
-//
-//            for (const auto& kv : this->pages)
-//            {
-//                const auto& key = kv.first;
-//                cout << "\t" << key << endl;
-//            }
-//        }
-//        if (this->members.empty())
-//            throw noMembersInSystem();
-//        else if (this->pages.empty())
-//            throw noPagesInSystem();
-//    }
-//}
+void System::printAllEntities() //Prints all entities.
+{
+
+    if (Entities.empty())
+        throw EmptySystemExceptions();
+    else
+    {
+        const unordered_map<string, Entity*>& placeHolderFanPage = Entities[std::type_index(typeid(FanPage*))];
+        const unordered_map<string, Entity*>& placeHolderMember = Entities[std::type_index(typeid(Member*))];
+        if (!placeHolderMember.empty())
+        {
+            cout << "------------------------------------\nOur system's "
+                    "members list:\n------------------------------------" << endl;
+    
+            for (const auto& kv: placeHolderMember)
+            {
+                const auto& key = kv.first;
+                cout << "\t" << key << endl;
+            }
+        }
+        else
+        {
+            throw noMembersInSystem();
+        }
+        if (!placeHolderFanPage.empty())
+        {
+            cout << "------------------------------------\nOur system's "
+                "fan pages list:\n------------------------------------" << endl;
+
+            for (const auto& kv : placeHolderFanPage)
+            {
+                const auto& key = kv.first;
+                cout << "\t" << key << endl;
+            }
+        }
+        else
+        {
+            throw noPagesInSystem();
+        }      
+    }
+}
 ////----------------------------------------------------------
-//void System::printAllFriends() const //Prints an entity's friends.
-//{
-//    int decision;
-//    string entityName;
-//    cout << "Please enter the entity of which you want to view its friends:";
-//
-//    try {decision = System::memberOrFanPage();}
-//    catch(invalidUserDecision& error) {throw invalidUserDecision(error);}
-//    catch(...) {throw systemExceptions();}
-//    getline(cin, entityName);
-//
-//    if (this->pages.find(entityName) != this->pages.end() ||
-//    this->members.find(entityName) != this->members.end())
-//    {
-//        if (decision == MEMBER_CHOOSE)
-//        {
-//            try {this->members.at(entityName).Member::printFriendsArr();}
-//            catch(printFriendsException& error) {throw printFriendsException(error);}
-//            catch (...) {throw memberExceptions();}
-//        }
-//
-//        else if (decision == FAN_PAGE_CHOOSE)
-//        {
-//            try {this->pages.at(entityName).FanPage::printFans();}
-//            catch(printFansException& error) {throw printFansException(error);}
-//            catch (...) {throw fanPageExceptions();}
-//        }
-//    }
-//
-//    else
-//        throw entityNotFound();
-//}
+void System::printAllFriends()  //Prints an entity's friends.
+{
+    int decision;
+    string entityName;
+    cout << "Please enter the entity of which you want to view its friends:";
+
+    try {decision = System::memberOrFanPage();}
+    catch(invalidUserDecision& error) {throw invalidUserDecision(error);}
+    catch(...) {throw systemExceptions();}
+    getline(cin, entityName);
+    if (!entityName.empty())
+    { 
+         const unordered_map<string, Entity*>& placeHolderMember = Entities[std::type_index(typeid(Member*))];
+         const unordered_map<string, Entity*>& placeHolderFanPage = Entities[std::type_index(typeid(FanPage*))];
+        if (placeHolderFanPage.find(entityName) != placeHolderFanPage.end() ||
+            placeHolderMember.find(entityName) != placeHolderMember.end())
+        {
+            if (decision == MEMBER_CHOOSE)
+            {
+                Member* MemberPTR = dynamic_cast<Member*>(placeHolderMember.at(entityName));
+                try { MemberPTR->Entity::printMembers();}
+                catch (printFriendsException& error) { throw printFriendsException(error); }
+                catch (...) { throw memberExceptions(); }
+            }
+            else if (decision == FAN_PAGE_CHOOSE)
+            {
+                FanPage* FanPagePTR = dynamic_cast<FanPage*>(placeHolderFanPage.at(entityName));
+                try { FanPagePTR->Entity::printMembers();}
+                catch (printFansException& error) { throw printFansException(error); }
+                catch (...) { throw fanPageExceptions(); }
+            }
+        }
+        else
+            throw entityNotFound();
+    }
+    else
+        throw EmptyName();
+}
 //----------------------------------------------------------
