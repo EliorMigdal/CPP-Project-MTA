@@ -18,7 +18,6 @@ public:
     //Start Methods
     void Start() noexcept(false);
 private:
-    void initialData();
 
     //System-to-user Methods
     static inline void printMenu();
@@ -28,34 +27,37 @@ private:
 
     //Member Methods
     void createMember() noexcept(false);
-    void createMember(const string&, Date&);
     void Connect_OR_DisconnectMember(void(System::* operation)(const string&, const string&)) noexcept(false);
     void connectMembers(const string&, const string&) noexcept(false);
     void disconnectMembers(const string&, const string&) noexcept(false);
-    void connectMembersHardCoded(Member*, Member*);
-    void disconnectMembersHardCoded(Member*, Member*);
     
     //FanPage Methods
     void createFanPage() noexcept(false);
-    void createFanPage(const string&);
     void Add_OR_RemoveFAN(void(System::* operation)(Member*,FanPage*)) noexcept(false);
     void addFan(Member*, FanPage*) noexcept(false);
     void removeFan(Member*, FanPage*) noexcept(false);
-    void addFanHardCoded(const string&, const string&);
-    void removeFanHardCoded(const string&, const string&);
 
     //Status Methods
     void newStatus() noexcept(false);
-    void newStatus(const string&, const size_SI&, const string&);
     
     //Global Methods
     static inline bool BirthdayCheck(const Date&);
    
     //Printers Methods
-    void printAllStatuses() const noexcept(false);
-    void printTenLastStatuses() const noexcept(false);
-    void printAllEntities()  noexcept(false);
-    void printAllFriends()  noexcept(false);
+    void printAllStatuses() noexcept(false);
+    void printTenLastStatuses() noexcept(false);
+    void printAllEntities() noexcept(false);
+    void printAllFriends() noexcept(false);
+
+    //Commented
+//    void newStatus(const string&, const size_SI&, const string&);
+//    void addFanHardCoded(const string&, const string&);
+//    void removeFanHardCoded(const string&, const string&);
+//    void createFanPage(const string&);
+//    void connectMembersHardCoded(Member*, Member*);
+//    void disconnectMembersHardCoded(Member*, Member*);
+//    void createMember(const string&, Date&);
+//    void initialData();
 };
 
 class systemExceptions : public std::exception {
@@ -105,11 +107,8 @@ class entityNotFound : public systemExceptions {
 };
 
 class EmptyName : public systemExceptions {
-
     const char* what() const noexcept override { return "Cannot enter an empty name."; }
 };
-
-
 
 class EmptySystemExceptions : public std::exception {
 public:
@@ -123,6 +122,5 @@ class noMembersInSystem : public EmptySystemExceptions {
 class noPagesInSystem : public EmptySystemExceptions {
     const char* what() const noexcept override { return "System has no pages yet."; }
 };
-
 
 #endif //CPP_PROJECT_SYSTEM_H

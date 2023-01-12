@@ -31,8 +31,8 @@ public:
     // << Operator
     friend ostream& operator<<(ostream&, const Status&);
     // = Operator
-    virtual Status& operator=(Status&& status) = default;
-    virtual Status& operator=(const Status& status) = default;
+    Status& operator=(Status&& status) = default;
+    Status& operator=(const Status& status) = default;
     // Boolean Operators
     virtual bool operator==(const Status&) const;
     virtual bool operator!=(const Status&) const;
@@ -60,7 +60,7 @@ public:
 
 class StatusExceptions : public std::exception {
 public:
-    const char* what() const noexcept override { return "Status error"; }
+    const char* what() const noexcept override { return "Status error."; }
 };
 class EmptyStatus :public StatusExceptions {
 public:

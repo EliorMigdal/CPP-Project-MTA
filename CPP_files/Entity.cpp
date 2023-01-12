@@ -78,7 +78,7 @@ void Entity::addStatus() //Adds a new status to entity's bulletin board.
 void Entity::printMembers() const //Print an entity's members list.
 {
     if (this->members.empty())
-        throw entityHasNoMembers();
+        throw printFriendsException();
 
     else
     {

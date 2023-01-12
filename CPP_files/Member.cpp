@@ -8,6 +8,7 @@ Member::Member(string& _name): Entity(_name){}
 Member::Member(std::string &_name, Date &_date): Entity(_name), birthday(_date) {}
 //----------------------------------------------------------
 
+
 //Override functions
 //----------------------------------------------------------
 void Member::addFanPage(FanPage &fanPage) noexcept(false)
