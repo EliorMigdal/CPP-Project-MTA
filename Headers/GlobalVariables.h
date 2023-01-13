@@ -25,10 +25,9 @@ using std::fstream;//reading&writing
 
 typedef unsigned short int size_SI;
 typedef unsigned char Byte;
+
 //Const Variables
 constexpr size_SI PRINT_STATUS = 10;
-constexpr size_SI MEMBER = 0;
-constexpr size_SI FAN_PAGE = 1;
 constexpr size_SI MEMBER_CHOOSE = 1;
 constexpr size_SI FAN_PAGE_CHOOSE = 2;
 
@@ -54,7 +53,6 @@ enum DECISION_TYPE { CREATEMEMBER = 1, CREATEFANPAGE, NEWSTATUS,
 //Global Functions
 void readBirthday(Date& birthday);
 void setTimeAndDate(Time& exactTime, Date& exactDate);
-
 
 class GlobalExceptions : public std::exception {
 public:

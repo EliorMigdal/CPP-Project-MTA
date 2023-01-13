@@ -76,6 +76,7 @@ class EntityAlreadyExists : public systemExceptions {
 public:
     const char* what() const noexcept override { return "Entity already exists in out system."; }
 };
+
 class userAlreadyExists : public systemExceptions {
 public:
     const char* what() const noexcept override { return "User already exists in our system."; }
@@ -97,18 +98,22 @@ public:
 };
 
 class connectSameMember : public systemExceptions {
+public:
     const char* what() const noexcept override { return "Cannot add yourself to your friends list."; }
 };
 
 class removeSameMember : public systemExceptions {
+public:
     const char* what() const noexcept override { return "Cannot remove yourself from your friends list."; }
 };
 
 class entityNotFound : public systemExceptions {
+public:
     const char* what() const noexcept override { return "Entity was not found in our system."; }
 };
 
 class EmptyName : public systemExceptions {
+public:
     const char* what() const noexcept override { return "Cannot enter an empty name."; }
 };
 
@@ -118,11 +123,18 @@ public:
 };
 
 class noMembersInSystem : public EmptySystemExceptions {
+public:
     const char* what() const noexcept override { return "System has no members yet."; }
 };
 
 class noPagesInSystem : public EmptySystemExceptions {
+public:
     const char* what() const noexcept override { return "System has no pages yet."; }
+};
+
+class corruptedFile : public systemExceptions {
+public:
+    const char* what() const noexcept override { return "File is corrupted."; }
 };
 
 #endif //CPP_PROJECT_SYSTEM_H

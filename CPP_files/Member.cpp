@@ -5,31 +5,38 @@
 //----------------------------------------------------------
 Member::Member(string& _name): Entity(_name){}
 //----------------------------------------------------------
-Member::Member(std::string &_name, Date &_date): Entity(_name), birthday(_date) {}
+Member::Member(std::string &_name, Date &_date): Entity(_name), birthday(_date){}
 //----------------------------------------------------------
 
-
-//Override functions
+//Member-to-FanPage Methods
 //----------------------------------------------------------
-void Member::addFanPage(FanPage &fanPage) noexcept(false)
+void Member::addFanPage(FanPage &fanPage) noexcept(false) //Adds a fan page.
 {
-    if (this->isFan(fanPage.Entity::getName()))
+    if (this->isFan(fanPage))
         throw addAFanException();
 
     else
         this->pages[fanPage.Entity::getName()] = &fanPage;
 }
 //----------------------------------------------------------
-void Member::removeFanPage(FanPage &fanPage) noexcept(false)
+void Member::removeFanPage(FanPage &fanPage) noexcept(false) //Removes a fan page.
 {
-    if (!this->isFan(fanPage.Entity::getName()))
+    if (!this->isFan(fanPage))
         throw removeAFanException();
 
     else
         this->pages.erase(fanPage.Entity::getName());
 }
 //----------------------------------------------------------
-void Member::printTenLastStatuses() noexcept(false)
+bool Member::isFan(FanPage & _fanPage) //Searches for fan page in member's pages.
+{
+    return this->pages.find(_fanPage.FanPage::getName()) != this->pages.end();
+}
+//----------------------------------------------------------
+
+//Printer Methods
+//----------------------------------------------------------
+void Member::printTenLastStatuses() noexcept(false) //Prints all of member's friends' 10 last statuses.
 {
     if (this->bulletinBoard.empty())
         throw memberPrintStatusesException();
@@ -61,7 +68,7 @@ void Member::printTenLastStatuses() noexcept(false)
     }
 }
 //----------------------------------------------------------
-void Member::printPages() noexcept(false)
+void Member::printPages() noexcept(false) //Prints member's pages (Implementation only).
 {
     if (this->pages.empty())
         throw printPagesException();
@@ -73,7 +80,26 @@ void Member::printPages() noexcept(false)
     }
 }
 //----------------------------------------------------------
-const Member &Member::operator+=(FanPage &fanPage) noexcept(false)
+
+//Operators
+//----------------------------------------------------------
+const Member &Member::operator+=(Member& _member) //Member += Member operator.
+{
+    try{this->Entity::addMember(_member);}
+    catch (addAFriendException& error) { throw addAFriendException(error); }
+    catch (...) { throw memberExceptions(); }
+    return *this;
+}
+//----------------------------------------------------------
+const Member &Member::operator-=(Member& _member) //Member -= Member operator.
+{
+    try {this->Member::removeMember(_member);}
+    catch (removeAFriendException& error) {throw removeAFriendException(error);}
+    catch(...) {throw memberExceptions();}
+    return *this;
+}
+//----------------------------------------------------------
+const Member &Member::operator+=(FanPage &fanPage) noexcept(false) //Member += FanPage operator.
 {
     try {this->Member::addFanPage(fanPage);}
     catch (addAFanException& error) { throw error; }
@@ -81,7 +107,7 @@ const Member &Member::operator+=(FanPage &fanPage) noexcept(false)
     return *this;
 }
 //----------------------------------------------------------
-const Member &Member::operator-=(FanPage &fanPage) noexcept(false)
+const Member &Member::operator-=(FanPage &fanPage) noexcept(false) //Member -= FanPage operator.
 {
     try {this->Member::removeFanPage(fanPage);}
     catch (removeAFanException& error) {throw error;}
@@ -90,31 +116,9 @@ const Member &Member::operator-=(FanPage &fanPage) noexcept(false)
     return *this;
 }
 //----------------------------------------------------------
-bool Member::isFan(const string & _pageName) //Searches for fan page in member's pages.
-{
-    return this->pages.find(_pageName) != this->pages.end();
-}
-//----------------------------------------------------------
-const Member &Member::operator+=(Member& _member) //Member + Member operator.
-{
-    try{this->Entity::addMember(_member);}
-    catch (addAFriendException& error) { throw addAFriendException(error); }
-    catch (...) { throw memberExceptions(); }
-    return *this;
-}
-//----------------------------------------------------------
-const Member &Member::operator-=(Member& _member) //Member - Member operator.
-{
-    try {this->Member::removeMember(_member);}
-    catch (removeAFriendException& error) {throw removeAFriendException(error);}
-    catch(...) {throw memberExceptions();}
-    return *this;
-}
-//----------------------------------------------------------
 
-//
-////Member-to-Member Methods
-////----------------------------------------------------------
+//Commented Methods
+//----------------------------------------------------------
 //void Member::addFriend(Member* memberToAdd) //Adds a new friends to the friends array.
 //{
 //    if (!this->Member::isFriend(memberToAdd->getName()))
@@ -123,7 +127,7 @@ const Member &Member::operator-=(Member& _member) //Member - Member operator.
 //    else
 //        throw addAFriendException();
 //}
-////----------------------------------------------------------
+//----------------------------------------------------------
 //void Member::removeFriend(const string& memberToRemove) //Removes a friend from the friends array.
 //{
 //    if (this->Member::isFriend(memberToRemove))
@@ -132,12 +136,12 @@ const Member &Member::operator-=(Member& _member) //Member - Member operator.
 //    else
 //        throw removeAFriendException();
 //}
-////----------------------------------------------------------
+//----------------------------------------------------------
 //bool Member::isFriend(const string& member_name) //Searches for a member in other member's friends array.
 //{
 //    return this->friends.find(member_name) != this->friends.end();
 //}
-////----------------------------------------------------------
+//----------------------------------------------------------
 //void Member::printFriendsArr() const //Prints friends' names.
 //{
 //    if (this->friends.empty())
@@ -151,10 +155,9 @@ const Member &Member::operator-=(Member& _member) //Member - Member operator.
 //            cout <<"\t" << kv.first << endl;
 //    }
 //}
-////----------------------------------------------------------
-//
-////Member-to-Status Methods
-////----------------------------------------------------------
+//----------------------------------------------------------
+//Member-to-Status Methods
+//----------------------------------------------------------
 //void Member::printStatuses(const size_t& numToPrint) const //Prints member's statuses.
 //{
 //    if (this->bulletinBoard.empty())
@@ -189,7 +192,7 @@ const Member &Member::operator-=(Member& _member) //Member - Member operator.
 //        }
 //    }
 //}
-////----------------------------------------------------------
+//----------------------------------------------------------
 //void Member::addStatus() //Creates a new status.
 //{
 //    Date newDate;
@@ -205,7 +208,7 @@ const Member &Member::operator-=(Member& _member) //Member - Member operator.
 //    else
 //        throw EmptyStatus();
 //}
-////----------------------------------------------------------
+//----------------------------------------------------------
 //void Member::addStatus(const string& statusContent) //For hard-coded data.
 //{
 //    Date newDate;
@@ -213,10 +216,9 @@ const Member &Member::operator-=(Member& _member) //Member - Member operator.
 //    setTimeAndDate(newTime, newDate);
 //    this->bulletinBoard.emplace_back((newDate, newTime, statusContent));
 //}
-////----------------------------------------------------------
-//
-////Member-to-FanPage Methods
-////----------------------------------------------------------
+//----------------------------------------------------------
+//Member-to-FanPage Methods
+//----------------------------------------------------------
 //void Member::addPage(FanPage* fanPage_obj) //Adds a new page to the pages array.
 //{
 //    if (!this->Member::isFan(fanPage_obj->FanPage::getName()))
@@ -225,7 +227,7 @@ const Member &Member::operator-=(Member& _member) //Member - Member operator.
 //    else
 //        throw addAFanException();
 //}
-////----------------------------------------------------------
+//----------------------------------------------------------
 //void Member::removePage(const string& fanPage_name) //Removes a page from the page array.
 //{
 //    if (this->Member::isFan(fanPage_name))
@@ -234,8 +236,8 @@ const Member &Member::operator-=(Member& _member) //Member - Member operator.
 //    else
 //        throw removeAFanException();
 //}
-////----------------------------------------------------------
-////----------------------------------------------------------
+//----------------------------------------------------------
+//----------------------------------------------------------
 //void Member::printAllPages() const //Prints a member's pages list.
 //{
 //    unordered_map<string, FanPage*> u_fanMap = this->Member::getPagesArr();
@@ -245,10 +247,9 @@ const Member &Member::operator-=(Member& _member) //Member - Member operator.
 //    for (const auto& kv : u_fanMap)
 //        cout << kv.first << endl;
 //}
-////----------------------------------------------------------
-//
-////Operators Methods
-////----------------------------------------------------------
+//----------------------------------------------------------
+//Operators Methods
+//----------------------------------------------------------
 //ostream& operator<<(ostream& out, Member* _member) //Print operator.
 //{
 //    return out << _member->Member::getName();
@@ -268,24 +269,24 @@ const Member &Member::operator-=(Member& _member) //Member - Member operator.
 //    catch (...) {throw GlobalExceptions();}
 //    return *this;
 //}
-////----------------------------------------------------------
+//----------------------------------------------------------
 //bool Member::operator<(const Member& _member) const //Member < Member operator.
 //{
 //    return this->Member::getNumOfFriends() < _member.Member::getNumOfFriends();
 //}
-////----------------------------------------------------------
+//----------------------------------------------------------
 //bool Member::operator<=(const Member& _member) const //Member <= Member operator.
 //{
 //    return this->Member::getNumOfFriends() <= _member.Member::getNumOfFriends();
 //}
-////----------------------------------------------------------
+//----------------------------------------------------------
 //bool Member::operator>(const Member& _member) const //Member > Member operator.
 //{
 //    return this->Member::getNumOfFriends() > _member.Member::getNumOfFriends();
 //}
-////----------------------------------------------------------
+//----------------------------------------------------------
 //bool Member::operator>=(const Member& _member) const //Member >= Member operator.
 //{
 //    return this->Member::getNumOfFriends() >= _member.Member::getNumOfFriends();
 //}
-////----------------------------------------------------------
+//----------------------------------------------------------

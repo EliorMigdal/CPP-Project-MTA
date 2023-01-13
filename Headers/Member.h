@@ -2,7 +2,6 @@
 #define CPP_PROJECT_MEMBERS_H
 #include "Entity.h"
 class FanPage;
-class Entity;
 
 class Member : public Entity {
 private:
@@ -16,25 +15,29 @@ public:
     Member(Member&&) noexcept = delete;
     explicit Member(string&);
     Member(string&, Date&);
-    Member& operator=(Member&& mem) = default;
     Member& operator=(const Member& mem) = default;
+    Member& operator=(Member&& mem) = default;
     ~Member() override = default;
 
     //Getters
     const Date& getBirthday() const {return birthday;}
-    const unordered_map<string, FanPage*>& getPagesArr() const {return pages;}
+    const unordered_map<string, FanPage*>& getPages() const {return pages;}
     size_t getNumOfPages() const {return pages.size();}
 
-    //Methods
+    //Member-to-FanPage Methods
     virtual void addFanPage(FanPage&) noexcept(false);
     virtual void removeFanPage(FanPage&) noexcept(false);
+    bool isFan(FanPage&);
+
+    //Printer Methods
     virtual void printTenLastStatuses() noexcept(false);
     virtual void printPages() noexcept(false);
+
+    //Operators
     virtual const Member& operator+=(Member&) noexcept(false);
     virtual const Member& operator-=(Member&) noexcept(false);
     virtual const Member& operator+=(FanPage&) noexcept(false);
     virtual const Member& operator-=(FanPage&) noexcept(false);
-    bool isFan(const string&);
 
 //    Commented methods
 //    void addFriend(Member*) noexcept(false);
