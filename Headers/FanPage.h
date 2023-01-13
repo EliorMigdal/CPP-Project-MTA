@@ -6,8 +6,8 @@ class FanPage : public Entity {
 public:
     //Constructors & Destructor
     FanPage() = default;
-    FanPage(const FanPage& obj) = default;
-    FanPage(FanPage&& fanPage) noexcept = default;
+    FanPage(const FanPage&) = delete;
+    FanPage(FanPage&&) noexcept = delete;
     explicit FanPage(string&);
     FanPage& operator=(const FanPage& fan_page) = default;
     FanPage& operator=(FanPage&& fan_page) = default;

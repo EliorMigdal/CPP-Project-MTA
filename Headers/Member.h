@@ -12,8 +12,8 @@ private:
 public:
     //Constructors & Destructor
     Member() = default;
-    Member(const Member&) = default;
-    Member(Member&&) noexcept = default;
+    Member(const Member&) = delete;
+    Member(Member&&) noexcept = delete;
     explicit Member(string&);
     Member(string&, Date&);
     Member& operator=(Member&& mem) = default;

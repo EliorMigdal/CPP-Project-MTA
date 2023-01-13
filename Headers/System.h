@@ -18,7 +18,6 @@ public:
     //Start Methods
     void Start() noexcept(false);
 private:
-
     //System-to-user Methods
     static inline void printMenu();
     void setDecision(size_SI&) noexcept(false);
@@ -48,6 +47,9 @@ private:
     void printTenLastStatuses() noexcept(false);
     void printAllEntities() noexcept(false);
     void printAllFriends() noexcept(false);
+
+    //File methods
+    void writeData();
 
     //Commented
 //    void newStatus(const string&, const size_SI&, const string&);

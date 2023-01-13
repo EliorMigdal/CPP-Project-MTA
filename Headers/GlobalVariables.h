@@ -9,6 +9,7 @@
 #include <unordered_map>
 #include <typeindex>
 #include <typeinfo>
+#include <fstream>
 using std::cout;
 using std::cin;
 using std::endl;
@@ -18,6 +19,9 @@ using std::string;
 using std::vector;
 using std::unordered_map;
 using std::ostream;
+using std::ifstream;//reading from file
+using std::ofstream;//writing to file
+using std::fstream;//reading&writing
 
 typedef unsigned short int size_SI;
 typedef unsigned char Byte;
@@ -38,7 +42,7 @@ struct Date
 struct Time
 {
     Time() = default;
-   string hour = "0", minutes = "0", seconds = "0";
+    string hour = "0", minutes = "0", seconds = "0";
 };
 
 //Enums

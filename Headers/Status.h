@@ -25,6 +25,7 @@ public:
     const string& getStatusContent() const { return statusContent; }
     const Date& getStatusDate() const { return statusDate; }
     const Time& getStatusTime() const { return statusTime; }
+    const STATUS_TYPE& getStatusType() const { return statusType; }
 
    /* virtual void showContent() const;*/
     //Operators Methods

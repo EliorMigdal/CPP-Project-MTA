@@ -13,6 +13,8 @@ protected:
 public:
     Entity() = default;
     explicit Entity(string _name):name(std::move(_name)){}
+    Entity(Entity&) = delete;
+    Entity(Entity&&) noexcept = delete;
     virtual ~Entity() = default;
 
     const string& getName() const {return name;}
