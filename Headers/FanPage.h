@@ -1,7 +1,6 @@
 #ifndef CPP_PROJECT_FANPAGE_H
 #define CPP_PROJECT_FANPAGE_H
 #include "Entity.h"
-class Member;
 
 class FanPage : public Entity {
 public:
@@ -14,15 +13,10 @@ public:
     FanPage& operator=(FanPage&& fan_page) = default;
     ~FanPage() override = default;
 
-    //Operators
     virtual const FanPage& operator+=(Member&) noexcept(false);
     virtual const FanPage& operator-=(Member&) noexcept(false);
 
-<<<<<<< HEAD
 };
-=======
-    //Commented Methods
->>>>>>> ca0bba83977dbc9795fb915806ad0d2645eafe33
 //    bool checkIfFan(const string&);
 //    void addFan(Member*) noexcept(false);
 //    void removeFan(Member*) noexcept(false);

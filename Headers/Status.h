@@ -26,14 +26,16 @@ public:
     const STATUS_TYPE& getStatusType() const { return statusType; }
 
    /* virtual void showContent() const;*/
-    //Operators
+    //Operators Methods
+    // << Operator
     friend ostream& operator<<(ostream&, const Status&);
+    // = Operator
     Status& operator=(Status&& status) = default;
     Status& operator=(const Status& status) = default;
+    // Boolean Operators
     virtual bool operator==(const Status&) const;
     virtual bool operator!=(const Status&) const;
 };
-
 //class VideoStatus :public Status {
 //
 //public:
