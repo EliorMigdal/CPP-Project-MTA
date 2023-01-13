@@ -74,6 +74,12 @@ void Entity::addStatus() //Adds a new status to entity's bulletin board.
     else
         throw EmptyStatus();
 }
+void Entity::addStatusFromFile(Date& _date, Time& _time, string& _content, STATUS_TYPE& _type) //Adds a new status to entity's bulletin board.
+{
+
+    setTimeAndDate(_time, _date);
+    bulletinBoard.emplace_back(new Status(_date, _time, _content, _type));
+}
 //----------------------------------------------------------
 void Entity::printMembers() const //Print an entity's members list.
 {

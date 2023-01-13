@@ -24,6 +24,7 @@ public:
     const Date& getBirthday() const {return birthday;}
     const unordered_map<string, FanPage*>& getPagesArr() const {return pages;}
     size_t getNumOfPages() const {return pages.size();}
+    
 
     //Methods
     virtual void addFanPage(FanPage&) noexcept(false);
@@ -36,6 +37,7 @@ public:
     virtual const Member& operator-=(FanPage&) noexcept(false);
     bool isFan(const string&);
 
+};
 //    Commented methods
 //    void addFriend(Member*) noexcept(false);
 //    void removeFriend(const string&) noexcept(false);
@@ -54,7 +56,6 @@ public:
 //    bool operator>=(const Member&) const;
 //    bool operator<(const Member&) const;
 //    bool operator<=(const Member&) const;
-};
 
 class memberExceptions : public std::exception {
 public:

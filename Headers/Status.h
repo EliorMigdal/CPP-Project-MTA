@@ -15,9 +15,7 @@ public:
     Status(const Status&) = default;
     Status(Status&&) noexcept = default;
     explicit Status(Date&);
-    Status(Date&, Time&, const string&);
-    Status(Date&, Time&, const string&, STATUS_TYPE&);
-    Status(Date&, Time&, Byte&, const string&);
+    Status(Date&, Time&, string&, STATUS_TYPE&);
     explicit Status(const string&);
     virtual ~Status() = default;
 

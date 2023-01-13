@@ -16,6 +16,7 @@ public:
     virtual const FanPage& operator+=(Member&) noexcept(false);
     virtual const FanPage& operator-=(Member&) noexcept(false);
 
+};
 //    bool checkIfFan(const string&);
 //    void addFan(Member*) noexcept(false);
 //    void removeFan(Member*) noexcept(false);
@@ -28,7 +29,6 @@ public:
 //    bool operator<=(FanPage&) const;
 //    bool operator>(FanPage&) const;
 //    bool operator>=(FanPage&) const;
-};
 
 class fanPageExceptions : public std::exception {
 public:

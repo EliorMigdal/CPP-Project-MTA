@@ -4,11 +4,12 @@
 class System {
 private:
     size_SI userDecision = 0;
-    unordered_map<std::type_index, unordered_map<string, Entity*>> Entities{}; //managed container
+    unordered_map<std::type_index, unordered_map<string, Entity*>> Entities; //managed container
 
 public:
+    void readData();
     //Constructors & Destructor
-    System() = default;
+    System();
     ~System() = default;
     System(const System& sys) = delete;
     System(System&& sys) = delete;
@@ -48,8 +49,10 @@ private:
     void printAllEntities() noexcept(false);
     void printAllFriends() noexcept(false);
 
-    //File methods
     void writeData();
+
+    //File methods
+    //void writeData();
 
     //Commented
 //    void newStatus(const string&, const size_SI&, const string&);

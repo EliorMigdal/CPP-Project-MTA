@@ -28,6 +28,7 @@ public:
     virtual void removeMember(Member&) noexcept(false);
     virtual void printAllStatuses() const noexcept(false);
     virtual void addStatus() noexcept(false);
+    virtual void addStatusFromFile(Date& _date, Time& _time, string& _content, STATUS_TYPE& _type);
     virtual void printMembers() const noexcept(false);
 
     friend ostream& operator<<(ostream&, Entity&);

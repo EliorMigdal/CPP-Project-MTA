@@ -2,6 +2,83 @@
 #include "../Headers/FanPage.h"
 #include "../Headers/Member.h"
 
+void System::readData() 
+{
+    Entities[std::type_index(typeid(FanPage*))] = {};
+    Entities[std::type_index(typeid(Member*))] = {};
+    std::ifstream dataBinFile("SystemData.bin", std::ios_base::binary | std::ios_base::in);
+    if (!(dataBinFile.peek() == std::ifstream::traits_type::eof()))
+    {
+        if (dataBinFile.good()) {
+
+            size_t membersSize, fanPagesSize;
+            dataBinFile.read(reinterpret_cast<char*>(&membersSize), sizeof(membersSize));
+
+            for (size_t i = 0; i < membersSize; i++) {
+                std::string memberName;
+                Date memberBirthday;
+                size_t numOfStatuses;
+                std::getline(dataBinFile, memberName, '\0');
+                dataBinFile.read(reinterpret_cast<char*>(&memberBirthday.day), sizeof(memberBirthday.day));
+                dataBinFile.read(reinterpret_cast<char*>(&memberBirthday.month), sizeof(memberBirthday.month));
+                dataBinFile.read(reinterpret_cast<char*>(&memberBirthday.year), sizeof(memberBirthday.year));
+                dataBinFile.read(reinterpret_cast<char*>(&numOfStatuses), sizeof(numOfStatuses));
+                Member* member = new Member(memberName, memberBirthday);
+                for (size_t j = 0; j < numOfStatuses; j++) {
+                    Date statusDate;
+                    Time statusTime;
+                    int statusType = 0;
+                    string statusContent;
+                    dataBinFile.read(reinterpret_cast<char*>(&statusDate.day), sizeof(statusDate.day));
+                    dataBinFile.read(reinterpret_cast<char*>(&statusDate.month), sizeof(statusDate.month));
+                    dataBinFile.read(reinterpret_cast<char*>(&statusDate.year), sizeof(statusDate.year));
+                    std::getline(dataBinFile, statusTime.seconds, '\0');
+                    std::getline(dataBinFile, statusTime.minutes, '\0');
+                    std::getline(dataBinFile, statusTime.hour, '\0');
+                    dataBinFile.read(reinterpret_cast<char*>(&statusType), sizeof(statusType));
+                    STATUS_TYPE s = (STATUS_TYPE)statusType;
+                    std::getline(dataBinFile, statusContent, '\0');
+                    member->addStatusFromFile(statusDate, statusTime, statusContent, s);
+                }
+                Entities[std::type_index(typeid(Member*))][memberName] = member;
+            }
+
+            dataBinFile.read(reinterpret_cast<char*>(&fanPagesSize), sizeof(fanPagesSize));
+
+            for (size_t i = 0; i < fanPagesSize; i++) {
+                string fanPageName;
+                size_t numOfStatuses;
+                std::getline(dataBinFile, fanPageName, '\0');
+                dataBinFile.read(reinterpret_cast<char*>(&numOfStatuses), sizeof(size_t));
+                FanPage * fanPage = new FanPage(fanPageName);
+                for (size_t j = 0; j < numOfStatuses; j++) {
+                    Date statusDate;
+                    Time statusTime;
+                    int statusType = 0;
+                    std::string statusContent;
+                    dataBinFile.read(reinterpret_cast<char*>(&statusDate.day), sizeof(statusDate.day));
+                    dataBinFile.read(reinterpret_cast<char*>(&statusDate.month), sizeof(statusDate.month));
+                    dataBinFile.read(reinterpret_cast<char*>(&statusDate.year), sizeof(statusDate.year));
+                    std::getline(dataBinFile, statusTime.seconds, '\0');
+                    std::getline(dataBinFile, statusTime.minutes, '\0');
+                    std::getline(dataBinFile, statusTime.hour, '\0');
+                    dataBinFile.read(reinterpret_cast<char*>(&statusType), sizeof(statusType));
+                    std::getline(dataBinFile, statusContent, '\0');
+                    STATUS_TYPE s = (STATUS_TYPE)statusType;
+                    fanPage->addStatusFromFile(statusDate, statusTime, statusContent, s);
+                }
+                Entities[std::type_index(typeid(FanPage*))][fanPageName] = fanPage;
+            }
+        }
+    }
+    dataBinFile.close();
+}
+
+System::System()
+{
+    readData();
+}
+
 //Start Function
 //----------------------------------------------------------
 void System::Start() //Boots up the system.
@@ -151,6 +228,9 @@ void System::setDecision(size_SI& _decision) //Gets the decision from user and a
             catch(fanPageExceptions& error) {throw fanPageExceptions(error);}
             catch(entityNotFound& error) {throw entityNotFound(error);}
             catch(...) {throw systemExceptions();}
+            break;
+        case (size_SI)EXIT:
+            writeData();
             break;
         ////////////////////////////////////////////////////////////////////////////////////////
     }
@@ -581,75 +661,138 @@ void System::printAllFriends()  //Prints an entity's friends.
         throw EmptyName();
 }
 //----------------------------------------------------------
-
-
-//Files methods
-//----------------------------------------------------------
-void System::writeData() //Writes system data to a bin file.
+void System::writeData()
 {
-    ofstream dataBinFile("SystemData.bin", std::ios_base::binary|std::ios_base::out);
-    if (dataBinFile.good())
-    {
-        const unordered_map<string, Entity*>& placeHolderMember = Entities[std::type_index(typeid(Member*))];
-        const unordered_map<string, Entity*>& placeHolderFanPage = Entities[std::type_index(typeid(FanPage*))];
+    std::ofstream dataBinFile("SystemData.bin", std::ios_base::binary | std::ios_base::out | std::ios_base::trunc);
+    if (dataBinFile.good()) {
+         const auto& placeHolderMember = Entities[std::type_index(typeid(Member*))];
+         const auto& placeHolderFanPage = Entities[std::type_index(typeid(FanPage*))];
 
-        dataBinFile.write((const char*)placeHolderMember.size(), sizeof(placeHolderMember.size()));
+         size_t s = placeHolderMember.size();
+         
 
-        for (const auto& kv : placeHolderMember)
-        {
-            dataBinFile.write((const char*)kv.first.c_str(), sizeof(kv.first.c_str()));
-            dataBinFile.write((const char*) dynamic_cast<Member*>(kv.second)->getBirthday().day,
-                              sizeof(dynamic_cast<Member*>(kv.second)->getBirthday().day));
-            dataBinFile.write((const char*) dynamic_cast<Member*>(kv.second)->getBirthday().month,
-                              sizeof(dynamic_cast<Member*>(kv.second)->getBirthday().day));
-            dataBinFile.write((const char*) dynamic_cast<Member*>(kv.second)->getBirthday().year,
-                              sizeof(dynamic_cast<Member*>(kv.second)->getBirthday().day));
-            dataBinFile.write((const char*) dynamic_cast<Member*>(kv.second)->getNumOfStatuses(),
-                              sizeof(dynamic_cast<Member*>(kv.second)->getNumOfStatuses()));
+         if (!placeHolderMember.empty()) {
+             dataBinFile.write(reinterpret_cast<const char*>(&s), sizeof(s));
+         }
 
-            const vector<Status*> memberStatuses = dynamic_cast<Member*>(kv.second)->getBulletinBoard();
+        for (const auto& kv : placeHolderMember) {
+            dataBinFile.write(kv.first.c_str(), kv.first.size() + 1);
 
-            for (const auto& sv : memberStatuses)
-            {
-                dataBinFile.write((const char*)sv->getStatusDate().day, sizeof(sv->getStatusDate().day));
-                dataBinFile.write((const char*)sv->getStatusDate().month, sizeof(sv->getStatusDate().month));
-                dataBinFile.write((const char*)sv->getStatusDate().year, sizeof(sv->getStatusDate().year));
-                dataBinFile.write((const char*)sv->getStatusTime().seconds.c_str(),
-                                  sizeof(sv->getStatusTime().seconds.c_str()));
-                dataBinFile.write((const char*)sv->getStatusTime().minutes.c_str(),
-                                  sizeof(sv->getStatusTime().minutes.c_str()));
-                dataBinFile.write((const char*)sv->getStatusTime().hour.c_str(),
-                                  sizeof(sv->getStatusTime().hour.c_str()));
-                dataBinFile.write((const char*)sv->getStatusType(), sizeof(sv->getStatusType()));
-                dataBinFile.write((const char*)sv->getStatusContent().c_str(), sizeof(sv->getStatusContent().c_str()));
+            auto* member = dynamic_cast<Member*>(kv.second);
+            size_t NumOfStatuses = member->getNumOfStatuses();
+            dataBinFile.write(reinterpret_cast<const char*>(&member->getBirthday().day), sizeof(member->getBirthday().day));
+            dataBinFile.write(reinterpret_cast<const char*>(&member->getBirthday().month), sizeof(member->getBirthday().month));
+            dataBinFile.write(reinterpret_cast<const char*>(&member->getBirthday().year), sizeof(member->getBirthday().year));
+            dataBinFile.write(reinterpret_cast<const char*>(&NumOfStatuses), sizeof(NumOfStatuses));
+
+            const auto& memberStatuses = member->getBulletinBoard();
+
+            for (const auto& sv : memberStatuses) {
+                dataBinFile.write(reinterpret_cast<const char*>(&sv->getStatusDate().day), sizeof(sv->getStatusDate().day));
+                dataBinFile.write(reinterpret_cast<const char*>(&sv->getStatusDate().month), sizeof(sv->getStatusDate().month));
+                dataBinFile.write(reinterpret_cast<const char*>(&sv->getStatusDate().year), sizeof(sv->getStatusDate().year));
+                dataBinFile.write(sv->getStatusTime().seconds.c_str(), sv->getStatusTime().seconds.size() + 1);
+                dataBinFile.write(sv->getStatusTime().minutes.c_str(), sv->getStatusTime().minutes.size() + 1);
+                dataBinFile.write(sv->getStatusTime().hour.c_str(), sv->getStatusTime().hour.size() + 1);
+                dataBinFile.write(reinterpret_cast<const char*>(&sv->getStatusType()), sizeof(sv->getStatusType()));
+                dataBinFile.write(sv->getStatusContent().c_str(), sv->getStatusContent().size() + 1);
             }
         }
+        size_t fanpageSize = placeHolderFanPage.size();
+        dataBinFile.write(reinterpret_cast<const char*>(&fanpageSize), sizeof(fanpageSize));
+        
+        for (const auto& kv : placeHolderFanPage) {
+            dataBinFile.write(kv.first.c_str(), kv.first.size() + 1);
 
-        for (const auto& kv : placeHolderFanPage)
-        {
-            dataBinFile.write((const char*)kv.first.c_str(), sizeof(kv.first));
-            dataBinFile.write((const char*) dynamic_cast<FanPage*>(kv.second)->getNumOfStatuses(),
-                              sizeof(dynamic_cast<FanPage*>(kv.second)->getNumOfStatuses()));
+            auto* fanPage = dynamic_cast<FanPage*>(kv.second);
+            size_t numOfstatuses = fanPage->getNumOfStatuses();
+            dataBinFile.write(reinterpret_cast<const char*>(&numOfstatuses), sizeof(numOfstatuses));
 
-            const vector<Status*> fanPageStatuses = dynamic_cast<FanPage*>(kv.second)->getBulletinBoard();
+            const auto& fanPageStatuses = fanPage->getBulletinBoard();
 
-            for (const auto& sv : fanPageStatuses)
-            {
-                dataBinFile.write((const char*)sv->getStatusDate().day, sizeof(sv->getStatusDate().day));
-                dataBinFile.write((const char*)sv->getStatusDate().month, sizeof(sv->getStatusDate().month));
-                dataBinFile.write((const char*)sv->getStatusDate().year, sizeof(sv->getStatusDate().year));
-                dataBinFile.write((const char*)sv->getStatusTime().seconds.c_str(),
-                                  sizeof(sv->getStatusTime().seconds.c_str()));
-                dataBinFile.write((const char*)sv->getStatusTime().minutes.c_str(),
-                                  sizeof(sv->getStatusTime().minutes.c_str()));
-                dataBinFile.write((const char*)sv->getStatusTime().hour.c_str(),
-                                  sizeof(sv->getStatusTime().hour.c_str()));
-                dataBinFile.write((const char*)sv->getStatusType(), sizeof(sv->getStatusType()));
-                dataBinFile.write((const char*)sv->getStatusContent().c_str(), sizeof(sv->getStatusContent().c_str()));
+            for (const auto& sv : fanPageStatuses) {
+                const auto& statusType = sv->getStatusType();
+                dataBinFile.write(reinterpret_cast<const char*>(&sv->getStatusDate().day), sizeof(sv->getStatusDate().day));
+                dataBinFile.write(reinterpret_cast<const char*>(&sv->getStatusDate().month), sizeof(sv->getStatusDate().month));
+                dataBinFile.write(reinterpret_cast<const char*>(&sv->getStatusDate().year), sizeof(sv->getStatusDate().year));
+                dataBinFile.write(sv->getStatusTime().seconds.c_str(), sv->getStatusTime().seconds.size() + 1);
+                dataBinFile.write(sv->getStatusTime().minutes.c_str(), sv->getStatusTime().minutes.size() + 1);
+                dataBinFile.write(sv->getStatusTime().hour.c_str(), sv->getStatusTime().hour.size() + 1);
+                dataBinFile.write(reinterpret_cast<const char*>(&statusType), sizeof(statusType));
+                dataBinFile.write(sv->getStatusContent().c_str(), sv->getStatusContent().size() + 1);
             }
         }
     }
+    dataBinFile.close();
 }
+
+//Files methods
+//----------------------------------------------------------
+//void System::writeData() //Writes system data to a bin file.
+//{
+//    ofstream dataBinFile("SystemData.bin", std::ios_base::binary|std::ios_base::out);
+//    if (dataBinFile.good())
+//    {
+//        const unordered_map<string, Entity*>& placeHolderMember = Entities[std::type_index(typeid(Member*))];
+//        const unordered_map<string, Entity*>& placeHolderFanPage = Entities[std::type_index(typeid(FanPage*))];
+//
+//        dataBinFile.write((const char*)placeHolderMember.size(), sizeof(placeHolderMember.size()));
+//
+//        for (const auto& kv : placeHolderMember)
+//        {
+//            dataBinFile.write((const char*)kv.first.c_str(), sizeof(kv.first.c_str()));
+//            dataBinFile.write((const char*) dynamic_cast<Member*>(kv.second)->getBirthday().day,
+//                              sizeof(dynamic_cast<Member*>(kv.second)->getBirthday().day));
+//            dataBinFile.write((const char*) dynamic_cast<Member*>(kv.second)->getBirthday().month,
+//                              sizeof(dynamic_cast<Member*>(kv.second)->getBirthday().day));
+//            dataBinFile.write((const char*) dynamic_cast<Member*>(kv.second)->getBirthday().year,
+//                              sizeof(dynamic_cast<Member*>(kv.second)->getBirthday().day));
+//            dataBinFile.write((const char*) dynamic_cast<Member*>(kv.second)->getNumOfStatuses(),
+//                              sizeof(dynamic_cast<Member*>(kv.second)->getNumOfStatuses()));
+//
+//            const vector<Status*> memberStatuses = dynamic_cast<Member*>(kv.second)->getBulletinBoard();
+//
+//            for (const auto& sv : memberStatuses)
+//            {
+//                dataBinFile.write((const char*)sv->getStatusDate().day, sizeof(sv->getStatusDate().day));
+//                dataBinFile.write((const char*)sv->getStatusDate().month, sizeof(sv->getStatusDate().month));
+//                dataBinFile.write((const char*)sv->getStatusDate().year, sizeof(sv->getStatusDate().year));
+//                dataBinFile.write((const char*)sv->getStatusTime().seconds.c_str(),
+//                                  sizeof(sv->getStatusTime().seconds.c_str()));
+//                dataBinFile.write((const char*)sv->getStatusTime().minutes.c_str(),
+//                                  sizeof(sv->getStatusTime().minutes.c_str()));
+//                dataBinFile.write((const char*)sv->getStatusTime().hour.c_str(),
+//                                  sizeof(sv->getStatusTime().hour.c_str()));
+//                dataBinFile.write((const char*)sv->getStatusType(), sizeof(sv->getStatusType()));
+//                dataBinFile.write((const char*)sv->getStatusContent().c_str(), sizeof(sv->getStatusContent().c_str()));
+//            }
+//        }
+//
+//        for (const auto& kv : placeHolderFanPage)
+//        {
+//            dataBinFile.write((const char*)kv.first.c_str(), sizeof(kv.first));
+//            dataBinFile.write((const char*) dynamic_cast<FanPage*>(kv.second)->getNumOfStatuses(),
+//                              sizeof(dynamic_cast<FanPage*>(kv.second)->getNumOfStatuses()));
+//
+//            const vector<Status*> fanPageStatuses = dynamic_cast<FanPage*>(kv.second)->getBulletinBoard();
+//
+//            for (const auto& sv : fanPageStatuses)
+//            {
+//                dataBinFile.write((const char*)sv->getStatusDate().day, sizeof(sv->getStatusDate().day));
+//                dataBinFile.write((const char*)sv->getStatusDate().month, sizeof(sv->getStatusDate().month));
+//                dataBinFile.write((const char*)sv->getStatusDate().year, sizeof(sv->getStatusDate().year));
+//                dataBinFile.write((const char*)sv->getStatusTime().seconds.c_str(),
+//                                  sizeof(sv->getStatusTime().seconds.c_str()));
+//                dataBinFile.write((const char*)sv->getStatusTime().minutes.c_str(),
+//                                  sizeof(sv->getStatusTime().minutes.c_str()));
+//                dataBinFile.write((const char*)sv->getStatusTime().hour.c_str(),
+//                                  sizeof(sv->getStatusTime().hour.c_str()));
+//                dataBinFile.write((const char*)sv->getStatusType(), sizeof(sv->getStatusType()));
+//                dataBinFile.write((const char*)sv->getStatusContent().c_str(), sizeof(sv->getStatusContent().c_str()));
+//            }
+//        }
+//    }
+//}
 //----------------------------------------------------------
 
 

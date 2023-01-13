@@ -3,21 +3,15 @@
 //Constructors
 //------------------------------------------------------
 Status::Status(Date& _date):statusDate(_date){}
-//------------------------------------------------------
-Status::Status(Date& _date, Time& _time, Byte& _statusType, const string& _content):
-    statusDate(_date), statusTime(_time),
-    statusType((STATUS_TYPE)_statusType), statusContent(_content){}
-//------------------------------------------------------
-Status::Status(Date& _date, Time& _time, const string& _content):statusDate(_date),
-statusTime(_time), statusContent(_content){}
+
 //------------------------------------------------------
 Status::Status(const string& _statusContent):statusContent(_statusContent)
 {
     setTimeAndDate(this->statusTime, this->statusDate);
 }
 //------------------------------------------------------
-Status::Status(Date &_date, Time &_time, const string &_content, STATUS_TYPE &_type):
-statusDate(_date), statusTime(_time), statusContent(_content), statusType(_type){}
+Status::Status(Date& _date, Time& _time, string& _content, STATUS_TYPE& _type) :
+    statusDate(_date), statusTime(_time), statusContent(_content), statusType(_type) {}
 //------------------------------------------------------
 
 //Operators Methods
