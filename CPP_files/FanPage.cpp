@@ -4,6 +4,9 @@
 //-----------------------------------------------------------
 FanPage::FanPage(string& _name):Entity(_name){}
 //-----------------------------------------------------------
+
+//Operators
+//-----------------------------------------------------------
 const FanPage& FanPage::operator+=(Member& _member) //FanPage += Member method.
 {
     try{this->Entity::addMember(_member);}
@@ -14,20 +17,21 @@ const FanPage& FanPage::operator+=(Member& _member) //FanPage += Member method.
 //-----------------------------------------------------------
 const FanPage &FanPage::operator-=(Member& _member) //FanPage -= Member method.
 {
-    try{ this->Entity::addMember(_member); }
-    catch (removeAFanException& error) { throw removeAFanException(error);}
-    catch (...) {throw GlobalExceptions();}
+    try { this->Entity::addMember(_member); }
+    catch (removeAFanException &error) { throw removeAFanException(error); }
+    catch (...) { throw GlobalExceptions(); }
     return *this;
 }
 //-----------------------------------------------------------
 
-////FanPage-to-Member Methods
-////-----------------------------------------------------------
+//Commented Methods
+//FanPage-to-Member Methods
+//-----------------------------------------------------------
 //bool FanPage::checkIfFan(const string& member_name) //Checks whether member is a fan of the page.
 //{
 //    return members.find(member_name) != members.end();
 //}
-////-----------------------------------------------------------
+//-----------------------------------------------------------
 //void FanPage::addFan(Member* _member) //Adds a new member to members array.
 //{
 //    if (!this->FanPage::checkIfFan(_member->getName()))
@@ -36,7 +40,7 @@ const FanPage &FanPage::operator-=(Member& _member) //FanPage -= Member method.
 //    else
 //        throw addAFanException();
 //}
-////----------------------------------------------------------
+//----------------------------------------------------------
 //void FanPage::removeFan(Member* _member) //Removes a fan from members array.
 //{
 //    if (this->FanPage::checkIfFan(_member->getName()))
@@ -45,7 +49,7 @@ const FanPage &FanPage::operator-=(Member& _member) //FanPage -= Member method.
 //    else
 //        throw removeAFanException();
 //}
-////-----------------------------------------------------------
+//-----------------------------------------------------------
 //void FanPage::printFans() const //Prints a fan page's fans.
 //{
 //    if (this->members.empty())
@@ -62,9 +66,9 @@ const FanPage &FanPage::operator-=(Member& _member) //FanPage -= Member method.
 //        }
 //    }
 //}
-////-----------------------------------------------------------
-////FanPage-to-Status Methods
-////----------------------------------------------------------
+//-----------------------------------------------------------
+//FanPage-to-Status Methods
+//----------------------------------------------------------
 //void FanPage::printStatuses() const //Prints all fan page's statuses.
 //{
 //    size_t i = 0;
@@ -81,7 +85,7 @@ const FanPage &FanPage::operator-=(Member& _member) //FanPage -= Member method.
 //        "\n------------------------------------" << endl << status << endl;
 //    }
 //}
-////----------------------------------------------------------
+//----------------------------------------------------------
 //void FanPage::addStatus() //Adds a status to a fan page.
 //{
 //    Date newDate;
@@ -97,7 +101,7 @@ const FanPage &FanPage::operator-=(Member& _member) //FanPage -= Member method.
 //    else
 //        throw EmptyStatus();
 //}
-////----------------------------------------------------------
+//----------------------------------------------------------
 //void FanPage::addStatus(const string& statusContent) //For hard coded data.
 //{
 //    Date newDate;
@@ -105,30 +109,31 @@ const FanPage &FanPage::operator-=(Member& _member) //FanPage -= Member method.
 //    setTimeAndDate(newTime, newDate);
 //    this->bulletinBoard.emplace_back((newDate, newTime, statusContent));
 //}
-////----------------------------------------------------------
-////Operators Methods
-////-----------------------------------------------------------
+//----------------------------------------------------------
+//Operators Methods
+//-----------------------------------------------------------
 //ostream& operator<<(ostream& _out, FanPage* _fanPage) //Print method.
 //{
 //    return _out << _fanPage->FanPage::getName();
 //}
-//bool FanPage::operator<(FanPage& _fanPage) const //FanPage < FanPage operator.
-//{
-//    return this->FanPage::getNumOfMembers() < _fanPage.FanPage::getNumOfMembers();
-//}
-////-----------------------------------------------------------
+//-----------------------------------------------------------
 //bool FanPage::operator<=(FanPage& _fanPage) const //FanPage <= FanPage operator.
 //{
 //    return this->FanPage::getNumOfMembers() <= _fanPage.FanPage::getNumOfMembers();
 //}
-////-----------------------------------------------------------
+//-----------------------------------------------------------
 //bool FanPage::operator>(FanPage& _fanPage) const //FanPage > FanPage operator.
 //{
 //    return this->FanPage::getNumOfMembers() > _fanPage.FanPage::getNumOfMembers();
 //}
-////-----------------------------------------------------------
+//-----------------------------------------------------------
 //bool FanPage::operator>=(FanPage& _fanPage) const //FanPage >= FanPage operator.
 //{
 //    return this->FanPage::getNumOfMembers() >= _fanPage.FanPage::getNumOfMembers();
 //}
-////-----------------------------------------------------------
+//-----------------------------------------------------------
+//bool FanPage::operator<(FanPage& _fanPage) const //FanPage < FanPage operator.
+//{
+//    return this->FanPage::getNumOfMembers() < _fanPage.FanPage::getNumOfMembers();
+//}
+//-----------------------------------------------------------

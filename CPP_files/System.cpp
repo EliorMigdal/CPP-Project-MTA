@@ -104,10 +104,11 @@ void System::Start() //Boots up the system.
         cin >> userDecision;
     }
 
-    System::writeData();
+    try{System::writeData();}
+    catch(corruptedFile& error) {cout << error.what() << endl;}
+    catch(...) {throw systemExceptions();}
 }
 //----------------------------------------------------------
-
 
 //System-to-user methods
 //----------------------------------------------------------
@@ -256,7 +257,6 @@ int System::memberOrFanPage() //Gets user decision for specific functions.
 }
 //----------------------------------------------------------
 
-
 //Member Methods
 //----------------------------------------------------------
 void System::createMember() //Creates a new member.
@@ -356,7 +356,6 @@ void System::disconnectMembers(Member* firstMemberName, Member* secondMemberName
 }
 //----------------------------------------------------------
 
-
 //FanPage Methods
 //----------------------------------------------------------
 void System::createFanPage() //Creates a fan page.
@@ -437,7 +436,6 @@ void System::removeFan(Member* MemberPTR, FanPage* FanPagePTR) //Removes a fan f
 }
 //----------------------------------------------------------
 
-
 //Status Methods
 //----------------------------------------------------------
 void System::newStatus() //Creates a new status.
@@ -484,7 +482,6 @@ void System::newStatus() //Creates a new status.
 }
 //----------------------------------------------------------
 
-
 //Private Global Methods
 //----------------------------------------------------------
 inline bool System::BirthdayCheck(const Date& _birthday) //Verifies birthday inserted correctly.
@@ -494,7 +491,6 @@ inline bool System::BirthdayCheck(const Date& _birthday) //Verifies birthday ins
         && _birthday.year > 1900 && _birthday.year < 2023) ? true : false;
 }
 //----------------------------------------------------------
-
 
 //Private Printer Methods
 //----------------------------------------------------------
@@ -661,6 +657,7 @@ void System::printAllFriends()  //Prints an entity's friends.
         throw EmptyName();
 }
 //----------------------------------------------------------
+<<<<<<< HEAD
 void System::writeData()
 {
     std::ofstream dataBinFile("SystemData.bin", std::ios_base::binary | std::ios_base::out | std::ios_base::trunc);
@@ -696,6 +693,52 @@ void System::writeData()
                 dataBinFile.write(sv->getStatusTime().hour.c_str(), sv->getStatusTime().hour.size() + 1);
                 dataBinFile.write(reinterpret_cast<const char*>(&sv->getStatusType()), sizeof(sv->getStatusType()));
                 dataBinFile.write(sv->getStatusContent().c_str(), sv->getStatusContent().size() + 1);
+=======
+
+//Files methods
+//----------------------------------------------------------
+void System::writeData() //Writes system data to a bin file.
+{
+    ofstream dataBinFile("SystemData.bin",std::ios::out|std::ios::binary);
+    dataBinFile.close();
+
+    if (dataBinFile.is_open() && dataBinFile.good())
+    {
+        unordered_map<string, Entity*>& placeHolderMember = Entities[std::type_index(typeid(Member*))];
+        unordered_map<string, Entity*>& placeHolderFanPage = Entities[std::type_index(typeid(FanPage*))];
+
+        //Step 1: Write all Members.
+        dataBinFile.write(reinterpret_cast<const char*>(placeHolderMember.size()),
+                          sizeof(reinterpret_cast<const char*>(placeHolderMember.size())));
+        for (const auto& kv : placeHolderMember)
+        {
+            dataBinFile.write((const char*)kv.first.c_str(), sizeof(kv.first.c_str()));
+            dataBinFile.write((const char*) dynamic_cast<Member*>(kv.second)->Member::getBirthday().day,
+                              sizeof(dynamic_cast<Member*>(kv.second)->getBirthday().day));
+            dataBinFile.write((const char*) dynamic_cast<Member*>(kv.second)->Member::getBirthday().month,
+                              sizeof(dynamic_cast<Member*>(kv.second)->getBirthday().day));
+            dataBinFile.write((const char*) dynamic_cast<Member*>(kv.second)->Member::getBirthday().year,
+                              sizeof(dynamic_cast<Member*>(kv.second)->getBirthday().day));
+            dataBinFile.write((const char*) dynamic_cast<Member*>(kv.second)->Member::getNumOfStatuses(),
+                              sizeof(dynamic_cast<Member*>(kv.second)->getNumOfStatuses()));
+
+            const vector<Status*> memberStatuses = dynamic_cast<Member*>(kv.second)->Member::getBulletinBoard();
+
+            for (const auto& sv : memberStatuses)
+            {
+                dataBinFile.write((const char*)sv->Status::getStatusDate().day, sizeof(sv->Status::getStatusDate().day));
+                dataBinFile.write((const char*)sv->Status::getStatusDate().month, sizeof(sv->Status::getStatusDate().month));
+                dataBinFile.write((const char*)sv->Status::getStatusDate().year, sizeof(sv->Status::getStatusDate().year));
+                dataBinFile.write((const char*)sv->Status::getStatusTime().seconds.c_str(),
+                                  sizeof(sv->Status::getStatusTime().seconds.c_str()));
+                dataBinFile.write((const char*)sv->Status::getStatusTime().minutes.c_str(),
+                                  sizeof(sv->Status::getStatusTime().minutes.c_str()));
+                dataBinFile.write((const char*)sv->Status::getStatusTime().hour.c_str(),
+                                  sizeof(sv->Status::getStatusTime().hour.c_str()));
+                dataBinFile.write((const char*)sv->Status::getStatusType(), sizeof(sv->Status::getStatusType()));
+                dataBinFile.write((const char*)sv->Status::getStatusContent().c_str(),
+                                  sizeof(sv->Status::getStatusContent().c_str()));
+>>>>>>> ca0bba83977dbc9795fb915806ad0d2645eafe33
             }
         }
         size_t fanpageSize = placeHolderFanPage.size();
@@ -704,6 +747,7 @@ void System::writeData()
         for (const auto& kv : placeHolderFanPage) {
             dataBinFile.write(kv.first.c_str(), kv.first.size() + 1);
 
+<<<<<<< HEAD
             auto* fanPage = dynamic_cast<FanPage*>(kv.second);
             size_t numOfstatuses = fanPage->getNumOfStatuses();
             dataBinFile.write(reinterpret_cast<const char*>(&numOfstatuses), sizeof(numOfstatuses));
@@ -720,10 +764,76 @@ void System::writeData()
                 dataBinFile.write(sv->getStatusTime().hour.c_str(), sv->getStatusTime().hour.size() + 1);
                 dataBinFile.write(reinterpret_cast<const char*>(&statusType), sizeof(statusType));
                 dataBinFile.write(sv->getStatusContent().c_str(), sv->getStatusContent().size() + 1);
+=======
+        //Step 2: Write all Fan Pages.
+        dataBinFile.write((const char*)placeHolderFanPage.size(), sizeof(placeHolderFanPage.size()));
+        for (const auto& kv : placeHolderFanPage)
+        {
+            dataBinFile.write((const char*)kv.first.c_str(), sizeof(kv.first.c_str()));
+            dataBinFile.write((const char*) dynamic_cast<FanPage*>(kv.second)->FanPage::getNumOfStatuses(),
+                              sizeof(dynamic_cast<FanPage*>(kv.second)->FanPage::getNumOfStatuses()));
+
+            const vector<Status*> fanPageStatuses = dynamic_cast<FanPage*>(kv.second)->FanPage::getBulletinBoard();
+
+            for (const auto& sv : fanPageStatuses)
+            {
+                dataBinFile.write((const char*)sv->Status::getStatusDate().day, sizeof(sv->Status::getStatusDate().day));
+                dataBinFile.write((const char*)sv->Status::getStatusDate().month, sizeof(sv->Status::getStatusDate().month));
+                dataBinFile.write((const char*)sv->Status::getStatusDate().year, sizeof(sv->Status::getStatusDate().year));
+                dataBinFile.write((const char*)sv->Status::getStatusTime().seconds.c_str(),
+                                  sizeof(sv->Status::getStatusTime().seconds.c_str()));
+                dataBinFile.write((const char*)sv->Status::getStatusTime().minutes.c_str(),
+                                  sizeof(sv->Status::getStatusTime().minutes.c_str()));
+                dataBinFile.write((const char*)sv->Status::getStatusTime().hour.c_str(),
+                                  sizeof(sv->Status::getStatusTime().hour.c_str()));
+                dataBinFile.write((const char*)sv->Status::getStatusType(), sizeof(sv->Status::getStatusType()));
+                dataBinFile.write((const char*)sv->Status::getStatusContent().c_str(),
+                                  sizeof(sv->Status::getStatusContent().c_str()));
+>>>>>>> ca0bba83977dbc9795fb915806ad0d2645eafe33
             }
         }
+
+        //Step 3: Write each member's connections to members & fan pages.
+        for (const auto& kv : placeHolderMember)
+        {
+            dataBinFile.write((const char*)kv.first.c_str(), sizeof(kv.first.c_str()));
+            dataBinFile.write((const char*)dynamic_cast<Member*>(kv.second)->Member::getNumOfMembers(),
+                              sizeof(dynamic_cast<Member*>(kv.second)->Member::getNumOfMembers()));
+            const unordered_map<string, Member*> memberFriends = dynamic_cast<Member*>(kv.second)->Member::getMembers();
+
+            for (const auto& mv : memberFriends)
+                dataBinFile.write((const char*)mv.first.c_str(), sizeof(mv.first.c_str()));
+
+            const unordered_map<string, FanPage*> memberPages = dynamic_cast<Member*>(kv.second)->Member::getPages();
+            dataBinFile.write((const char*)dynamic_cast<Member*>(kv.second)->Member::getNumOfPages(),
+                              sizeof(dynamic_cast<Member*>(kv.second)->Member::getNumOfPages()));
+
+            for (const auto& pv : memberPages)
+                dataBinFile.write((const char*)pv.first.c_str(), sizeof(pv.first.c_str()));
+
+        }
+
+        //Step 4: Write each fan page's connections to members.
+        for (const auto& kv : placeHolderFanPage)
+        {
+            dataBinFile.write((const char*)kv.first.c_str(), sizeof(kv.first.c_str()));
+            dataBinFile.write((const char*)dynamic_cast<FanPage*>(kv.second)->FanPage::getNumOfMembers(),
+                              sizeof(dynamic_cast<FanPage*>(kv.second)->FanPage::getNumOfMembers()));
+            const unordered_map<string, Member*> pagesFans = dynamic_cast<FanPage*>(kv.second)->FanPage::getMembers();
+
+            for (const auto& pf : pagesFans)
+                dataBinFile.write((const char*)pf.first.c_str(), sizeof(pf.first.c_str()));
+        }
+
+        dataBinFile.close();
     }
+<<<<<<< HEAD
     dataBinFile.close();
+=======
+
+    else
+        throw corruptedFile();
+>>>>>>> ca0bba83977dbc9795fb915806ad0d2645eafe33
 }
 
 //Files methods
@@ -794,7 +904,6 @@ void System::writeData()
 //    }
 //}
 //----------------------------------------------------------
-
 
 //Commented Methods
 //----------------------------------------------------------

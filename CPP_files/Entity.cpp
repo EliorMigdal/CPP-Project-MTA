@@ -2,6 +2,7 @@
 #include "../Headers/Member.h"
 #include "../Headers/FanPage.h"
 
+//General Methods
 //----------------------------------------------------------
 bool Entity::checkIfMember(const std::string &_name) const //Checks whether _name is in object's members list.
 {
@@ -24,26 +25,6 @@ void Entity::removeMember(Member &_member) //Removes a member from object's memb
 
     else
         this->members.erase(_member.getName());
-}
-//----------------------------------------------------------
-void Entity::printAllStatuses() const //Prints all object's statuses.
-{
-    if (this->bulletinBoard.empty())
-        throw entityHasNoStatuses();
-
-    else
-    {
-        cout << this->getName() << " has posted " << this->bulletinBoard.size() << " statuses:" << endl;
-        size_t _numOfStatuses = this->bulletinBoard.size();
-        using reverseStatusIter = vector<Status*>::const_reverse_iterator;
-        reverseStatusIter begin = this->bulletinBoard.crbegin();
-        reverseStatusIter end = this->bulletinBoard.crend();
-        for (reverseStatusIter rit = begin; rit != end; ++rit)
-        {
-            cout << "------------------------------------\n\tStatus #"
-                 << _numOfStatuses-- << "\n------------------------------------" << endl << *rit << endl;
-        }
-    }
 }
 //----------------------------------------------------------
 void Entity::addStatus() //Adds a new status to entity's bulletin board.
@@ -81,6 +62,26 @@ void Entity::addStatusFromFile(Date& _date, Time& _time, string& _content, STATU
     bulletinBoard.emplace_back(new Status(_date, _time, _content, _type));
 }
 //----------------------------------------------------------
+void Entity::printAllStatuses() const //Prints all object's statuses.
+{
+    if (this->bulletinBoard.empty())
+        throw entityHasNoStatuses();
+
+    else
+    {
+        cout << this->getName() << " has posted " << this->bulletinBoard.size() << " statuses:" << endl;
+        size_t _numOfStatuses = this->bulletinBoard.size();
+        using reverseStatusIter = vector<Status*>::const_reverse_iterator;
+        reverseStatusIter begin = this->bulletinBoard.crbegin();
+        reverseStatusIter end = this->bulletinBoard.crend();
+        for (reverseStatusIter rit = begin; rit != end; ++rit)
+        {
+            cout << "------------------------------------\n\tStatus #"
+                 << _numOfStatuses-- << "\n------------------------------------" << endl << *rit << endl;
+        }
+    }
+}
+//----------------------------------------------------------
 void Entity::printMembers() const //Print an entity's members list.
 {
     if (this->members.empty())
@@ -95,32 +96,15 @@ void Entity::printMembers() const //Print an entity's members list.
     }
 }
 //----------------------------------------------------------
-ostream& operator<<(ostream& _os, Entity& _entity)
+
+//Operators
+//----------------------------------------------------------
+ostream& operator<<(ostream& _os, Entity& _entity) //<< operator.
 {
-    return _os << _entity.getName();
+    return _os << _entity.Entity::getName();
 }
 //----------------------------------------------------------
-bool Entity::operator<(const Entity &_entity) const
-{
-    return this->members.size() < _entity.members.size();
-}
-//----------------------------------------------------------
-bool Entity::operator<=(const Entity &_entity) const
-{
-    return this->members.size() <= _entity.members.size();
-}
-//----------------------------------------------------------
-bool Entity::operator>(const Entity &_entity) const
-{
-    return this->members.size() > _entity.members.size();
-}
-//----------------------------------------------------------
-bool Entity::operator>=(const Entity &_entity) const
-{
-    return this->members.size() >= _entity.members.size();
-}
-//----------------------------------------------------------
-Entity &Entity::operator=(const Entity &_entity)
+Entity &Entity::operator=(const Entity &_entity) //= operator.
 {
     if (this != &_entity)
     {
@@ -130,5 +114,25 @@ Entity &Entity::operator=(const Entity &_entity)
     }
 
     return *this;
+}
+//----------------------------------------------------------
+bool Entity::operator<(const Entity &_entity) const //< operator.
+{
+    return this->members.size() < _entity.members.size();
+}
+//----------------------------------------------------------
+bool Entity::operator<=(const Entity &_entity) const //<= operator.
+{
+    return this->members.size() <= _entity.members.size();
+}
+//----------------------------------------------------------
+bool Entity::operator>(const Entity &_entity) const //> operator.
+{
+    return this->members.size() > _entity.members.size();
+}
+//----------------------------------------------------------
+bool Entity::operator>=(const Entity &_entity) const //>= operator.
+{
+    return this->members.size() >= _entity.members.size();
 }
 //----------------------------------------------------------
