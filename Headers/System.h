@@ -7,7 +7,6 @@ private:
     unordered_map<std::type_index, unordered_map<string, Entity*>> Entities{}; //managed container
 
 public:
-    void readData();
     //Constructors & Destructor
     System();
     ~System() = default;
@@ -19,6 +18,7 @@ public:
     //Start Methods
     void Start() noexcept(false);
 private:
+    void readData();
     //System-to-user Methods
     static inline void printMenu();
     void setDecision(size_SI&) noexcept(false);
@@ -27,13 +27,15 @@ private:
 
     //Member Methods
     void createMember() noexcept(false);
-    void Connect_OR_DisconnectMember(void(System::* operation)(Member*, Member*)) noexcept(false);
-    void connectMembers(Member*, Member*) noexcept(false);
-    void disconnectMembers(Member*, Member*) noexcept(false);
+   
+    void Connect_OR_DisconnectMember(bool connect) noexcept(false);
+    void connectOrDisconnectMembers(Member* firstMember, Member* secondMember, bool connect) noexcept(false);
+   
     
     //FanPage Methods
     void createFanPage() noexcept(false);
-    void Add_OR_RemoveFAN(void(System::* operation)(Member*,FanPage*)) noexcept(false);
+    void Add_OR_RemoveFAN(bool connect) noexcept(false);
+    void addOrRemoveFanUtility(Member* Member, FanPage* Fanpage, bool connect) noexcept(false);
     void addFan(Member*, FanPage*) noexcept(false);
     void removeFan(Member*, FanPage*) noexcept(false);
 

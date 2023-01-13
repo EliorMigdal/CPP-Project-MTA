@@ -181,7 +181,7 @@ void System::setDecision(size_SI& _decision) //Gets the decision from user and a
             break;
         //////////////////////////////////////////////////////////////////////////////////////////
         case (size_SI)CONNECTMEMBERS: //6
-            try{System::Connect_OR_DisconnectMember(&System::connectMembers);}
+            try{System::Connect_OR_DisconnectMember(true);}
             catch(addAFriendException& error) {throw addAFriendException(error);}
             catch(connectSameMember& error) {throw connectSameMember(error);}
             catch(memberExceptions& error) {throw memberExceptions(error);}
@@ -190,7 +190,7 @@ void System::setDecision(size_SI& _decision) //Gets the decision from user and a
             break;
         //////////////////////////////////////////////////////////////////////////////////////////
         case (size_SI)DISCONNECTMEMBERS: //7
-            try{System::Connect_OR_DisconnectMember(&System::disconnectMembers);}
+            try{System::Connect_OR_DisconnectMember(false);}
             catch(removeAFriendException& error) {throw removeAFriendException(error);}
             catch(removeSameMember& error) {throw removeSameMember(error);}
             catch(memberExceptions& error) {throw memberExceptions(error);}
@@ -199,14 +199,14 @@ void System::setDecision(size_SI& _decision) //Gets the decision from user and a
             break;
         //////////////////////////////////////////////////////////////////////////////////////////
         case (size_SI)ADDFAN: //8
-            try{System::Add_OR_RemoveFAN(&System::addFan);}
+            try{System::Add_OR_RemoveFAN(true);}
             catch (addAFanException& error) { throw addAFanException(error); }
             catch(entityNotFound& error) {throw entityNotFound(error);}
             catch(...) {throw GlobalExceptions();}
             break;
         //////////////////////////////////////////////////////////////////////////////////////////
         case (size_SI)REMOVEFAN: //9
-            try{System::Add_OR_RemoveFAN(&System::removeFan);}
+            try{System::Add_OR_RemoveFAN(false);}
             catch (removeAFanException& error) { throw removeAFanException(error); }
             catch(entityNotFound& error) {throw entityNotFound(error);}
             catch(...) {throw GlobalExceptions();}
@@ -289,8 +289,7 @@ void System::createMember() //Creates a new member.
         throw EmptyName();
 }
 //----------------------------------------------------------
-void System::Connect_OR_DisconnectMember(void(System::* operation)(Member*, Member*)) //Connects or
-// Disconnects Members.
+void System::Connect_OR_DisconnectMember(bool connect)
 {
     string firstMemberName, secondMemberName;
     cout << "Please enter two member names:\nFirst member: ";
@@ -306,13 +305,11 @@ void System::Connect_OR_DisconnectMember(void(System::* operation)(Member*, Memb
             placeHolder.find(secondMemberName) != placeHolder.end())
         {
             try {
-                (this->*operation)(dynamic_cast<Member*>(placeHolder.at(firstMemberName)),
-                    dynamic_cast<Member*>(placeHolder.at(secondMemberName)));
+                connectOrDisconnectMembers(dynamic_cast<Member*>(placeHolder.at(firstMemberName)), 
+                    dynamic_cast<Member*>(placeHolder.at(secondMemberName)), connect);
             }
             catch (addAFriendException& error) { throw addAFriendException(error); }
             catch (removeAFriendException& error) { throw removeAFriendException(error); }
-            catch (connectSameMember& error) { throw connectSameMember(error); }
-            catch (removeSameMember& error) { throw removeSameMember(error); }
             catch (...) { throw memberExceptions(); }
         }
 
@@ -322,39 +319,30 @@ void System::Connect_OR_DisconnectMember(void(System::* operation)(Member*, Memb
     else
         throw EmptyName();
 }
-//----------------------------------------------------------
-void System::connectMembers(Member* firstMemberName, Member* secondMemberName) //Connects two members.
-{
-    if (firstMemberName->Member::getName() != secondMemberName->Member::getName())
-    {
-        try
-        {
-            *firstMemberName += *secondMemberName;
-            *secondMemberName += *firstMemberName;
+void System::connectOrDisconnectMembers(Member* firstMember, Member* secondMember, bool connect) {
+    try {
+        if (connect) {
+            *firstMember += *secondMember;
+            *secondMember += *firstMember;
         }
-        catch (addAFriendException& error) {throw addAFriendException(error);}
-        catch (...) {throw memberExceptions();}
-    }
-    else
-        throw connectSameMember();
-}
-//----------------------------------------------------------
-void System::disconnectMembers(Member* firstMemberName, Member* secondMemberName) //Disconnects two members.
-{
-    if (firstMemberName->Member::getName() != secondMemberName->Member::getName())
-    {
-        try
-        {
-            *firstMemberName -= *secondMemberName;
-            *secondMemberName -= *firstMemberName;
+        else {
+            *firstMember -= *secondMember;
+            *secondMember -= *firstMember;
         }
-        catch (removeAFriendException& error) {throw removeAFriendException(error);}
-        catch(...) {throw memberExceptions();}
     }
-    else
-        throw removeSameMember();
+    catch (addAFriendException& error) {
+        throw addAFriendException(error);
+    }
+    catch (removeAFriendException& error) {
+        throw removeAFriendException(error);
+    }
+    catch (...) {
+        throw memberExceptions();
+    }
 }
+
 //----------------------------------------------------------
+
 
 
 //FanPage Methods
@@ -385,7 +373,7 @@ void System::createFanPage() //Creates a fan page.
         throw EmptyName();
 }
 //----------------------------------------------------------
-void System::Add_OR_RemoveFAN(void(System::*operation)(Member*,FanPage*)) //Adds or removes a fan.
+void System::Add_OR_RemoveFAN(bool connect) //Adds or removes a fan.
 {
     string fanPageName, memberName;
     cout << "Enter a member's and a fan page's name: " << endl;
@@ -401,8 +389,10 @@ void System::Add_OR_RemoveFAN(void(System::*operation)(Member*,FanPage*)) //Adds
         if (placeHolderMember.find(memberName) != placeHolderMember.end() && 
             placeHolderFanPage.find(fanPageName) != placeHolderFanPage.end())
         {
-            try { (this->*operation)(dynamic_cast<Member*>(placeHolderMember.at(memberName)),
-                    dynamic_cast<FanPage*>(placeHolderFanPage.at(fanPageName))); }
+            try {
+                addOrRemoveFanUtility(dynamic_cast<Member*>(placeHolderMember.at(memberName)),
+                    dynamic_cast<FanPage*>(placeHolderFanPage.at(fanPageName)), connect);
+            }
             catch (addAFanException& error) { throw addAFanException(error); }
             catch (removeAFanException& error) { throw removeAFanException(error); }
             catch (GlobalExceptions& error) { throw GlobalExceptions(error); }
@@ -412,6 +402,27 @@ void System::Add_OR_RemoveFAN(void(System::*operation)(Member*,FanPage*)) //Adds
     }
     else
         throw EmptyName();
+}
+void System::addOrRemoveFanUtility(Member* Member, FanPage* Fanpage, bool connect) {
+    try {
+        if (connect) {
+            *Member += *Fanpage;
+            *Fanpage += *Member;
+        }
+        else {
+            *Member -= *Fanpage;
+            *Fanpage -= *Member;
+        }
+    }
+    catch (addAFriendException& error) {
+        throw addAFriendException(error);
+    }
+    catch (removeAFriendException& error) {
+        throw removeAFriendException(error);
+    }
+    catch (...) {
+        throw memberExceptions();
+    }
 }
 //----------------------------------------------------------
 void System::addFan(Member* MemberPTR , FanPage* FanPagePTR) //Adds a fan to a fan page's members array.
