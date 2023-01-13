@@ -4,7 +4,7 @@
 class System {
 private:
     size_SI userDecision = 0;
-    unordered_map<std::type_index, unordered_map<string, Entity*>> Entities{};
+    unordered_map<std::type_index, unordered_map<string, Entity*>> Entities{}; //managed container
 
 public:
     //Constructors & Destructor
@@ -27,9 +27,9 @@ private:
 
     //Member Methods
     void createMember() noexcept(false);
-    void Connect_OR_DisconnectMember(void(System::* operation)(const string&, const string&)) noexcept(false);
-    void connectMembers(const string&, const string&) noexcept(false);
-    void disconnectMembers(const string&, const string&) noexcept(false);
+    void Connect_OR_DisconnectMember(void(System::* operation)(Member*, Member*)) noexcept(false);
+    void connectMembers(Member*, Member*) noexcept(false);
+    void disconnectMembers(Member*, Member*) noexcept(false);
     
     //FanPage Methods
     void createFanPage() noexcept(false);

@@ -208,7 +208,7 @@ void System::createMember() //Creates a new member.
         throw EmptyName();
 }
 //----------------------------------------------------------
-void System::Connect_OR_DisconnectMember(void(System::* operation)(const string&, const string&)) //Connects or
+void System::Connect_OR_DisconnectMember(void(System::* operation)(Member*, Member*)) //Connects or
 // Disconnects Members.
 {
     string firstMemberName, secondMemberName;
@@ -224,7 +224,10 @@ void System::Connect_OR_DisconnectMember(void(System::* operation)(const string&
         if (placeHolder.find(firstMemberName) != placeHolder.end() &&
             placeHolder.find(secondMemberName) != placeHolder.end())
         {
-            try { (this->*operation)(firstMemberName, secondMemberName); }
+            try {
+                (this->*operation)(dynamic_cast<Member*>(placeHolder.at(firstMemberName)),
+                    dynamic_cast<Member*>(placeHolder.at(secondMemberName)));
+            }
             catch (addAFriendException& error) { throw addAFriendException(error); }
             catch (removeAFriendException& error) { throw removeAFriendException(error); }
             catch (connectSameMember& error) { throw connectSameMember(error); }
@@ -239,17 +242,14 @@ void System::Connect_OR_DisconnectMember(void(System::* operation)(const string&
         throw EmptyName();
 }
 //----------------------------------------------------------
-void System::connectMembers(const string& firstMemberName, const string& secondMemberName) //Connects two members.
+void System::connectMembers(Member* firstMemberName, Member* secondMemberName) //Connects two members.
 {
-    if (firstMemberName != secondMemberName)
+    if (firstMemberName->Member::getName() != secondMemberName->Member::getName())
     {
-        const unordered_map<string, Entity*>& placeHolder = Entities[std::type_index(typeid(Member*))];
-        auto* firstMemberPTR = dynamic_cast<Member*>(placeHolder.at(firstMemberName));
-        auto* secondMemberPTR = dynamic_cast<Member*>(placeHolder.at(secondMemberName));
         try
         {
-            *firstMemberPTR += *secondMemberPTR;
-            *secondMemberPTR += *firstMemberPTR;
+            *firstMemberName += *secondMemberName;
+            *secondMemberName += *firstMemberName;
         }
         catch (addAFriendException& error) {throw addAFriendException(error);}
         catch (...) {throw memberExceptions();}
@@ -258,17 +258,14 @@ void System::connectMembers(const string& firstMemberName, const string& secondM
         throw connectSameMember();
 }
 //----------------------------------------------------------
-void System::disconnectMembers(const string& firstMemberName, const string& secondMemberName) //Disconnects two members.
+void System::disconnectMembers(Member* firstMemberName, Member* secondMemberName) //Disconnects two members.
 {
-    if (firstMemberName != secondMemberName)
+    if (firstMemberName->Member::getName() != secondMemberName->Member::getName())
     {
-        const unordered_map<string, Entity*>& placeHolder = Entities[std::type_index(typeid(Member*))];
-        auto* firstMemberPTR = dynamic_cast<Member*>(placeHolder.at(firstMemberName));
-        auto* secondMemberPTR = dynamic_cast<Member*>(placeHolder.at(secondMemberName));
         try
         {
-            *firstMemberPTR -= *secondMemberPTR;
-            *secondMemberPTR -= *firstMemberPTR;
+            *firstMemberName -= *secondMemberName;
+            *secondMemberName -= *firstMemberName;
         }
         catch (removeAFriendException& error) {throw removeAFriendException(error);}
         catch(...) {throw memberExceptions();}
@@ -376,29 +373,34 @@ void System::newStatus() //Creates a new status.
 
     const unordered_map<string, Entity*>& placeHolderMember = Entities[std::type_index(typeid(Member*))];
     const unordered_map<string, Entity*>& fanPagePlaceHolder = Entities[std::type_index(typeid(FanPage*))];
-
-    if (placeHolderMember.find(name) != placeHolderMember.end() ||
-        fanPagePlaceHolder.find(name) != fanPagePlaceHolder.end())
+    if (!name.empty())
     {
-        if (decision == MEMBER_CHOOSE)
+        if (placeHolderMember.find(name) != placeHolderMember.end() ||
+            fanPagePlaceHolder.find(name) != fanPagePlaceHolder.end())
         {
-            try { placeHolderMember.find(name)->second->addStatus(); }
-            catch (EmptyStatus& error) { throw error; }
-            catch (invalidStatusType& error) { throw error;}
-            catch (...) { throw StatusExceptions(); }
+            if (decision == MEMBER_CHOOSE)
+            {
+                try 
+                {dynamic_cast<Member*>(placeHolderMember.at(name))->Entity::addStatus(); }
+                catch (EmptyStatus& error) { throw error; }
+                catch (invalidStatusType& error) { throw error; }
+                catch (...) { throw StatusExceptions(); }
+            }
+
+            else if (decision == FAN_PAGE_CHOOSE)
+            {
+                try {dynamic_cast<FanPage*>(fanPagePlaceHolder.at(name))->Entity::addStatus();}
+                catch (EmptyStatus& error) { throw error; }
+                catch (invalidStatusType& error) { throw error; }
+                catch (...) { throw StatusExceptions(); }
+            }
         }
 
-        else if (decision == FAN_PAGE_CHOOSE)
-        {
-            try { placeHolderMember.find(name)->second->addStatus(); }
-            catch (EmptyStatus& error) { throw error; }
-            catch (invalidStatusType& error) { throw error;}
-            catch (...) { throw StatusExceptions(); }
-        }
+        else
+            throw entityNotFound();
     }
-
     else
-        throw entityNotFound();
+        throw EmptyName();
 }
 //----------------------------------------------------------
 
@@ -437,22 +439,22 @@ void System::printAllStatuses() //Prints an entity's statuses.
         {
             if (decision == MEMBER_CHOOSE)
             {
-                try { placeHolderMember.find(name)->second->Entity::printAllStatuses(); }
+                try{ dynamic_cast<Member*>(placeHolderMember.at(name))->Entity::printAllStatuses(); }
                 catch (entityHasNoStatuses& error) {throw error;}
                 catch (...) {throw EntityExceptions();}
             }
 
             else if (decision == FAN_PAGE_CHOOSE)
             {
-                try { fanPagePlaceHolder.find(name)->second->Entity::printAllStatuses(); }
+                try { dynamic_cast<FanPage*>(fanPagePlaceHolder.at(name))->Entity::printAllStatuses(); }
                 catch (entityHasNoStatuses& error) {throw error;}
                 catch (...) {throw EntityExceptions();}
             }
         }
+        else
+            throw entityNotFound();
     }
-
-    else
-        throw entityNotFound();
+    throw EmptyName();
 }
 //----------------------------------------------------------
 void System::printTenLastStatuses() //Prints a member's friends ten last statuses.
@@ -462,34 +464,39 @@ void System::printTenLastStatuses() //Prints a member's friends ten last statuse
     cout << "Please enter a member's name: ";
     cin.ignore();
     getline(cin, name);
-    unordered_map<string, Entity*>& memberPlaceHolder = Entities[std::type_index(typeid(Member*))];
-
-    if (memberPlaceHolder.find(name) != memberPlaceHolder.end())
+    const unordered_map<string, Entity*>& memberPlaceHolder = Entities[std::type_index(typeid(Member*))];
+    if (!name.empty())
     {
-        unordered_map<string, Member*> u_memberMap = memberPlaceHolder.find(name)->second->getMembers();
-        if (!u_memberMap.empty())
+        if (memberPlaceHolder.find(name) != memberPlaceHolder.end())
         {
-            for (const auto& kv : u_memberMap)
+            const unordered_map<string, Member*>& u_memberMap = memberPlaceHolder.at(name)->Entity::getMembers();
+            if (!u_memberMap.empty())
             {
-                auto& key = kv.first;
-                auto& value = kv.second;
-                if (key != name) // need to change after creating all the classes operators
+                for (const auto& kv : u_memberMap)
                 {
-                    cout << "####################################\nFriend #" << ++i
-                    << ": " << key << "\n####################################" << endl;
-                    try {value->Member::printTenLastStatuses();}
-                    catch (memberPrintStatusesException& error) {throw memberPrintStatusesException(error);}
-                    catch (...) {throw memberExceptions();}
+                    auto& key = kv.first;
+                    auto& value = kv.second;
+                    if (key != name) // need to change after creating all the classes operators
+                    {
+                        cout << "####################################\nFriend #" << ++i
+                            << ": " << key << "\n####################################" << endl;
+                        try { value->Member::printTenLastStatuses(); }
+                        catch (memberPrintStatusesException& error) { throw memberPrintStatusesException(error); }
+                        catch (...) { throw memberExceptions(); }
+                    }
                 }
             }
+
+            else
+                throw printFriendsException();
         }
 
         else
-            throw printFriendsException();
-    }
+            throw memberNotFound();
 
+    }
     else
-        throw memberNotFound();
+        throw EmptyName();
 
 }
 //----------------------------------------------------------
