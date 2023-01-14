@@ -2,88 +2,20 @@
 #include "../Headers/FanPage.h"
 #include "../Headers/Member.h"
 
-void System::readData() 
+//System constructor
+//----------------------------------------------------------
+System::System() noexcept(false) //Reading data constructor.
 {
-    Entities[std::type_index(typeid(FanPage*))] = {};
-    Entities[std::type_index(typeid(Member*))] = {};
-    std::ifstream dataBinFile("SystemData.bin", std::ios_base::binary | std::ios_base::in);
-    if (!(dataBinFile.peek() == std::ifstream::traits_type::eof()))
-    {
-        if (dataBinFile.good()) {
-
-            size_t membersSize, fanPagesSize;
-            dataBinFile.read(reinterpret_cast<char*>(&membersSize), sizeof(membersSize));
-
-            for (size_t i = 0; i < membersSize; i++) {
-                std::string memberName;
-                Date memberBirthday;
-                size_t numOfStatuses;
-                std::getline(dataBinFile, memberName, '\0');
-                dataBinFile.read(reinterpret_cast<char*>(&memberBirthday.day), sizeof(memberBirthday.day));
-                dataBinFile.read(reinterpret_cast<char*>(&memberBirthday.month), sizeof(memberBirthday.month));
-                dataBinFile.read(reinterpret_cast<char*>(&memberBirthday.year), sizeof(memberBirthday.year));
-                dataBinFile.read(reinterpret_cast<char*>(&numOfStatuses), sizeof(numOfStatuses));
-                Member* member = new Member(memberName, memberBirthday);
-                for (size_t j = 0; j < numOfStatuses; j++) {
-                    Date statusDate;
-                    Time statusTime;
-                    int statusType = 0;
-                    string statusContent;
-                    dataBinFile.read(reinterpret_cast<char*>(&statusDate.day), sizeof(statusDate.day));
-                    dataBinFile.read(reinterpret_cast<char*>(&statusDate.month), sizeof(statusDate.month));
-                    dataBinFile.read(reinterpret_cast<char*>(&statusDate.year), sizeof(statusDate.year));
-                    std::getline(dataBinFile, statusTime.seconds, '\0');
-                    std::getline(dataBinFile, statusTime.minutes, '\0');
-                    std::getline(dataBinFile, statusTime.hour, '\0');
-                    dataBinFile.read(reinterpret_cast<char*>(&statusType), sizeof(statusType));
-                    STATUS_TYPE s = (STATUS_TYPE)statusType;
-                    std::getline(dataBinFile, statusContent, '\0');
-                    member->addStatusFromFile(statusDate, statusTime, statusContent, s);
-                }
-                Entities[std::type_index(typeid(Member*))][memberName] = member;
-            }
-
-            dataBinFile.read(reinterpret_cast<char*>(&fanPagesSize), sizeof(fanPagesSize));
-
-            for (size_t i = 0; i < fanPagesSize; i++) {
-                string fanPageName;
-                size_t numOfStatuses;
-                std::getline(dataBinFile, fanPageName, '\0');
-                dataBinFile.read(reinterpret_cast<char*>(&numOfStatuses), sizeof(size_t));
-                FanPage * fanPage = new FanPage(fanPageName);
-                for (size_t j = 0; j < numOfStatuses; j++) {
-                    Date statusDate;
-                    Time statusTime;
-                    int statusType = 0;
-                    std::string statusContent;
-                    dataBinFile.read(reinterpret_cast<char*>(&statusDate.day), sizeof(statusDate.day));
-                    dataBinFile.read(reinterpret_cast<char*>(&statusDate.month), sizeof(statusDate.month));
-                    dataBinFile.read(reinterpret_cast<char*>(&statusDate.year), sizeof(statusDate.year));
-                    std::getline(dataBinFile, statusTime.seconds, '\0');
-                    std::getline(dataBinFile, statusTime.minutes, '\0');
-                    std::getline(dataBinFile, statusTime.hour, '\0');
-                    dataBinFile.read(reinterpret_cast<char*>(&statusType), sizeof(statusType));
-                    std::getline(dataBinFile, statusContent, '\0');
-                    STATUS_TYPE s = (STATUS_TYPE)statusType;
-                    fanPage->addStatusFromFile(statusDate, statusTime, statusContent, s);
-                }
-                Entities[std::type_index(typeid(FanPage*))][fanPageName] = fanPage;
-            }
-        }
-    }
-    dataBinFile.close();
+    try{readData();}
+    catch(corruptFile& error) {throw error;}
+    catch(...) {throw systemExceptions();}
 }
-
-System::System()
-{
-    readData();
-}
+//----------------------------------------------------------
 
 //Start Function
 //----------------------------------------------------------
 void System::Start() //Boots up the system.
 {
-    /*this->System::initialData();*/
     cout << "Welcome to our social network!" << endl;
     System::printMenu();
     cout << "Please choose your action: " << flush;
@@ -104,10 +36,11 @@ void System::Start() //Boots up the system.
         cin >> userDecision;
     }
 
-    System::writeData();
+    try{System::writeData();}
+    catch(corruptFile& error) {cout << error.what() << endl;}
+    catch(...) {cout << systemExceptions().what() << endl;}
 }
 //----------------------------------------------------------
-
 
 //System-to-user methods
 //----------------------------------------------------------
@@ -256,7 +189,6 @@ int System::memberOrFanPage() //Gets user decision for specific functions.
 }
 //----------------------------------------------------------
 
-
 //Member Methods
 //----------------------------------------------------------
 void System::createMember() //Creates a new member.
@@ -289,7 +221,7 @@ void System::createMember() //Creates a new member.
         throw EmptyName();
 }
 //----------------------------------------------------------
-void System::Connect_OR_DisconnectMember(bool connect)
+void System::Connect_OR_DisconnectMember(bool connect) //General method for connection
 {
     string firstMemberName, secondMemberName;
     cout << "Please enter two member names:\nFirst member: ";
@@ -319,7 +251,9 @@ void System::Connect_OR_DisconnectMember(bool connect)
     else
         throw EmptyName();
 }
-void System::connectOrDisconnectMembers(Member* firstMember, Member* secondMember, bool connect) {
+//----------------------------------------------------------
+void System::connectOrDisconnectMembers(Member* firstMember, Member* secondMember, bool connect) //Executes connection/removal.
+{
     try {
         if (connect) {
             *firstMember += *secondMember;
@@ -340,10 +274,7 @@ void System::connectOrDisconnectMembers(Member* firstMember, Member* secondMembe
         throw memberExceptions();
     }
 }
-
 //----------------------------------------------------------
-
-
 
 //FanPage Methods
 //----------------------------------------------------------
@@ -403,7 +334,9 @@ void System::Add_OR_RemoveFAN(bool connect) //Adds or removes a fan.
     else
         throw EmptyName();
 }
-void System::addOrRemoveFanUtility(Member* Member, FanPage* Fanpage, bool connect) {
+//----------------------------------------------------------
+void System::addOrRemoveFanUtility(Member* Member, FanPage* Fanpage, bool connect) //Executes connection/removal.
+{
     try {
         if (connect) {
             *Member += *Fanpage;
@@ -425,29 +358,6 @@ void System::addOrRemoveFanUtility(Member* Member, FanPage* Fanpage, bool connec
     }
 }
 //----------------------------------------------------------
-void System::addFan(Member* MemberPTR , FanPage* FanPagePTR) //Adds a fan to a fan page's members array.
-{
-    try 
-    {
-        *MemberPTR += *FanPagePTR;
-        *FanPagePTR += *MemberPTR;
-    }
-     catch (addAFanException& error) { throw addAFanException(error); }
-     catch(...) {throw GlobalExceptions();}
-}
-//----------------------------------------------------------
-void System::removeFan(Member* MemberPTR, FanPage* FanPagePTR) //Removes a fan from a fan page's members array.
-{
-    try 
-    {
-        *MemberPTR -= *FanPagePTR;
-        *FanPagePTR -= *MemberPTR;
-    }
-    catch(removeAFanException& error) {throw removeAFanException(error);}
-    catch (...) {throw GlobalExceptions();}
-}
-//----------------------------------------------------------
-
 
 //Status Methods
 //----------------------------------------------------------
@@ -495,7 +405,6 @@ void System::newStatus() //Creates a new status.
 }
 //----------------------------------------------------------
 
-
 //Private Global Methods
 //----------------------------------------------------------
 inline bool System::BirthdayCheck(const Date& _birthday) //Verifies birthday inserted correctly.
@@ -505,7 +414,6 @@ inline bool System::BirthdayCheck(const Date& _birthday) //Verifies birthday ins
         && _birthday.year > 1900 && _birthday.year < 2023) ? true : false;
 }
 //----------------------------------------------------------
-
 
 //Private Printer Methods
 //----------------------------------------------------------
@@ -593,9 +501,9 @@ void System::printTenLastStatuses() //Prints a member's friends ten last statuse
 //----------------------------------------------------------
 void System::printAllEntities() //Prints all entities.
 {
-
     if (Entities.empty())
         throw EmptySystemExceptions();
+
     else
     {
         const unordered_map<string, Entity*>& placeHolderFanPage = Entities[std::type_index(typeid(FanPage*))];
@@ -672,10 +580,95 @@ void System::printAllFriends()  //Prints an entity's friends.
         throw EmptyName();
 }
 //----------------------------------------------------------
+
 //Files methods
 //----------------------------------------------------------
+void System::readData() //Reads data from bin file pre-startup.
+{
+    Entities[std::type_index(typeid(FanPage*))] = {};
+    Entities[std::type_index(typeid(Member*))] = {};
+    std::ifstream dataBinFile("SystemData.bin", std::ios_base::binary | std::ios_base::in);
+    if (dataBinFile.peek() != std::ifstream::traits_type::eof())
+    {
+        if (dataBinFile.good()) {
 
-void System::writeData()
+            size_t membersSize, fanPagesSize;
+            dataBinFile.read(reinterpret_cast<char*>(&membersSize), sizeof(membersSize));
+
+            for (size_t i = 0; i < membersSize; i++) {
+                std::string memberName;
+                Date memberBirthday;
+                size_t numOfStatuses;
+                std::getline(dataBinFile, memberName, '\0');
+                dataBinFile.read(reinterpret_cast<char*>(&memberBirthday.day), sizeof(memberBirthday.day));
+                dataBinFile.read(reinterpret_cast<char*>(&memberBirthday.month), sizeof(memberBirthday.month));
+                dataBinFile.read(reinterpret_cast<char*>(&memberBirthday.year), sizeof(memberBirthday.year));
+                dataBinFile.read(reinterpret_cast<char*>(&numOfStatuses), sizeof(numOfStatuses));
+                auto* member = new Member(memberName, memberBirthday);
+                for (size_t j = 0; j < numOfStatuses; j++) {
+                    Date statusDate;
+                    Time statusTime;
+                    int statusType = 0;
+                    string statusContent, fileName;
+                    dataBinFile.read(reinterpret_cast<char*>(&statusDate.day), sizeof(statusDate.day));
+                    dataBinFile.read(reinterpret_cast<char*>(&statusDate.month), sizeof(statusDate.month));
+                    dataBinFile.read(reinterpret_cast<char*>(&statusDate.year), sizeof(statusDate.year));
+                    std::getline(dataBinFile, statusTime.seconds, '\0');
+                    std::getline(dataBinFile, statusTime.minutes, '\0');
+                    std::getline(dataBinFile, statusTime.hour, '\0');
+                    dataBinFile.read(reinterpret_cast<char*>(&statusType), sizeof(statusType));
+                    auto s = (STATUS_TYPE)statusType;
+                    std::getline(dataBinFile, statusContent, '\0');
+
+                    if (s != STATUS_TYPE::TEXT)
+                        std::getline(dataBinFile, fileName, '\0');
+
+                    member->addStatusFromFile(statusDate, statusTime, statusContent, s, fileName);
+
+                }
+                Entities[std::type_index(typeid(Member*))][memberName] = member;
+            }
+
+            dataBinFile.read(reinterpret_cast<char*>(&fanPagesSize), sizeof(fanPagesSize));
+
+            for (size_t i = 0; i < fanPagesSize; i++) {
+                string fanPageName;
+                size_t numOfStatuses;
+                std::getline(dataBinFile, fanPageName, '\0');
+                dataBinFile.read(reinterpret_cast<char*>(&numOfStatuses), sizeof(size_t));
+                auto * fanPage = new FanPage(fanPageName);
+                for (size_t j = 0; j < numOfStatuses; j++) {
+                    Date statusDate;
+                    Time statusTime;
+                    int statusType = 0;
+                    std::string statusContent, fileName;
+                    dataBinFile.read(reinterpret_cast<char*>(&statusDate.day), sizeof(statusDate.day));
+                    dataBinFile.read(reinterpret_cast<char*>(&statusDate.month), sizeof(statusDate.month));
+                    dataBinFile.read(reinterpret_cast<char*>(&statusDate.year), sizeof(statusDate.year));
+                    std::getline(dataBinFile, statusTime.seconds, '\0');
+                    std::getline(dataBinFile, statusTime.minutes, '\0');
+                    std::getline(dataBinFile, statusTime.hour, '\0');
+                    dataBinFile.read(reinterpret_cast<char*>(&statusType), sizeof(statusType));
+                    std::getline(dataBinFile, statusContent, '\0');
+                    auto s = (STATUS_TYPE)statusType;
+
+                    if (s != STATUS_TYPE::TEXT)
+                        std::getline(dataBinFile, fileName, '\0');
+
+                    fanPage->addStatusFromFile(statusDate, statusTime, statusContent, s, fileName);
+                }
+                Entities[std::type_index(typeid(FanPage*))][fanPageName] = fanPage;
+            }
+        }
+
+        else
+            throw corruptFile();
+    }
+
+    dataBinFile.close();
+}
+//----------------------------------------------------------
+void System::writeData() //Writes current system data to bin file.
 {
     std::ofstream dataBinFile("SystemData.bin", std::ios_base::binary | std::ios_base::out | std::ios_base::trunc);
     if (dataBinFile.good()) {
@@ -683,7 +676,6 @@ void System::writeData()
          const auto& placeHolderFanPage = Entities[std::type_index(typeid(FanPage*))];
 
          size_t s = placeHolderMember.size();
-         
 
          if (!placeHolderMember.empty()) {
              dataBinFile.write(reinterpret_cast<const char*>(&s), sizeof(s));
@@ -710,6 +702,14 @@ void System::writeData()
                 dataBinFile.write(sv->getStatusTime().hour.c_str(), sv->getStatusTime().hour.size() + 1);
                 dataBinFile.write(reinterpret_cast<const char*>(&sv->getStatusType()), sizeof(sv->getStatusType()));
                 dataBinFile.write(sv->getStatusContent().c_str(), sv->getStatusContent().size() + 1);
+
+                if (sv->getStatusType() == STATUS_TYPE::IMAGE)
+                    dataBinFile.write((dynamic_cast<ImageStatus*>(sv)->getFileName().c_str()),
+                                      dynamic_cast<ImageStatus*>(sv)->getFileName().size() + 1);
+
+                if ((sv->getStatusType() == STATUS_TYPE::VIDEO))
+                    dataBinFile.write(dynamic_cast<VideoStatus*>(sv)->getFileName().c_str(),
+                                      dynamic_cast<VideoStatus*>(sv)->getFileName().size() + 1);
             }
         }
         size_t fanpageSize = placeHolderFanPage.size();
@@ -734,15 +734,24 @@ void System::writeData()
                 dataBinFile.write(sv->getStatusTime().hour.c_str(), sv->getStatusTime().hour.size() + 1);
                 dataBinFile.write(reinterpret_cast<const char*>(&statusType), sizeof(statusType));
                 dataBinFile.write(sv->getStatusContent().c_str(), sv->getStatusContent().size() + 1);
+
+                if (sv->getStatusType() == STATUS_TYPE::IMAGE)
+                    dataBinFile.write((dynamic_cast<ImageStatus*>(sv)->getFileName().c_str()),
+                                      dynamic_cast<ImageStatus*>(sv)->getFileName().size() + 1);
+
+                if ((sv->getStatusType() == STATUS_TYPE::VIDEO))
+                    dataBinFile.write(dynamic_cast<VideoStatus*>(sv)->getFileName().c_str(),
+                                      dynamic_cast<VideoStatus*>(sv)->getFileName().size() + 1);
             }
         }
     }
+
+    else
+        throw corruptFile();
+
     dataBinFile.close();
 }
-
-
 //----------------------------------------------------------
-
 
 //Commented Methods
 //----------------------------------------------------------
@@ -903,5 +912,27 @@ void System::writeData()
 //
 //    else if (type == FAN_PAGE)
 //        this->pages.at(name).FanPage::addStatus(statusContent);
+//}
+//----------------------------------------------------------
+//void System::addFan(Member* MemberPTR , FanPage* FanPagePTR) //Adds a fan to a fan page's members array.
+//{
+//    try
+//    {
+//        *MemberPTR += *FanPagePTR;
+//        *FanPagePTR += *MemberPTR;
+//    }
+//    catch (addAFanException& error) { throw addAFanException(error); }
+//    catch(...) {throw GlobalExceptions();}
+//}
+//----------------------------------------------------------
+//void System::removeFan(Member* MemberPTR, FanPage* FanPagePTR) //Removes a fan from a fan page's members array.
+//{
+//    try
+//    {
+//        *MemberPTR -= *FanPagePTR;
+//        *FanPagePTR -= *MemberPTR;
+//    }
+//    catch(removeAFanException& error) {throw removeAFanException(error);}
+//    catch (...) {throw GlobalExceptions();}
 //}
 //----------------------------------------------------------

@@ -41,6 +41,7 @@ public:
     virtual const Member& operator-=(FanPage&) noexcept(false);
 
 };
+
 //    Commented methods
 //    void addFriend(Member*) noexcept(false);
 //    void removeFriend(const string&) noexcept(false);

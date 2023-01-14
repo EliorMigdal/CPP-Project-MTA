@@ -25,44 +25,43 @@ public:
     const Time& getStatusTime() const { return statusTime; }
     const STATUS_TYPE& getStatusType() const { return statusType; }
 
-   /* virtual void showContent() const;*/
-    //Operators Methods
-    // << Operator
+    //General Methods
+    virtual void showContent(ostream&) const {cout << *this;}
+
+    //Operators
     friend ostream& operator<<(ostream&, const Status&);
-    // = Operator
     Status& operator=(Status&& status) = default;
     Status& operator=(const Status& status) = default;
-    // Boolean Operators
     virtual bool operator==(const Status&) const;
     virtual bool operator!=(const Status&) const;
 };
-//class VideoStatus :public Status {
-//
-//public:
-//    VideoStatus() = default;
-//    ~VideoStatus() override = default;
-//    virtual void showContent() const override;
-//
-//
-//
-//};
-//class ImageStatus :public Status {
-//
-//public:
-//    ImageStatus() = default;
-//    ~ImageStatus() override = default;
-//
-//
-//
-//
-//};
+
+class VideoStatus : public Status {
+    string fileName;
+public:
+    VideoStatus(Date&, Time&, string&, STATUS_TYPE&, string&);
+    ~VideoStatus() override = default;
+    const string& getFileName() const {return fileName;}
+    void showContent(ostream&) const override;
+};
+
+class ImageStatus : public Status {
+    string fileName;
+public:
+    ImageStatus(Date&, Time&, string&, STATUS_TYPE&, string&);
+    ~ImageStatus() override = default;
+    const string& getFileName() const {return fileName;}
+    void showContent(ostream&) const override;
+};
 
 class StatusExceptions : public std::exception {
 public:
     const char* what() const noexcept override { return "Status error."; }
 };
+
 class EmptyStatus :public StatusExceptions {
 public:
     const char* what() const noexcept override { return "Cannot enter an empty status."; }
 };
+
 #endif

@@ -32,34 +32,61 @@ void Entity::addStatus() //Adds a new status to entity's bulletin board.
     Date newDate;
     Time newTime;
     STATUS_TYPE newType;
-    string statusContent;
+    string statusContent, fileName;
     int userInput;
-    cout << "Please enter a status type:\n1 - Text & Picture\n2 - Text & Video" << endl;
+    cout << "Please enter a status type:\n0 - Text Only\n1 - Text & Picture\n2 - Text & Video" << endl;
     cin >> userInput;
 
-    if (userInput != 1 && userInput != 2)
+    if (userInput != 0 && userInput != 1 && userInput != 2)
         throw invalidStatusType();
 
     else
         newType = (STATUS_TYPE)userInput;
 
+    cin.ignore();
     cout << "Please enter a your status content:" << endl;
     getline(cin, statusContent);
 
     if (!statusContent.empty())
     {
         setTimeAndDate(newTime, newDate);
-        this->bulletinBoard.emplace_back(new Status(newDate, newTime, statusContent, newType));
+
+        if (userInput != 0)
+        {
+            cout << "Please enter a your file's name:" << endl;
+            getline(cin, fileName);
+        }
+
+        switch (userInput){
+            default: break;
+            case static_cast<int>(STATUS_TYPE::TEXT): this->bulletinBoard.emplace_back(new Status
+            (newDate, newTime, statusContent, newType)); break;
+            case static_cast<int>(STATUS_TYPE::IMAGE): this->bulletinBoard.emplace_back(new ImageStatus
+            (newDate, newTime, statusContent, newType, fileName)); break;
+            case static_cast<int>(STATUS_TYPE::VIDEO): this->bulletinBoard.emplace_back(new VideoStatus
+            (newDate, newTime, statusContent, newType, fileName)); break;
+        }
     }
 
     else
         throw EmptyStatus();
 }
-void Entity::addStatusFromFile(Date& _date, Time& _time, string& _content, STATUS_TYPE& _type) //Adds a new status to entity's bulletin board.
+//----------------------------------------------------------
+void Entity::addStatusFromFile(Date& _date, Time& _time, string& _content, STATUS_TYPE& _type, string fileName) //Adds a new status to entity's bulletin board.
 {
+    if (fileName.empty())
+        bulletinBoard.emplace_back(new Status(_date, _time, _content, _type));
 
-    setTimeAndDate(_time, _date);
-    bulletinBoard.emplace_back(new Status(_date, _time, _content, _type));
+    else
+    {
+        switch(static_cast<int>(_type)){
+            default: break;
+            case static_cast<int>(STATUS_TYPE::IMAGE): bulletinBoard.emplace_back(new ImageStatus
+            (_date, _time, _content, _type, fileName)); break;
+            case static_cast<int>(STATUS_TYPE::VIDEO): bulletinBoard.emplace_back(new VideoStatus
+            (_date, _time, _content, _type, fileName)); break;
+        }
+    }
 }
 //----------------------------------------------------------
 void Entity::printAllStatuses() const //Prints all object's statuses.
@@ -77,7 +104,7 @@ void Entity::printAllStatuses() const //Prints all object's statuses.
         for (reverseStatusIter rit = begin; rit != end; ++rit)
         {
             cout << "------------------------------------\n\tStatus #"
-                 << _numOfStatuses-- << "\n------------------------------------" << endl << *rit << endl;
+                 << _numOfStatuses-- << "\n------------------------------------" << endl << **rit << endl;
         }
     }
 }

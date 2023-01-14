@@ -28,7 +28,7 @@ public:
     virtual void removeMember(Member&) noexcept(false);
     virtual void printAllStatuses() const noexcept(false);
     virtual void addStatus() noexcept(false);
-    virtual void addStatusFromFile(Date& _date, Time& _time, string& _content, STATUS_TYPE& _type);
+    virtual void addStatusFromFile(Date&, Time&, string&, STATUS_TYPE&, string = "");
     virtual void printMembers() const noexcept(false);
 
     friend ostream& operator<<(ostream&, Entity&);
@@ -66,9 +66,9 @@ public:
     const char* what() const noexcept override { return "Invalid status type."; }
 };
 
-class entityHasNoMembers : public EntityExceptions {
-public:
-    const char* what() const noexcept override { return "Entity has no connections yet."; }
-};
+//class entityHasNoMembers : public EntityExceptions {
+//public:
+//    const char* what() const noexcept override { return "Entity has no connections yet."; }
+//};
 
 #endif //CPP_PROJECT_ENTITY_H

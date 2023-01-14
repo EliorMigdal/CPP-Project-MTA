@@ -4,11 +4,11 @@
 class System {
 private:
     size_SI userDecision = 0;
-    unordered_map<std::type_index, unordered_map<string, Entity*>> Entities{}; //managed container
+    unordered_map<std::type_index, unordered_map<string, Entity*>> Entities{}; //Managed container.
 
 public:
     //Constructors & Destructor
-    System();
+    System() noexcept(false);
     ~System() = default;
     System(const System& sys) = delete;
     System(System&& sys) = delete;
@@ -17,8 +17,8 @@ public:
 
     //Start Methods
     void Start() noexcept(false);
+
 private:
-    void readData();
     //System-to-user Methods
     static inline void printMenu();
     void setDecision(size_SI&) noexcept(false);
@@ -27,17 +27,13 @@ private:
 
     //Member Methods
     void createMember() noexcept(false);
-   
     void Connect_OR_DisconnectMember(bool connect) noexcept(false);
     void connectOrDisconnectMembers(Member* firstMember, Member* secondMember, bool connect) noexcept(false);
-   
-    
+
     //FanPage Methods
     void createFanPage() noexcept(false);
     void Add_OR_RemoveFAN(bool connect) noexcept(false);
     void addOrRemoveFanUtility(Member* Member, FanPage* Fanpage, bool connect) noexcept(false);
-    void addFan(Member*, FanPage*) noexcept(false);
-    void removeFan(Member*, FanPage*) noexcept(false);
 
     //Status Methods
     void newStatus() noexcept(false);
@@ -51,10 +47,9 @@ private:
     void printAllEntities() noexcept(false);
     void printAllFriends() noexcept(false);
 
-    void writeData();
-
     //File methods
-    //void writeData();
+    void readData();
+    void writeData();
 
     //Commented
 //    void newStatus(const string&, const size_SI&, const string&);
@@ -65,6 +60,8 @@ private:
 //    void disconnectMembersHardCoded(Member*, Member*);
 //    void createMember(const string&, Date&);
 //    void initialData();
+//    void addFan(Member*, FanPage*) noexcept(false);
+//    void removeFan(Member*, FanPage*) noexcept(false);
 };
 
 class systemExceptions : public std::exception {
@@ -77,10 +74,11 @@ public:
     const char* what() const noexcept override { return "Invalid user decision."; }
 };
 
-class EntityAlreadyExists : public systemExceptions {
-public:
-    const char* what() const noexcept override { return "Entity already exists in out system."; }
-};
+//class EntityAlreadyExists : public systemExceptions {
+//public:
+//    const char* what() const noexcept override { return "Entity already exists in out system."; }
+//};
+
 class userAlreadyExists : public systemExceptions {
 public:
     const char* what() const noexcept override { return "User already exists in our system."; }
@@ -102,18 +100,22 @@ public:
 };
 
 class connectSameMember : public systemExceptions {
+public:
     const char* what() const noexcept override { return "Cannot add yourself to your friends list."; }
 };
 
 class removeSameMember : public systemExceptions {
+public:
     const char* what() const noexcept override { return "Cannot remove yourself from your friends list."; }
 };
 
 class entityNotFound : public systemExceptions {
+public:
     const char* what() const noexcept override { return "Entity was not found in our system."; }
 };
 
 class EmptyName : public systemExceptions {
+public:
     const char* what() const noexcept override { return "Cannot enter an empty name."; }
 };
 
@@ -123,11 +125,23 @@ public:
 };
 
 class noMembersInSystem : public EmptySystemExceptions {
+public:
     const char* what() const noexcept override { return "System has no members yet."; }
 };
 
 class noPagesInSystem : public EmptySystemExceptions {
+public:
     const char* what() const noexcept override { return "System has no pages yet."; }
+};
+
+class emptyFile : public systemExceptions {
+public:
+    const char* what() const noexcept override { return "File is empty."; }
+};
+
+class corruptFile : public systemExceptions {
+public:
+    const char* what() const noexcept override { return "File is corrupt."; }
 };
 
 #endif //CPP_PROJECT_SYSTEM_H
