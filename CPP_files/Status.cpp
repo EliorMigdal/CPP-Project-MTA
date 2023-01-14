@@ -23,14 +23,12 @@ ImageStatus::ImageStatus(Date &_date, Time &_time, std::string &_content, STATUS
 //------------------------------------------------------
 void VideoStatus::showContent(ostream& _out) const
 {
-    _out << fileName << endl;
-    system("start myvideo.jpg");
+    _out << "\tFile name: " << fileName << endl;
 }
 //------------------------------------------------------
 void ImageStatus::showContent(ostream& _out) const
 {
     _out << "\tFile name: " << fileName << endl;
-    system("start mypicture.jpg");
 }
 //------------------------------------------------------
 

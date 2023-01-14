@@ -30,7 +30,7 @@ void Member::removeFanPage(FanPage &fanPage) noexcept(false) //Removes a fan pag
 //----------------------------------------------------------
 bool Member::isFan(FanPage & _fanPage) //Searches for fan page in member's pages.
 {
-    return this->pages.find(_fanPage.FanPage::getName()) != this->pages.end();
+    return this->pages.find(_fanPage.FanPage::getName()) == this->pages.end();
 }
 //----------------------------------------------------------
 

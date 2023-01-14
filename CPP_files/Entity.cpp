@@ -12,7 +12,7 @@ bool Entity::checkIfMember(const std::string &_name) const //Checks whether _nam
 void Entity::addMember(Member &_member) //Adds a new member to object's members.
 {
     if (checkIfMember(_member.getName()))
-        throw memberAlreadyExists();
+        throw addAFriendException();
 
     else
         this->members[_member.getName()] = &_member;
@@ -21,7 +21,7 @@ void Entity::addMember(Member &_member) //Adds a new member to object's members.
 void Entity::removeMember(Member &_member) //Removes a member from object's members.
 {
     if (!checkIfMember(_member.getName()))
-        throw memberAlreadyDoesntExists();
+        throw removeAFriendException();
 
     else
         this->members.erase(_member.getName());
