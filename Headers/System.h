@@ -1,6 +1,7 @@
 #ifndef CPP_PROJECT_SYSTEM_H
 #define CPP_PROJECT_SYSTEM_H
 #include "Entity.h"
+
 class System {
 private:
     size_SI userDecision = 0;
@@ -33,7 +34,7 @@ private:
     //FanPage Methods
     void createFanPage() noexcept(false);
     void Add_OR_RemoveFAN(bool connect) noexcept(false);
-    void addOrRemoveFanUtility(Member* Member, FanPage* Fanpage, bool connect) noexcept(false);
+    void addOrRemoveFanUtility(Member*, FanPage*, bool) noexcept(false);
 
     //Status Methods
     void newStatus() noexcept(false);
@@ -73,11 +74,6 @@ class invalidUserDecision : public systemExceptions {
 public:
     const char* what() const noexcept override { return "Invalid user decision."; }
 };
-
-//class EntityAlreadyExists : public systemExceptions {
-//public:
-//    const char* what() const noexcept override { return "Entity already exists in out system."; }
-//};
 
 class userAlreadyExists : public systemExceptions {
 public:
@@ -132,11 +128,6 @@ public:
 class noPagesInSystem : public EmptySystemExceptions {
 public:
     const char* what() const noexcept override { return "System has no pages yet."; }
-};
-
-class emptyFile : public systemExceptions {
-public:
-    const char* what() const noexcept override { return "File is empty."; }
 };
 
 class corruptFile : public systemExceptions {

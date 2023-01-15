@@ -13,7 +13,6 @@ public:
     Member() = default;
     Member(const Member&) = delete;
     Member(Member&&) noexcept = delete;
-    explicit Member(string&);
     Member(string&, Date&);
     Member& operator=(const Member& mem) = default;
     Member& operator=(Member&& mem) = default;
@@ -23,7 +22,6 @@ public:
     const Date& getBirthday() const {return birthday;}
     const unordered_map<string, FanPage*>& getPages() const {return pages;}
     size_t getNumOfPages() const {return pages.size();}
-    
 
     //Member-to-FanPage Methods
     virtual void addFanPage(FanPage&) noexcept(false);
@@ -39,27 +37,7 @@ public:
     virtual const Member& operator-=(Member&) noexcept(false);
     virtual const Member& operator+=(FanPage&) noexcept(false);
     virtual const Member& operator-=(FanPage&) noexcept(false);
-
 };
-
-//    Commented methods
-//    void addFriend(Member*) noexcept(false);
-//    void removeFriend(const string&) noexcept(false);
-//    bool isFriend(const string&);
-//    void printFriendsArr() const noexcept(false);
-//    void printStatuses(const size_t& numToPrint = PRINT_STATUS) const noexcept(false);
-//    void addStatus();
-//    void addStatus(const string&);
-//    void addPage(FanPage*);
-//    void removePage(const string&);
-//    void printAllPages() const noexcept(false);
-//    friend ostream& operator<<(ostream&, Member*);
-//    const Member& operator+=(FanPage*);
-//    const Member& operator-=(FanPage*);
-//    bool operator>(const Member&) const;
-//    bool operator>=(const Member&) const;
-//    bool operator<(const Member&) const;
-//    bool operator<=(const Member&) const;
 
 class memberExceptions : public std::exception {
 public:
@@ -86,7 +64,7 @@ public:
     const char* what() const noexcept override { return "Member has not posted any statuses yet."; }
 };
 
-class printPagesException : public memberExceptions { //exception for the implemented uncategorized function.
+class printPagesException : public memberExceptions { //Exception for unused Member::printPages() method.
 public:
     const char* what() const noexcept override { return "Member is not a fan of any page."; }
 };

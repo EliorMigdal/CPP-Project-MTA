@@ -12,7 +12,7 @@ bool Entity::checkIfMember(const std::string &_name) const //Checks whether _nam
 void Entity::addMember(Member &_member) //Adds a new member to object's members.
 {
     if (checkIfMember(_member.getName()))
-        throw addAFriendException();
+        throw connectedEntities();
 
     else
         this->members[_member.getName()] = &_member;
@@ -21,7 +21,7 @@ void Entity::addMember(Member &_member) //Adds a new member to object's members.
 void Entity::removeMember(Member &_member) //Removes a member from object's members.
 {
     if (!checkIfMember(_member.getName()))
-        throw removeAFriendException();
+        throw disconnectedEntities();
 
     else
         this->members.erase(_member.getName());
@@ -55,6 +55,9 @@ void Entity::addStatus() //Adds a new status to entity's bulletin board.
         {
             cout << "Please enter a your file's name:" << endl;
             getline(cin, fileName);
+
+            if (fileName.empty())
+                throw EmptyFileName();
         }
 
         switch (userInput){
@@ -104,7 +107,7 @@ void Entity::printAllStatuses() const //Prints all object's statuses.
         for (reverseStatusIter rit = begin; rit != end; ++rit)
         {
             cout << "------------------------------------\n\tStatus #"
-                 << _numOfStatuses-- << "\n------------------------------------" << endl << **rit << endl;
+                 << _numOfStatuses-- << "\n------------------------------------" << endl << **rit;
         }
     }
 }
@@ -112,7 +115,7 @@ void Entity::printAllStatuses() const //Prints all object's statuses.
 void Entity::printMembers() const //Print an entity's members list.
 {
     if (this->members.empty())
-        throw printFriendsException();
+        throw entityHasNoConnections();
 
     else
     {

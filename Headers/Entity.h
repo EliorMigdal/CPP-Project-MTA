@@ -11,29 +11,32 @@ protected:
     unordered_map<string, Member*> members{};
     vector<Status*> bulletinBoard{};
 public:
+    //Constructors & Destructor
     Entity() = default;
     explicit Entity(string _name):name(std::move(_name)){}
     Entity(Entity&) = delete;
     Entity(Entity&&) noexcept = delete;
     virtual ~Entity() = default;
 
+    //Getters
     const string& getName() const {return name;}
     const unordered_map<string, Member*>& getMembers() const {return members;}
     size_t getNumOfMembers() const {return members.size();}
     const vector<Status*>& getBulletinBoard() const {return bulletinBoard;}
     size_t getNumOfStatuses() const {return bulletinBoard.size();}
 
+    //Virtual Methods
     virtual bool checkIfMember(const string&) const;
     virtual void addMember(Member&) noexcept(false);
     virtual void removeMember(Member&) noexcept(false);
     virtual void printAllStatuses() const noexcept(false);
     virtual void addStatus() noexcept(false);
-    virtual void addStatusFromFile(Date&, Time&, string&, STATUS_TYPE&, string = "");
+    void addStatusFromFile(Date&, Time&, string&, STATUS_TYPE&, string = "");
     virtual void printMembers() const noexcept(false);
 
+    //Operators
     friend ostream& operator<<(ostream&, Entity&);
     virtual Entity& operator=(const Entity&);
-    //virtual Entity& operator+=(Entity&) = 0;
     virtual Entity& operator=(Entity&&) noexcept = default;
     virtual bool operator>(const Entity&) const;
     virtual bool operator>=(const Entity&) const;
@@ -46,29 +49,29 @@ public:
     const char* what() const noexcept override { return "Error handling entity."; }
 };
 
-class memberAlreadyExists : public EntityExceptions {
-public:
-    const char* what() const noexcept override { return "Member is already connected to entity."; }
-};
-
-class memberAlreadyDoesntExists : public EntityExceptions {
-public:
-    const char* what() const noexcept override { return "Member is already not connected to entity."; }
-};
-
 class entityHasNoStatuses : public EntityExceptions {
 public:
     const char* what() const noexcept override { return "Entity hasn't posted any statuses."; }
+};
+
+class entityHasNoConnections : public EntityExceptions {
+public:
+    const char* what() const noexcept override { return "Entity has no connections yet."; }
+};
+
+class connectedEntities : public EntityExceptions {
+public:
+    const char* what() const noexcept override { return "Entities are already connected."; }
+};
+
+class disconnectedEntities : public EntityExceptions {
+public:
+    const char* what() const noexcept override { return "Entities are already disconnected."; }
 };
 
 class invalidStatusType : public EntityExceptions {
 public:
     const char* what() const noexcept override { return "Invalid status type."; }
 };
-
-//class entityHasNoMembers : public EntityExceptions {
-//public:
-//    const char* what() const noexcept override { return "Entity has no connections yet."; }
-//};
 
 #endif //CPP_PROJECT_ENTITY_H

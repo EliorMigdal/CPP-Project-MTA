@@ -13,21 +13,10 @@ public:
     FanPage& operator=(FanPage&& fan_page) = default;
     ~FanPage() override = default;
 
+    //Operators
     virtual const FanPage& operator+=(Member&) noexcept(false);
     virtual const FanPage& operator-=(Member&) noexcept(false);
 };
-//    bool checkIfFan(const string&);
-//    void addFan(Member*) noexcept(false);
-//    void removeFan(Member*) noexcept(false);
-//    void printFans()const noexcept(false);
-//    void printStatuses() const noexcept(false);
-//    void addStatus();
-//    void addStatus(const string&);
-//    friend ostream& operator<<(ostream&, FanPage*);
-//    bool operator<(FanPage&) const;
-//    bool operator<=(FanPage&) const;
-//    bool operator>(FanPage&) const;
-//    bool operator>=(FanPage&) const;
 
 class fanPageExceptions : public std::exception {
 public:

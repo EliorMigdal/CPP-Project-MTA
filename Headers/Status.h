@@ -14,9 +14,7 @@ public:
     Status() = default;
     Status(const Status&) = default;
     Status(Status&&) noexcept = default;
-    explicit Status(Date&);
     Status(Date&, Time&, string&, STATUS_TYPE&);
-    explicit Status(const string&);
     virtual ~Status() = default;
 
     //Getters
@@ -62,6 +60,11 @@ public:
 class EmptyStatus :public StatusExceptions {
 public:
     const char* what() const noexcept override { return "Cannot enter an empty status."; }
+};
+
+class EmptyFileName :public StatusExceptions {
+public:
+    const char* what() const noexcept override { return "Cannot enter an empty file name."; }
 };
 
 #endif

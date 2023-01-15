@@ -25,7 +25,6 @@ using std::ofstream;//writing to file
 using std::fstream;//reading&writing
 
 typedef unsigned short int size_SI;
-typedef unsigned char Byte;
 
 //Const Variables
 constexpr size_SI PRINT_STATUS = 10;
@@ -46,10 +45,10 @@ struct Time
 };
 
 //Enums
-enum class STATUS_TYPE{TEXT, IMAGE, VIDEO};
-enum DECISION_TYPE { CREATEMEMBER = 1, CREATEFANPAGE, NEWSTATUS,
+enum class STATUS_TYPE {TEXT, IMAGE, VIDEO};
+enum DECISION_TYPE {CREATEMEMBER = 1, CREATEFANPAGE, NEWSTATUS,
         PRINTALLSTATUSES, PRINTTENLASTSTATUSES, CONNECTMEMBERS, DISCONNECTMEMBERS, ADDFAN,
-        REMOVEFAN, PRINTALLENTITIES, PRINTALLFRIENDS, EXIT };
+        REMOVEFAN, PRINTALLENTITIES, PRINTALLFRIENDS, EXIT};
 
 //Global Functions
 void readBirthday(Date& birthday);

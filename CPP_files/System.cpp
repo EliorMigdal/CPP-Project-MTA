@@ -24,20 +24,22 @@ void System::Start() //Boots up the system.
     while (userDecision != EXIT)
     {
         try {System::setDecision(userDecision);}
-        catch (EmptySystemExceptions& error) {cout << error.what() << endl;}
-        catch (StatusExceptions& error) {cout << error.what() << endl;}
-        catch (GlobalExceptions& error) {cout << error.what() << endl;}
         catch (systemExceptions& error) {cout << error.what() << endl;}
+        catch (EmptySystemExceptions& error) {cout << error.what() << endl;}
+        catch (EntityExceptions& error) {cout << error.what() << endl;}
         catch (memberExceptions& error) {cout << error.what() << endl;}
         catch (fanPageExceptions& error) {cout << error.what() << endl;}
+        catch (StatusExceptions& error) {cout << error.what() << endl;}
+        catch (GlobalExceptions& error) {cout << error.what() << endl;}
         catch (...) {cout << "General Error." << endl;}
         System::printMenu();
         cout << "Please choose another action: " << flush;
         cin >> userDecision;
     }
-    try { System::writeData(); }
-    catch (corruptFile& error) { cout << error.what() << endl; }
-    catch (...) { cout << systemExceptions().what() << endl; };
+
+    try {System::writeData();}
+    catch (corruptFile& error) {cout << error.what() << endl;}
+    catch (...) {cout << systemExceptions().what() << endl;}
    
 }
 //----------------------------------------------------------
@@ -65,102 +67,107 @@ void System::setDecision(size_SI& _decision) //Gets the decision from user and a
             break;
         //////////////////////////////////////////////////////////////////////////////////////////
         case (size_SI)CREATEMEMBER:  //1
-            try {
-                System::createMember();
-            }
+            try {System::createMember();}
             catch (userAlreadyExists& error) {throw userAlreadyExists(error);}
             catch (invalidBirthday& error) {throw invalidBirthday(error);}
-            catch (EmptyName& error) { throw EmptyName(error); }
-            catch(...) {throw systemExceptions();}
+            catch (EmptyName& error) {throw EmptyName(error);}
+            catch (...) {throw systemExceptions();}
             break;
         //////////////////////////////////////////////////////////////////////////////////////////
         case (size_SI)CREATEFANPAGE: //2
-            try {
-                System::createFanPage();
-            }
+            try {System::createFanPage();}
             catch (pageAlreadyExists& error) {throw pageAlreadyExists(error);}
-            catch (EmptyName& error) { throw EmptyName(error); }
+            catch (EmptyName& error) {throw EmptyName(error);}
             catch(...) {throw systemExceptions();}
             break;
         //////////////////////////////////////////////////////////////////////////////////////////
         case (size_SI)NEWSTATUS: //3
             try {System::newStatus();}
-            catch(invalidUserDecision& error) {throw invalidUserDecision(error);}
-            catch (EmptyStatus& error) { throw EmptyStatus(error); }
-            catch (invalidStatusType& error) {throw error;}
-            catch (StatusExceptions& error) { throw StatusExceptions(error); }
-            catch(entityNotFound& error) {throw entityNotFound(error);}
-            catch(...) {throw systemExceptions();}
+            catch (invalidUserDecision& error) {throw invalidUserDecision(error);}
+            catch (invalidStatusType& error) {throw invalidStatusType(error);}
+            catch (EmptyFileName& error) {throw EmptyFileName(error);}
+            catch (EmptyStatus& error) {throw EmptyStatus(error);}
+            catch (StatusExceptions& error) {throw StatusExceptions(error);}
+            catch (EmptyName& error) {throw EmptyName(error);}
+            catch (entityNotFound& error) {throw entityNotFound(error);}
+            catch (...) {throw systemExceptions();}
             break;
         ////////////////////////////////////////////////////////////////////////////////////////////
         case (size_SI)PRINTALLSTATUSES: //4
             try {System::printAllStatuses();}
-            catch(invalidUserDecision& error) {throw invalidUserDecision(error);}
-            catch(entityNotFound& error) {throw entityNotFound(error);}
-            catch(memberPrintStatusesException& error) {throw memberPrintStatusesException(error);}
-            catch(memberExceptions& error) {throw memberExceptions(error);}
-            catch(fanPagePrintStatusesException& error) {throw fanPagePrintStatusesException(error);}
-            catch(fanPageExceptions& error) {throw fanPageExceptions(error);}
-            catch(...) {throw systemExceptions();}
+            catch (invalidUserDecision& error) {throw invalidUserDecision(error);}
+            catch (memberPrintStatusesException& error) {throw memberPrintStatusesException(error);}
+            catch (fanPagePrintStatusesException& error) {throw fanPagePrintStatusesException(error);}
+            catch (entityNotFound& error) {throw entityNotFound(error);}
+            catch (EntityExceptions& error) {throw EntityExceptions(error);}
+            catch (EmptyName& error) {throw EmptyName(error);}
+            catch (...) {throw systemExceptions();}
             break;
         ////////////////////////////////////////////////////////////////////////////////////////////
         case (size_SI)PRINTTENLASTSTATUSES: //5
-            try{System::printTenLastStatuses();}
-            catch(memberPrintStatusesException& error) {throw memberPrintStatusesException(error);}
-            catch(printFriendsException& error) {throw printFriendsException(error);}
-            catch(memberExceptions& error) {throw memberExceptions(error);}
-            catch(memberNotFound& error) {throw memberNotFound(error);}
-            catch(...) {throw systemExceptions();}
+            try {System::printTenLastStatuses();}
+            catch (memberPrintStatusesException& error) {throw memberPrintStatusesException(error);}
+            catch (printFriendsException& error) {throw printFriendsException(error);}
+            catch (memberNotFound& error) {throw memberNotFound(error);}
+            catch (EmptyName& error) {throw EmptyName(error);}
+            catch (memberExceptions& error) {throw memberExceptions(error);}
+            catch (...) {throw systemExceptions();}
             break;
         //////////////////////////////////////////////////////////////////////////////////////////
         case (size_SI)CONNECTMEMBERS: //6
-            try{System::Connect_OR_DisconnectMember(true);}
-            catch(addAFriendException& error) {throw addAFriendException(error);}
-            catch(connectSameMember& error) {throw connectSameMember(error);}
-            catch(memberExceptions& error) {throw memberExceptions(error);}
-            catch(memberNotFound& error) {throw memberNotFound(error);}
-            catch(...) {throw systemExceptions();}
+            try {System::Connect_OR_DisconnectMember(true);}
+            catch (connectSameMember& error) {throw connectSameMember(error);}
+            catch (addAFriendException& error) {throw addAFriendException(error);}
+            catch (memberExceptions& error) {throw memberExceptions(error);}
+            catch (memberNotFound& error) {throw memberNotFound(error);}
+            catch (EmptyName& error) {throw EmptyName(error);}
+            catch (...) {throw systemExceptions();}
             break;
         //////////////////////////////////////////////////////////////////////////////////////////
         case (size_SI)DISCONNECTMEMBERS: //7
-            try{System::Connect_OR_DisconnectMember(false);}
-            catch(removeAFriendException& error) {throw removeAFriendException(error);}
-            catch(removeSameMember& error) {throw removeSameMember(error);}
-            catch(memberExceptions& error) {throw memberExceptions(error);}
-            catch(memberNotFound& error) {throw memberNotFound(error);}
-            catch(...) {throw systemExceptions();}
+            try {System::Connect_OR_DisconnectMember(false);}
+            catch (removeSameMember& error) {throw removeSameMember(error);}
+            catch (removeAFriendException& error) {throw removeAFriendException(error);}
+            catch (memberExceptions& error) {throw memberExceptions(error);}
+            catch (memberNotFound& error) {throw memberNotFound(error);}
+            catch (EmptyName& error) {throw EmptyName(error);}
+            catch (...) {throw systemExceptions();}
             break;
         //////////////////////////////////////////////////////////////////////////////////////////
         case (size_SI)ADDFAN: //8
-            try{System::Add_OR_RemoveFAN(true);}
-            catch (addAFanException& error) { throw addAFanException(error); }
-            catch(entityNotFound& error) {throw entityNotFound(error);}
-            catch(...) {throw GlobalExceptions();}
+            try {System::Add_OR_RemoveFAN(true);}
+            catch (addAFanException& error) {throw addAFanException(error);}
+            catch (entityNotFound& error) {throw entityNotFound(error);}
+            catch (EmptyName& error) {throw EmptyName(error);}
+            catch (...) {throw systemExceptions();}
             break;
         //////////////////////////////////////////////////////////////////////////////////////////
         case (size_SI)REMOVEFAN: //9
-            try{System::Add_OR_RemoveFAN(false);}
-            catch (removeAFanException& error) { throw removeAFanException(error); }
-            catch(entityNotFound& error) {throw entityNotFound(error);}
-            catch(...) {throw GlobalExceptions();}
+            try {System::Add_OR_RemoveFAN(false);}
+            catch (removeAFanException& error) {throw removeAFanException(error);}
+            catch (entityNotFound& error) {throw entityNotFound(error);}
+            catch (EmptyName& error) {throw EmptyName(error);}
+            catch (...) {throw systemExceptions();}
             break;
         //////////////////////////////////////////////////////////////////////////////////////////
         case (size_SI)PRINTALLENTITIES: //10
-            try{System::printAllEntities();}
-            catch(noMembersInSystem& error) {throw noMembersInSystem(error);}
-            catch(noPagesInSystem& error) {throw noPagesInSystem(error);}
-            catch(...) {throw EmptySystemExceptions();}
+            try {System::printAllEntities();}
+            catch (noMembersInSystem& error) {throw noMembersInSystem(error);}
+            catch (noPagesInSystem& error) {throw noPagesInSystem(error);}
+            catch (EmptySystemExceptions& error) {throw EmptySystemExceptions(error);}
+            catch (...) {throw systemExceptions();}
             break;
         //////////////////////////////////////////////////////////////////////////////////////////
         case (size_SI)PRINTALLFRIENDS: //11
             try {System::printAllFriends();}
-            catch(invalidUserDecision& error) {throw invalidUserDecision(error);}
-            catch(printFriendsException& error) {throw printFriendsException(error);}
-            catch(printFansException& error) {throw printFansException(error);}
-            catch(memberExceptions& error) {throw memberExceptions(error);}
-            catch(fanPageExceptions& error) {throw fanPageExceptions(error);}
-            catch(entityNotFound& error) {throw entityNotFound(error);}
-            catch(...) {throw systemExceptions();}
+            catch (invalidUserDecision& error) {throw invalidUserDecision(error);}
+            catch (printFriendsException& error) {throw printFriendsException(error);}
+            catch (printFansException& error) {throw printFansException(error);}
+            catch (memberExceptions& error) {throw memberExceptions(error);}
+            catch (fanPageExceptions& error) {throw fanPageExceptions(error);}
+            catch (entityNotFound& error) {throw entityNotFound(error);}
+            catch (EmptyName& error) {throw EmptyName(error);}
+            catch (...) {throw systemExceptions();}
             break;
         ////////////////////////////////////////////////////////////////////////////////////////
     }
@@ -194,13 +201,11 @@ void System::createMember() //Creates a new member.
     string name;
     cin.ignore();
     getline(cin, name);
+
     if (!name.empty())
     {
-        if (Entities.find(std::type_index(typeid(Member*))) == Entities.end()) // until we will load from files this.
-        {
-            Entities[std::type_index(typeid(Member*))] = {};
-        }
         unordered_map<string, Entity*>& placeHolder = Entities[std::type_index(typeid(Member*))];
+
         if (placeHolder.find(name) == placeHolder.end())
         {
             cout << "Please enter member's birthday:" << endl;
@@ -211,6 +216,7 @@ void System::createMember() //Creates a new member.
 
             placeHolder[name] = new Member{ name,Birthday };
         }
+
         else
             throw userAlreadyExists();    
     }
@@ -235,16 +241,15 @@ void System::Connect_OR_DisconnectMember(bool connect) //General method for conn
         {
             (connect) ? throw connectSameMember() : throw removeSameMember();
         }
+
         if (placeHolder.find(firstMemberName) != placeHolder.end() &&
             placeHolder.find(secondMemberName) != placeHolder.end())
         {
-            try {
-                connectOrDisconnectMembers(dynamic_cast<Member*>(placeHolder.at(firstMemberName)), 
-                    dynamic_cast<Member*>(placeHolder.at(secondMemberName)), connect);
-            }
-            catch (addAFriendException& error) { throw addAFriendException(error); }
-            catch (removeAFriendException& error) { throw removeAFriendException(error); }
-            catch (...) { throw memberExceptions(); }
+            try {connectOrDisconnectMembers(dynamic_cast<Member*>(placeHolder.at(firstMemberName)),
+                    dynamic_cast<Member*>(placeHolder.at(secondMemberName)), connect);}
+            catch (addAFriendException& error) {throw addAFriendException(error);}
+            catch (removeAFriendException& error) {throw removeAFriendException(error);}
+            catch (...) {throw memberExceptions();}
         }
 
         else
@@ -261,21 +266,16 @@ void System::connectOrDisconnectMembers(Member* firstMember, Member* secondMembe
             *firstMember += *secondMember;
             *secondMember += *firstMember;
         }
+
         else {
             *firstMember -= *secondMember;
             *secondMember -= *firstMember;
         }
     }
-    catch (addAFriendException& error) {
-        throw addAFriendException(error);
-    }
-    catch (removeAFriendException& error) {
-        throw removeAFriendException(error);
-    }
-   
-    catch (...) {
-        throw memberExceptions();
-    }
+
+    catch (addAFriendException& error) {throw addAFriendException(error);}
+    catch (removeAFriendException& error) {throw removeAFriendException(error);}
+    catch (...) {throw memberExceptions();}
 }
 //----------------------------------------------------------
 
@@ -287,21 +287,15 @@ void System::createFanPage() //Creates a fan page.
     cout << "Please enter a fan page's name: ";
     cin.ignore();
     getline(cin, name);
+
     if (!name.empty())
     {
-        if (Entities.find(std::type_index(typeid(FanPage*))) == Entities.end()) // until we will load from files this.
-        {
-            Entities[std::type_index(typeid(FanPage*))] = {};
-        }
         unordered_map<string, Entity*>& placeHolder = Entities[std::type_index(typeid(FanPage*))];
         if (placeHolder.find(name) == placeHolder.end())
-        {
             placeHolder[name] = new FanPage(name);
-        }
+
         else
-        {
             throw pageAlreadyExists();
-        }
     }
     else
         throw EmptyName();
@@ -316,21 +310,21 @@ void System::Add_OR_RemoveFAN(bool connect) //Adds or removes a fan.
     getline(cin, memberName);
     cout << "Fan Page name: " << flush;
     getline(cin, fanPageName);
+
     const unordered_map<string, Entity*>& placeHolderFanPage = Entities[std::type_index(typeid(FanPage*))];
     const unordered_map<string, Entity*>& placeHolderMember = Entities[std::type_index(typeid(Member*))];
+
     if (!memberName.empty() && !fanPageName.empty())
     {
         if (placeHolderMember.find(memberName) != placeHolderMember.end() && 
             placeHolderFanPage.find(fanPageName) != placeHolderFanPage.end())
         {
-            try {
-                addOrRemoveFanUtility(dynamic_cast<Member*>(placeHolderMember.at(memberName)),
-                    dynamic_cast<FanPage*>(placeHolderFanPage.at(fanPageName)), connect);
-            }
-            catch (addAFanException& error) { throw addAFanException(error); }
-            catch (removeAFanException& error) { throw removeAFanException(error); }
-            catch (GlobalExceptions& error) { throw GlobalExceptions(error); }
-            catch (...) { throw systemExceptions(); }
+            try {addOrRemoveFanUtility(dynamic_cast<Member*>(placeHolderMember.at(memberName)),
+                    dynamic_cast<FanPage*>(placeHolderFanPage.at(fanPageName)), connect);}
+            catch (addAFanException& error) {throw addAFanException(error);}
+            catch (removeAFanException& error) {throw removeAFanException(error);}
+            catch (GlobalExceptions& error) {throw GlobalExceptions(error);}
+            catch (...) {throw systemExceptions();}
         }
         else
             throw entityNotFound();
@@ -339,27 +333,23 @@ void System::Add_OR_RemoveFAN(bool connect) //Adds or removes a fan.
         throw EmptyName();
 }
 //----------------------------------------------------------
-void System::addOrRemoveFanUtility(Member* Member, FanPage* Fanpage, bool connect) //Executes connection/removal.
+void System::addOrRemoveFanUtility(Member* Member, FanPage* FanPage, bool connect) //Executes connection/removal.
 {
     try {
         if (connect) {
-            *Member += *Fanpage;
-            *Fanpage += *Member;
+            *Member += *FanPage;
+            *FanPage += *Member;
         }
+
         else {
-            *Member -= *Fanpage;
-            *Fanpage -= *Member;
+            *Member -= *FanPage;
+            *FanPage -= *Member;
         }
     }
-    catch (addAFriendException& error) {
-        throw addAFriendException(error);
-    }
-    catch (removeAFriendException& error) {
-        throw removeAFriendException(error);
-    }
-    catch (...) {
-        throw memberExceptions();
-    }
+
+    catch (addAFanException& error) {throw addAFanException(error);}
+    catch (removeAFanException& error) {throw removeAFanException(error);}
+    catch (...) {throw GlobalExceptions();}
 }
 //----------------------------------------------------------
 
@@ -372,29 +362,33 @@ void System::newStatus() //Creates a new status.
     cout << "Please choose the entity which you would like to add a status to:";
 
     try {decision = System::memberOrFanPage();}
-    catch(invalidUserDecision& error) {throw error;}
-    catch(...) {throw systemExceptions();}
-    getline(cin, name);
+    catch (invalidUserDecision& error) {throw error;}
+    catch (...) {throw systemExceptions();}
 
+    getline(cin, name);
     const unordered_map<string, Entity*>& placeHolderMember = Entities[std::type_index(typeid(Member*))];
     const unordered_map<string, Entity*>& fanPagePlaceHolder = Entities[std::type_index(typeid(FanPage*))];
+
     if (!name.empty())
     {
         if (decision == MEMBER_CHOOSE && placeHolderMember.find(name) != placeHolderMember.end() )
         {
-            try 
-            {dynamic_cast<Member*>(placeHolderMember.at(name))->Entity::addStatus(); }
-            catch (EmptyStatus& error) { throw error; }
-            catch (invalidStatusType& error) { throw error; }
-            catch (...) { throw StatusExceptions(); }
+            try {dynamic_cast<Member*>(placeHolderMember.at(name))->Entity::addStatus();}
+            catch (invalidStatusType& error) {throw invalidStatusType(error);}
+            catch (EmptyFileName& error) {throw EmptyFileName(error);}
+            catch (EmptyStatus& error) {throw EmptyStatus(error);}
+            catch (...) {throw StatusExceptions();}
         }
+
         else if  (decision == FAN_PAGE_CHOOSE && fanPagePlaceHolder.find(name) != fanPagePlaceHolder.end())
         {
             try {dynamic_cast<FanPage*>(fanPagePlaceHolder.at(name))->Entity::addStatus();}
-            catch (EmptyStatus& error) { throw error; }
-            catch (invalidStatusType& error) { throw error; }
-            catch (...) { throw StatusExceptions(); }
+            catch (invalidStatusType& error) {throw invalidStatusType(error);}
+            catch (EmptyFileName& error) {throw EmptyFileName(error);}
+            catch (EmptyStatus& error) {throw EmptyStatus(error);}
+            catch (...) {throw StatusExceptions();}
         }
+
         else
             throw entityNotFound();
     }
@@ -409,7 +403,7 @@ inline bool System::BirthdayCheck(const Date& _birthday) //Verifies birthday ins
 {
     return (_birthday.day > 0 && _birthday.day < 32 &&
         _birthday.month > 0 && _birthday.month < 13
-        && _birthday.year > 1900 && _birthday.year < 2023) ? true : false;
+        && _birthday.year > 1900 && _birthday.year < 2024) ? true : false;
 }
 //----------------------------------------------------------
 
@@ -430,19 +424,21 @@ void System::printAllStatuses() //Prints an entity's statuses.
     {
         const unordered_map<string, Entity*>& placeHolderMember = Entities[std::type_index(typeid(Member*))];
         const unordered_map<string, Entity*>& fanPagePlaceHolder = Entities[std::type_index(typeid(FanPage*))];
+
         if (decision == MEMBER_CHOOSE && placeHolderMember.find(name) != placeHolderMember.end())
         {
-            try{ dynamic_cast<Member*>(placeHolderMember.at(name))->Entity::printAllStatuses(); }
-            catch (entityHasNoStatuses& error) {throw error;}
+            try {dynamic_cast<Member*>(placeHolderMember.at(name))->Entity::printAllStatuses();}
+            catch (entityHasNoStatuses& error) {throw memberPrintStatusesException();}
             catch (...) {throw EntityExceptions();}
         }
 
         else if (decision == FAN_PAGE_CHOOSE && fanPagePlaceHolder.find(name) != fanPagePlaceHolder.end())
         {
-            try { dynamic_cast<FanPage*>(fanPagePlaceHolder.at(name))->Entity::printAllStatuses(); }
-            catch (entityHasNoStatuses& error) { throw error; }
-            catch (...) { throw EntityExceptions(); }
+            try {dynamic_cast<FanPage*>(fanPagePlaceHolder.at(name))->Entity::printAllStatuses();}
+            catch (entityHasNoStatuses& error) {throw fanPagePrintStatusesException();}
+            catch (...) {throw EntityExceptions();}
         }
+
         else
             throw entityNotFound();
     }
@@ -458,6 +454,7 @@ void System::printTenLastStatuses() //Prints a member's friends ten last statuse
     cout << "Please enter a member's name: ";
     cin.ignore();
     getline(cin, name);
+
     const unordered_map<string, Entity*>& memberPlaceHolder = Entities[std::type_index(typeid(Member*))];
     if (!name.empty())
     {
@@ -470,13 +467,14 @@ void System::printTenLastStatuses() //Prints a member's friends ten last statuse
                 {
                     auto& key = kv.first;
                     auto& value = kv.second;
-                    if (key != name) // need to change after creating all the classes operators
+                    if (key != name)
                     {
                         cout << "####################################\nFriend #" << ++i
                             << ": " << key << "\n####################################" << endl;
-                        try { value->Member::printTenLastStatuses(); }
-                        catch (memberPrintStatusesException& error) { throw memberPrintStatusesException(error); }
-                        catch (...) { throw memberExceptions(); }
+
+                        try {value->Member::printTenLastStatuses();}
+                        catch (memberPrintStatusesException& error) {cout << key << ": " << error.what() << endl; }
+                        catch (...) {throw memberExceptions();}
                     }
                 }
             }
@@ -484,14 +482,11 @@ void System::printTenLastStatuses() //Prints a member's friends ten last statuse
             else
                 throw printFriendsException();
         }
-
         else
             throw memberNotFound();
-
     }
     else
         throw EmptyName();
-
 }
 //----------------------------------------------------------
 void System::printAllEntities() //Prints all entities.
@@ -503,6 +498,7 @@ void System::printAllEntities() //Prints all entities.
     {
         const unordered_map<string, Entity*>& placeHolderFanPage = Entities[std::type_index(typeid(FanPage*))];
         const unordered_map<string, Entity*>& placeHolderMember = Entities[std::type_index(typeid(Member*))];
+
         if (!placeHolderMember.empty())
         {
             cout << "------------------------------------\nOur system's "
@@ -514,10 +510,10 @@ void System::printAllEntities() //Prints all entities.
                 cout << "\t" << key << endl;
             }
         }
+
         else
-        {
             throw noMembersInSystem();
-        }
+
         if (!placeHolderFanPage.empty())
         {
             cout << "------------------------------------\nOur system's "
@@ -529,10 +525,9 @@ void System::printAllEntities() //Prints all entities.
                 cout << "\t" << key << endl;
             }
         }
+
         else
-        {
             throw noPagesInSystem();
-        }      
     }
 }
 //----------------------------------------------------------
@@ -546,31 +541,32 @@ void System::printAllFriends()  //Prints an entity's friends.
     catch(invalidUserDecision& error) {throw invalidUserDecision(error);}
     catch(...) {throw systemExceptions();}
     getline(cin, entityName);
+
     if (!entityName.empty())
-    { 
+    {
         const unordered_map<string, Entity*>& placeHolderMember = Entities[std::type_index(typeid(Member*))];
         const unordered_map<string, Entity*>& placeHolderFanPage = Entities[std::type_index(typeid(FanPage*))];
-        if (placeHolderFanPage.find(entityName) != placeHolderFanPage.end() ||
-            placeHolderMember.find(entityName) != placeHolderMember.end())
+
+        if (decision == MEMBER_CHOOSE && placeHolderMember.find(entityName) != placeHolderMember.end())
         {
-            if (decision == MEMBER_CHOOSE)
-            {
-                auto* MemberPTR = dynamic_cast<Member*>(placeHolderMember.at(entityName));
-                try { MemberPTR->Entity::printMembers();}
-                catch (printFriendsException& error) { throw printFriendsException(error); }
-                catch (...) { throw memberExceptions(); }
-            }
-            else if (decision == FAN_PAGE_CHOOSE)
-            {
-                auto* FanPagePTR = dynamic_cast<FanPage*>(placeHolderFanPage.at(entityName));
-                try { FanPagePTR->Entity::printMembers();}
-                catch (printFansException& error) { throw printFansException(error); }
-                catch (...) { throw fanPageExceptions(); }
-            }
+            auto* MemberPTR = dynamic_cast<Member*>(placeHolderMember.at(entityName));
+            try {MemberPTR->Entity::printMembers();}
+            catch (entityHasNoConnections& error) {throw printFriendsException();}
+            catch (...) {throw memberExceptions();}
         }
+
+        else if (decision == FAN_PAGE_CHOOSE && placeHolderFanPage.find(entityName) != placeHolderFanPage.end())
+        {
+            auto* FanPagePTR = dynamic_cast<FanPage*>(placeHolderFanPage.at(entityName));
+            try {FanPagePTR->Entity::printMembers();}
+            catch (entityHasNoConnections& error) {throw printFansException();}
+            catch (...) {throw fanPageExceptions();}
+        }
+
         else
             throw entityNotFound();
     }
+
     else
         throw EmptyName();
 }
@@ -580,12 +576,16 @@ void System::printAllFriends()  //Prints an entity's friends.
 //----------------------------------------------------------
 void System::readData() //Reads data from bin file pre-startup.
 {
+    //Step 1: Initialization of Entities.
     Entities[std::type_index(typeid(FanPage*))] = {};
     Entities[std::type_index(typeid(Member*))] = {};
+
     std::ifstream dataBinFile("SystemData.bin", std::ios_base::binary | std::ios_base::in);
     if (dataBinFile.peek() != std::ifstream::traits_type::eof())
     {
         if (dataBinFile.good()) {
+
+            //Step 2: Read all members and their statuses.
             size_t membersSize, fanPagesSize;
             dataBinFile.read(reinterpret_cast<char*>(&membersSize), sizeof(membersSize));
             for (size_t i = 0; i < membersSize; i++) {
@@ -617,10 +617,11 @@ void System::readData() //Reads data from bin file pre-startup.
                         std::getline(dataBinFile, fileName, '\0');
 
                     member->addStatusFromFile(statusDate, statusTime, statusContent, s, fileName);
-
                 }
                 Entities[std::type_index(typeid(Member*))][memberName] = member;
             }
+
+            //Step 3: Read all pages and their statuses.
             dataBinFile.read(reinterpret_cast<char*>(&fanPagesSize), sizeof(fanPagesSize));
             for (size_t i = 0; i < fanPagesSize; i++) {
                 string fanPageName;
@@ -650,6 +651,8 @@ void System::readData() //Reads data from bin file pre-startup.
                 }
                 Entities[std::type_index(typeid(FanPage*))][fanPageName] = fanPage;
             }
+
+            //Step 4: Connect Members to Members and Members to Fan Pages.
             for (int i = 0; i < membersSize; ++i) 
             {
                 string nameToAdd;
@@ -659,15 +662,16 @@ void System::readData() //Reads data from bin file pre-startup.
      
                 dataBinFile.read(reinterpret_cast<char*>(&numOfMembers), sizeof(numOfMembers));
                 Member* currMember = dynamic_cast<Member*>(Entities[std::type_index(typeid(Member*))][nameToAdd]);
-                for (int i = 0; i < numOfMembers; ++i)
+                for (size_t j = 0; j < numOfMembers; ++j)
                 {
                     string friendName;
                     std::getline(dataBinFile, friendName, '\0');
 
                     currMember->addMember(*(dynamic_cast<Member*>(Entities[std::type_index(typeid(Member*))][friendName])));
                 }
+
                 dataBinFile.read(reinterpret_cast<char*>(&numOfPages), sizeof(numOfPages));
-                for (int i = 0; i < numOfPages; ++i)
+                for (size_t k = 0; k < numOfPages; ++k)
                 {
                     string pageToAdd; 
                     std::getline(dataBinFile, pageToAdd, '\0');
@@ -675,6 +679,8 @@ void System::readData() //Reads data from bin file pre-startup.
                    currMember->addFanPage(*(dynamic_cast<FanPage*>(Entities[std::type_index(typeid(FanPage*))][pageToAdd])));
                 }
             }
+
+            //Step 5: Connect Fan Pages to Members
             for (int i = 0; i < fanPagesSize; ++i)
             {
                 string currFanPageName;
@@ -683,7 +689,7 @@ void System::readData() //Reads data from bin file pre-startup.
 
                 dataBinFile.read(reinterpret_cast<char*>(&numOfMembers), sizeof(numOfMembers));
                 FanPage* currFanPage = dynamic_cast<FanPage*>(Entities[std::type_index(typeid(FanPage*))][currFanPageName]);
-                for (int i = 0; i < numOfMembers; ++i)
+                for (size_t j = 0; j < numOfMembers; ++j)
                 {
                     string memberToAdd;
                     std::getline(dataBinFile, memberToAdd, '\0');
@@ -692,6 +698,7 @@ void System::readData() //Reads data from bin file pre-startup.
                 }
             }            
         }
+
         else
           throw corruptFile();
     }
@@ -701,38 +708,51 @@ void System::readData() //Reads data from bin file pre-startup.
 //----------------------------------------------------------
 void System::writeData() //Writes current system data to bin file.
 {
-    std::ofstream dataBinFile("SystemData.bin", std::ios_base::binary | std::ios_base::out | std::ios_base::trunc);
+    std::ofstream dataBinFile("SystemData.bin", std::ios_base::binary | std::ios_base::out);
+
     if (dataBinFile.good()) {
          const auto& placeHolderMember = Entities[std::type_index(typeid(Member*))];
          const auto& placeHolderFanPage = Entities[std::type_index(typeid(FanPage*))];
 
+         //Step 1: Writing num of members in system.
          size_t s = placeHolderMember.size();
-
-         if (!placeHolderMember.empty()) {
-             dataBinFile.write(reinterpret_cast<const char*>(&s), sizeof(s));
-         }
-
-        for (const auto& kv : placeHolderMember) {
+         dataBinFile.write(reinterpret_cast<const char*>(&s), sizeof(s));
+         //Step 2: Writing each member's name, date of birth and statuses.
+         for (const auto& kv : placeHolderMember)
+        {
             dataBinFile.write(kv.first.c_str(), kv.first.size() + 1);
 
             auto* member = dynamic_cast<Member*>(kv.second);
             size_t NumOfStatuses = member->getNumOfStatuses();
-            dataBinFile.write(reinterpret_cast<const char*>(&member->getBirthday().day), sizeof(member->getBirthday().day));
-            dataBinFile.write(reinterpret_cast<const char*>(&member->getBirthday().month), sizeof(member->getBirthday().month));
-            dataBinFile.write(reinterpret_cast<const char*>(&member->getBirthday().year), sizeof(member->getBirthday().year));
-            dataBinFile.write(reinterpret_cast<const char*>(&NumOfStatuses), sizeof(NumOfStatuses));
+            dataBinFile.write(reinterpret_cast<const char*>(&member->getBirthday().day),
+                              sizeof(member->getBirthday().day));
+            dataBinFile.write(reinterpret_cast<const char*>(&member->getBirthday().month),
+                              sizeof(member->getBirthday().month));
+            dataBinFile.write(reinterpret_cast<const char*>(&member->getBirthday().year),
+                              sizeof(member->getBirthday().year));
+            dataBinFile.write(reinterpret_cast<const char*>(&NumOfStatuses),
+                              sizeof(NumOfStatuses));
 
             const auto& memberStatuses = member->getBulletinBoard();
 
-            for (const auto& sv : memberStatuses) {
-                dataBinFile.write(reinterpret_cast<const char*>(&sv->getStatusDate().day), sizeof(sv->getStatusDate().day));
-                dataBinFile.write(reinterpret_cast<const char*>(&sv->getStatusDate().month), sizeof(sv->getStatusDate().month));
-                dataBinFile.write(reinterpret_cast<const char*>(&sv->getStatusDate().year), sizeof(sv->getStatusDate().year));
-                dataBinFile.write(sv->getStatusTime().seconds.c_str(), sv->getStatusTime().seconds.size() + 1);
-                dataBinFile.write(sv->getStatusTime().minutes.c_str(), sv->getStatusTime().minutes.size() + 1);
-                dataBinFile.write(sv->getStatusTime().hour.c_str(), sv->getStatusTime().hour.size() + 1);
-                dataBinFile.write(reinterpret_cast<const char*>(&sv->getStatusType()), sizeof(sv->getStatusType()));
-                dataBinFile.write(sv->getStatusContent().c_str(), sv->getStatusContent().size() + 1);
+            for (const auto& sv : memberStatuses)
+            {
+                dataBinFile.write(reinterpret_cast<const char*>(&sv->getStatusDate().day),
+                                  sizeof(sv->getStatusDate().day));
+                dataBinFile.write(reinterpret_cast<const char*>(&sv->getStatusDate().month),
+                                  sizeof(sv->getStatusDate().month));
+                dataBinFile.write(reinterpret_cast<const char*>(&sv->getStatusDate().year),
+                                  sizeof(sv->getStatusDate().year));
+                dataBinFile.write(sv->getStatusTime().seconds.c_str(),
+                                  sv->getStatusTime().seconds.size() + 1);
+                dataBinFile.write(sv->getStatusTime().minutes.c_str(),
+                                  sv->getStatusTime().minutes.size() + 1);
+                dataBinFile.write(sv->getStatusTime().hour.c_str(),
+                                  sv->getStatusTime().hour.size() + 1);
+                dataBinFile.write(reinterpret_cast<const char*>(&sv->getStatusType()),
+                                  sizeof(sv->getStatusType()));
+                dataBinFile.write(sv->getStatusContent().c_str(),
+                                  sv->getStatusContent().size() + 1);
 
                 if (sv->getStatusType() == STATUS_TYPE::IMAGE)
                     dataBinFile.write((dynamic_cast<ImageStatus*>(sv)->getFileName().c_str()),
@@ -743,28 +763,41 @@ void System::writeData() //Writes current system data to bin file.
                                       dynamic_cast<VideoStatus*>(sv)->getFileName().size() + 1);
             }
         }
-        size_t fanpageSize = placeHolderFanPage.size();
-        dataBinFile.write(reinterpret_cast<const char*>(&fanpageSize), sizeof(fanpageSize));
-        
-        for (const auto& kv : placeHolderFanPage) {
+
+         //Step 3: Writing num of pages in system.
+         size_t fanPageSize = placeHolderFanPage.size();
+         dataBinFile.write(reinterpret_cast<const char*>(&fanPageSize), sizeof(fanPageSize));
+
+         //Step 4: Writing each fan page's name and statuses.
+         for (const auto& kv : placeHolderFanPage)
+        {
             dataBinFile.write(kv.first.c_str(), kv.first.size() + 1);
 
             auto* fanPage = dynamic_cast<FanPage*>(kv.second);
-            size_t numOfstatuses = fanPage->getNumOfStatuses();
-            dataBinFile.write(reinterpret_cast<const char*>(&numOfstatuses), sizeof(numOfstatuses));
+            size_t numOfStatuses = fanPage->getNumOfStatuses();
+            dataBinFile.write(reinterpret_cast<const char*>(&numOfStatuses), sizeof(numOfStatuses));
 
             const auto& fanPageStatuses = fanPage->getBulletinBoard();
 
-            for (const auto& sv : fanPageStatuses) {
+            for (const auto& sv : fanPageStatuses)
+            {
                 const auto& statusType = sv->getStatusType();
-                dataBinFile.write(reinterpret_cast<const char*>(&sv->getStatusDate().day), sizeof(sv->getStatusDate().day));
-                dataBinFile.write(reinterpret_cast<const char*>(&sv->getStatusDate().month), sizeof(sv->getStatusDate().month));
-                dataBinFile.write(reinterpret_cast<const char*>(&sv->getStatusDate().year), sizeof(sv->getStatusDate().year));
-                dataBinFile.write(sv->getStatusTime().seconds.c_str(), sv->getStatusTime().seconds.size() + 1);
-                dataBinFile.write(sv->getStatusTime().minutes.c_str(), sv->getStatusTime().minutes.size() + 1);
-                dataBinFile.write(sv->getStatusTime().hour.c_str(), sv->getStatusTime().hour.size() + 1);
-                dataBinFile.write(reinterpret_cast<const char*>(&statusType), sizeof(statusType));
-                dataBinFile.write(sv->getStatusContent().c_str(), sv->getStatusContent().size() + 1);
+                dataBinFile.write(reinterpret_cast<const char*>(&sv->getStatusDate().day),
+                                  sizeof(sv->getStatusDate().day));
+                dataBinFile.write(reinterpret_cast<const char*>(&sv->getStatusDate().month),
+                                  sizeof(sv->getStatusDate().month));
+                dataBinFile.write(reinterpret_cast<const char*>(&sv->getStatusDate().year),
+                                  sizeof(sv->getStatusDate().year));
+                dataBinFile.write(sv->getStatusTime().seconds.c_str(),
+                                  sv->getStatusTime().seconds.size() + 1);
+                dataBinFile.write(sv->getStatusTime().minutes.c_str(),
+                                  sv->getStatusTime().minutes.size() + 1);
+                dataBinFile.write(sv->getStatusTime().hour.c_str(),
+                                  sv->getStatusTime().hour.size() + 1);
+                dataBinFile.write(reinterpret_cast<const char*>(&statusType),
+                                  sizeof(statusType));
+                dataBinFile.write(sv->getStatusContent().c_str(),
+                                  sv->getStatusContent().size() + 1);
 
                 if (sv->getStatusType() == STATUS_TYPE::IMAGE)
                     dataBinFile.write((dynamic_cast<ImageStatus*>(sv)->getFileName().c_str()),
@@ -775,7 +808,9 @@ void System::writeData() //Writes current system data to bin file.
                                       dynamic_cast<VideoStatus*>(sv)->getFileName().size() + 1);
             }
         }
-        for (const auto& kv : placeHolderMember)
+
+         //Step 5: Writing each member's friends and pages.
+         for (const auto& kv : placeHolderMember)
         {
             size_t numOfMembers = dynamic_cast<Member*>(kv.second)->Member::getNumOfMembers();
             size_t numOfPages = dynamic_cast<Member*>(kv.second)->Member::getNumOfPages();
@@ -796,7 +831,8 @@ void System::writeData() //Writes current system data to bin file.
 
         }
 
-        for (const auto& kv : placeHolderFanPage)
+         //Step 6: Writing each fan page's fans.
+         for (const auto& kv : placeHolderFanPage)
         {
             size_t numOfMembers = dynamic_cast<FanPage*>(kv.second)->FanPage::getNumOfMembers();
             dataBinFile.write(kv.first.c_str(), kv.first.size() + 1);
