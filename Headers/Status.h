@@ -25,7 +25,6 @@ public:
 
     //General Methods
     virtual void showContent(ostream&) const {cout << *this;}
-
     //Operators
     friend ostream& operator<<(ostream&, const Status&);
     Status& operator=(Status&& status) = default;
@@ -37,6 +36,7 @@ public:
 class VideoStatus : public Status {
     string fileName;
 public:
+    VideoStatus() = default;
     VideoStatus(Date&, Time&, string&, STATUS_TYPE&, string&);
     ~VideoStatus() override = default;
     const string& getFileName() const {return fileName;}
@@ -46,6 +46,7 @@ public:
 class ImageStatus : public Status {
     string fileName;
 public:
+    ImageStatus() = default;
     ImageStatus(Date&, Time&, string&, STATUS_TYPE&, string&);
     ~ImageStatus() override = default;
     const string& getFileName() const {return fileName;}

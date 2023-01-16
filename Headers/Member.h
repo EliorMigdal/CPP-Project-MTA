@@ -27,7 +27,10 @@ public:
     virtual void addFanPage(FanPage&) noexcept(false);
     virtual void removeFanPage(FanPage&) noexcept(false);
     bool isFan(FanPage&);
-
+    void saveMembersToFile(ofstream& out);
+    void loadMembersFromFile(ifstream& in, SystemMap& Entities);
+    void savetoFile(ofstream& out);
+    void loadFromFile(ifstream& in);
     //Printer Methods
     virtual void printTenLastStatuses() noexcept(false);
     virtual void printPages() noexcept(false);

@@ -52,17 +52,7 @@ private:
     void readData();
     void writeData();
 
-    //Commented
-//    void newStatus(const string&, const size_SI&, const string&);
-//    void addFanHardCoded(const string&, const string&);
-//    void removeFanHardCoded(const string&, const string&);
-//    void createFanPage(const string&);
-//    void connectMembersHardCoded(Member*, Member*);
-//    void disconnectMembersHardCoded(Member*, Member*);
-//    void createMember(const string&, Date&);
-//    void initialData();
-//    void addFan(Member*, FanPage*) noexcept(false);
-//    void removeFan(Member*, FanPage*) noexcept(false);
+    
 };
 
 class systemExceptions : public std::exception {
