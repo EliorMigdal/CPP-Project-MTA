@@ -26,6 +26,8 @@ public:
     size_t getNumOfStatuses() const {return bulletinBoard.size();}
 
     //Virtual Methods
+    void saveToFile(ofstream& out);
+    void loadFromFile(ifstream& in);
     virtual bool checkIfMember(const string&) const;
     virtual void addMember(Member&) noexcept(false);
     virtual void removeMember(Member&) noexcept(false);
@@ -44,7 +46,7 @@ public:
     virtual bool operator<=(const Entity&) const;
 };
 
-class EntityExceptions : public std::exception {
+class EntityExceptions : public std::exception{
 public:
     const char* what() const noexcept override { return "Error handling entity."; }
 };
@@ -64,9 +66,28 @@ public:
     const char* what() const noexcept override { return "Entities are already connected."; }
 };
 
+class addAFanException : public connectedEntities {
+public:
+    const char* what() const noexcept override { return "Member is already a fan of this page."; }
+};
+
+class removeAFanException : public EntityExceptions {
+public:
+    const char* what() const noexcept override { return "Member is already not a fan of this page."; }
+};
+
 class disconnectedEntities : public EntityExceptions {
 public:
     const char* what() const noexcept override { return "Entities are already disconnected."; }
+};
+class addAFriendException : public EntityExceptions {
+public:
+    const char* what() const noexcept override { return "Members are already friends."; }
+};
+
+class removeAFriendException : public EntityExceptions {
+public:
+    const char* what() const noexcept override { return "Members are already not friends."; }
 };
 
 class invalidStatusType : public EntityExceptions {

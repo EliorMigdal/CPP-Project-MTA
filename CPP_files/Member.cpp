@@ -72,60 +72,6 @@ void Member::loadMembersFromFile(ifstream& in, SystemMap& Entities)
         this->addFanPage(*(dynamic_cast<FanPage*>(Entities[std::type_index(typeid(FanPage*))][pageToAdd])));
     }
 }
-void Member::savetoFile(ofstream& out)
-{
-    out.write(name.c_str(), name.size() + 1);
-    out.write(reinterpret_cast<const char*>(&birthday), sizeof(birthday));
-    size_t size = bulletinBoard.size();
-    out.write(reinterpret_cast<const char*>(&size), sizeof(size));
-    for (Status* sv : bulletinBoard)
-    {
-
-        size_t statusType =static_cast<int>(sv->getStatusType());
-        out.write(reinterpret_cast<const char*>(&statusType), sizeof(statusType));
-        if (statusType == static_cast<int>(STATUS_TYPE::IMAGE))
-        {
-             out.write(reinterpret_cast<const char*>(dynamic_cast<ImageStatus*>(sv)), sizeof(*(dynamic_cast<ImageStatus*>(sv))));
-        }
-        else if (statusType == static_cast<int>(STATUS_TYPE::VIDEO))
-        {
-            out.write(reinterpret_cast<const char*>(dynamic_cast<VideoStatus*>(sv)), sizeof(*(dynamic_cast<VideoStatus*>(sv))));
-        }
-        else
-        {
-            out.write(reinterpret_cast<const char*>(sv), sizeof(*sv));
-        }
-    }
-
-}
-void Member::loadFromFile(ifstream& in)
-{
-    getline(in, name, '\0');
-    in.read(reinterpret_cast<char*>(&birthday), sizeof(birthday));
-    size_t size;
-    in.read(reinterpret_cast<char*>(&size), sizeof(size));
-    for (size_t i = 0; i < size; ++i) {
-        size_t statusType = 0;
-        in.read(reinterpret_cast<char*>(&statusType), sizeof(statusType));
-        STATUS_TYPE type = static_cast<STATUS_TYPE>(statusType);
-        if (type == STATUS_TYPE::IMAGE) {
-            ImageStatus* sv = new ImageStatus();
-            in.read(reinterpret_cast<char*>(sv), sizeof(*sv));
-            bulletinBoard.emplace_back(sv);
-        }
-        else if (type == STATUS_TYPE::VIDEO) {
-            VideoStatus* sv = new VideoStatus();
-            in.read(reinterpret_cast<char*>(sv), sizeof(*sv));
-            bulletinBoard.emplace_back(sv);
-        }
-        else {
-            Status* sv = new Status();
-            in.read(reinterpret_cast<char*>(sv), sizeof(*sv));
-            bulletinBoard.emplace_back(sv);
-        }
-    }
-    
-}
 //----------------------------------------------------------
 
 //Printer Methods
@@ -181,7 +127,7 @@ void Member::printPages() noexcept(false) //Prints member's pages (Implementatio
 
 //Operators
 //----------------------------------------------------------
-const Member &Member::operator+=(Member& _member) //Member += Member operator.
+ Member &Member::operator+=(Member& _member) //Member += Member operator.
 {
     try {this->Entity::addMember(_member);}
     catch (connectedEntities& error) {throw addAFriendException();}
@@ -189,7 +135,7 @@ const Member &Member::operator+=(Member& _member) //Member += Member operator.
     return *this;
 }
 //----------------------------------------------------------
-const Member &Member::operator-=(Member& _member) //Member -= Member operator.
+Member &Member::operator-=(Member& _member) //Member -= Member operator.
 {
     try {this->Member::removeMember(_member);}
     catch (disconnectedEntities& error) {throw removeAFriendException();}
@@ -197,7 +143,7 @@ const Member &Member::operator-=(Member& _member) //Member -= Member operator.
     return *this;
 }
 //----------------------------------------------------------
-const Member &Member::operator+=(FanPage &fanPage) noexcept(false) //Member += FanPage operator.
+ Member &Member::operator+=(FanPage &fanPage) noexcept(false) //Member += FanPage operator.
 {
     try {this->Member::addFanPage(fanPage);}
     catch (addAFanException& error) {throw addAFanException(error);}
@@ -205,7 +151,7 @@ const Member &Member::operator+=(FanPage &fanPage) noexcept(false) //Member += F
     return *this;
 }
 //----------------------------------------------------------
-const Member &Member::operator-=(FanPage &fanPage) noexcept(false) //Member -= FanPage operator.
+ Member &Member::operator-=(FanPage &fanPage) noexcept(false) //Member -= FanPage operator.
 {
     try {this->Member::removeFanPage(fanPage);}
     catch (removeAFanException& error) {throw removeAFanException(error);}

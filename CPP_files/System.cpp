@@ -591,8 +591,11 @@ void System::readData() //Reads data from bin file pre-startup.
             for (size_t i = 0; i < membersSize; ++i)
             {
                 auto* member = new Member();
-                member->loadFromFile(dataBinFile);
-                Entities[std::type_index(typeid(Member*))][member->getName()] = member;
+                Date Birthday;
+                dataBinFile.read(reinterpret_cast<char*>(&Birthday), sizeof(Birthday));
+                member->Entity::loadFromFile(dataBinFile);
+                member->Member::setBirthday(Birthday);
+                Entities[std::type_index(typeid(Member*))][member->Member::getName()] = member;
             }
 
             //Step 3: Read all pages and their statuses.
@@ -600,8 +603,8 @@ void System::readData() //Reads data from bin file pre-startup.
             for (size_t i = 0; i < fanPagesSize; ++i)
             {
                 auto* fanpage = new FanPage();
-                fanpage->loadFromFile(dataBinFile);
-                Entities[std::type_index(typeid(FanPage*))][fanpage->getName()] = fanpage;
+                fanpage->Entity::loadFromFile(dataBinFile);
+                Entities[std::type_index(typeid(FanPage*))][fanpage->FanPage::getName()] = fanpage;
             }
 
             //Step 4: Connect Members to Members and Members to Fan Pages.
@@ -610,7 +613,7 @@ void System::readData() //Reads data from bin file pre-startup.
                 string nameToAdd;
                 std::getline(dataBinFile, nameToAdd, '\0');
                 auto* member = dynamic_cast<Member*>(Entities[std::type_index(typeid(Member*))][nameToAdd]);
-                member->loadMembersFromFile(dataBinFile, Entities);
+                member->Member::loadMembersFromFile(dataBinFile, Entities);
              
             }
 
@@ -620,7 +623,7 @@ void System::readData() //Reads data from bin file pre-startup.
                 string currFanPageName;
                 std::getline(dataBinFile, currFanPageName, '\0');
                 FanPage* currFanPage = dynamic_cast<FanPage*>(Entities[std::type_index(typeid(FanPage*))][currFanPageName]);
-                currFanPage->loadMembersFromFile(dataBinFile, Entities);
+                currFanPage->FanPage::loadMembersFromFile(dataBinFile, Entities);
             }            
         }
 
@@ -645,7 +648,9 @@ void System::writeData() //Writes current system data to bin file.
          //Step 2: Writing each member's name, date of birth and statuses.
          for (const auto& kv : placeHolderMember)
          {
-             dynamic_cast<Member*>(kv.second)->savetoFile(dataBinFile);
+             Date Birthday;
+             dataBinFile.write(reinterpret_cast<const char*>(&Birthday), sizeof(Birthday));
+             dynamic_cast<Member*>(kv.second)->Entity::saveToFile(dataBinFile);
          }
 
          //Step 3: Writing num of pages in system.
@@ -655,19 +660,19 @@ void System::writeData() //Writes current system data to bin file.
          //Step 4: Writing each fan page's name and statuses.
          for (const auto& kv : placeHolderFanPage)
          {
-             dynamic_cast<FanPage*>(kv.second)->saveToFile(dataBinFile);
+             dynamic_cast<FanPage*>(kv.second)->Entity::saveToFile(dataBinFile);
          }
 
          //Step 5: Writing each member's friends and pages.
          for (const auto& kv : placeHolderMember)
          {
-             dynamic_cast<Member*>(kv.second)->saveMembersToFile(dataBinFile);
+             dynamic_cast<Member*>(kv.second)->Member::saveMembersToFile(dataBinFile);
          }
 
          //Step 6: Writing each fan page's fans.
          for (const auto& kv : placeHolderFanPage)
          {
-             dynamic_cast<FanPage*>(kv.second)->saveMembersToFile(dataBinFile);
+             dynamic_cast<FanPage*>(kv.second)->FanPage::saveMembersToFile(dataBinFile);
          }
     }
 

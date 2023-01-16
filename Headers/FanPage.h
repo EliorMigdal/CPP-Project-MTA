@@ -14,14 +14,12 @@ public:
     ~FanPage() override = default;
     void saveMembersToFile(ofstream& out);
     void loadMembersFromFile(ifstream& in, SystemMap& Entities);
-    void saveToFile(ofstream& out);
-    void loadFromFile(ifstream& out);
     //Operators
-    virtual const FanPage& operator+=(Member&) noexcept(false);
-    virtual const FanPage& operator-=(Member&) noexcept(false);
+    virtual  FanPage& operator+=(Member&) noexcept(false);
+    virtual  FanPage& operator-=(Member&) noexcept(false);
 };
 
-class fanPageExceptions : public std::exception {
+class fanPageExceptions : public std::exception{
 public:
     const char* what() const noexcept override { return "Error handling fan page."; }
 };

@@ -30,70 +30,20 @@ void FanPage::loadMembersFromFile(ifstream& in, SystemMap& Entities)
     }
 }
 
-void FanPage::saveToFile(ofstream& out)
-{ 
-    out.write(name.c_str(), name.size() + 1);
-    size_t size = bulletinBoard.size();
-    out.write(reinterpret_cast<const char*>(&size), sizeof(size));
-    for (Status* sv : bulletinBoard)
-    {
-        size_t statusType = static_cast<int>(sv->getStatusType());
-        out.write(reinterpret_cast<const char*>(&statusType), sizeof(statusType));
-        if (statusType == static_cast<int>(STATUS_TYPE::IMAGE))
-        {
-            out.write(reinterpret_cast<const char*>(dynamic_cast<ImageStatus*>(sv)), sizeof(*(dynamic_cast<ImageStatus*>(sv))));
-        }
-        else if (statusType == static_cast<int>(STATUS_TYPE::VIDEO))
-        {
-            out.write(reinterpret_cast<const char*>(dynamic_cast<VideoStatus*>(sv)), sizeof(*(dynamic_cast<VideoStatus*>(sv))));
-        }
-        else
-        {
-            out.write(reinterpret_cast<const char*>(sv), sizeof(*sv));
-        }
-    }
-}
-void FanPage::loadFromFile(ifstream& in)
-{
-    getline(in, name, '\0');
-    size_t size;
-    in.read(reinterpret_cast<char*>(&size), sizeof(size));
-    for (size_t i = 0; i < size; ++i) {
-        size_t statusType = 0;
-        in.read(reinterpret_cast<char*>(&statusType), sizeof(statusType));
-        STATUS_TYPE type = static_cast<STATUS_TYPE>(statusType);
-        if (type == STATUS_TYPE::IMAGE) {
-            ImageStatus* sv = new ImageStatus();
-            in.read(reinterpret_cast<char*>(sv), sizeof(*sv));
-            bulletinBoard.emplace_back(sv);
-        }
-        else if (type == STATUS_TYPE::VIDEO) {
-            VideoStatus* sv = new VideoStatus();
-            in.read(reinterpret_cast<char*>(sv), sizeof(*sv));
-            bulletinBoard.emplace_back(sv);
-        }
-        else {
-            Status* sv = new Status();
-            in.read(reinterpret_cast<char*>(sv), sizeof(*sv));
-            bulletinBoard.emplace_back(sv);
-        }
-    }
-
-}
 //Operators
 //-----------------------------------------------------------
-const FanPage& FanPage::operator+=(Member& _member) //FanPage += Member method.
+ FanPage& FanPage::operator+=(Member& _member) //FanPage += Member method.
 {
     try {this->Entity::addMember(_member);}
-    catch (connectedEntities& error) {throw addAFanException();}
+    catch (connectedEntities& error) { throw reinterpret_cast<addAFanException*>(&error); }
     catch (...) {throw GlobalExceptions();}
     return *this;
 }
 //-----------------------------------------------------------
-const FanPage &FanPage::operator-=(Member& _member) //FanPage -= Member method.
+ FanPage &FanPage::operator-=(Member& _member) //FanPage -= Member method.
 {
     try {this->Entity::removeMember(_member);}
-    catch (disconnectedEntities& error) {throw removeAFanException();}
+    catch (disconnectedEntities& error) {throw reinterpret_cast<removeAFanException*>(&error);}
     catch (...) {throw GlobalExceptions();}
     return *this;
 }

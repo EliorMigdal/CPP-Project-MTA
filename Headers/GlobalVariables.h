@@ -55,19 +55,9 @@ enum DECISION_TYPE {CREATEMEMBER = 1, CREATEFANPAGE, NEWSTATUS,
 void readBirthday(Date& birthday);
 void setTimeAndDate(Time& exactTime, Date& exactDate);
 
-class GlobalExceptions : public std::exception {
+class GlobalExceptions : public std::exception{
 public:
     const char* what() const noexcept override { return "Global error."; }
-};
-
-class addAFanException : public GlobalExceptions {
-public:
-    const char* what() const noexcept override { return "Member is already a fan of this page."; }
-};
-
-class removeAFanException : public GlobalExceptions {
-public:
-    const char* what() const noexcept override { return "Member is already not a fan of this page."; }
 };
 
 #endif
