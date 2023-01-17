@@ -2,58 +2,82 @@
 #include "../Headers/Member.h"
 #include "../Headers/FanPage.h"
 
-void Entity::saveToFile(ofstream& out)
+//General Methods
+//----------------------------------------------------------
+void Entity::saveToFile(ofstream& out) //Saves an Entity's data to a file.
 {
     out.write(name.c_str(), name.size() + 1);
     size_t size = bulletinBoard.size();
     out.write(reinterpret_cast<const char*>(&size), sizeof(size));
-    for (Status* sv : bulletinBoard)
+
+    for (auto* sv : bulletinBoard)
     {
+        out.write(sv->getStatusContent().c_str(), sv->getStatusContent().size() + 1);
         size_t statusType = static_cast<int>(sv->Status::getStatusType());
         out.write(reinterpret_cast<const char*>(&statusType), sizeof(statusType));
+
         if (statusType == static_cast<int>(STATUS_TYPE::IMAGE))
         {
-            out.write(reinterpret_cast<const char*>(dynamic_cast<ImageStatus*>(sv)), sizeof(*(dynamic_cast<ImageStatus*>(sv))));
+            out.write(dynamic_cast<ImageStatus*>(sv)->ImageStatus::getFileName().c_str(),
+                      dynamic_cast<ImageStatus*>(sv)->ImageStatus::getFileName().size() + 1);
+            out.write(reinterpret_cast<const char*>(dynamic_cast<ImageStatus*>(sv)),
+                      sizeof(*(dynamic_cast<ImageStatus*>(sv))));
         }
+
         else if (statusType == static_cast<int>(STATUS_TYPE::VIDEO))
         {
-            out.write(reinterpret_cast<const char*>(dynamic_cast<VideoStatus*>(sv)), sizeof(*(dynamic_cast<VideoStatus*>(sv))));
+            out.write(dynamic_cast<VideoStatus*>(sv)->VideoStatus::getFileName().c_str(),
+                      dynamic_cast<VideoStatus*>(sv)->VideoStatus::getFileName().size() + 1);
+            out.write(reinterpret_cast<const char*>(dynamic_cast<VideoStatus*>(sv)),
+                      sizeof(*(dynamic_cast<VideoStatus*>(sv))));
         }
+
         else
-        {
             out.write(reinterpret_cast<const char*>(sv), sizeof(*sv));
-        }
     }
 }
-
-void Entity::loadFromFile(ifstream& in)
+//----------------------------------------------------------
+void Entity::loadFromFile(ifstream& in) //Reads an Entity's data from file.
 {
     getline(in, name, '\0');
     size_t size;
     in.read(reinterpret_cast<char*>(&size), sizeof(size));
-    for (size_t i = 0; i < size; ++i) {
+
+    for (size_t i = 0; i < size; ++i)
+    {
+        string statusContent, fileName;
+        getline(in, statusContent, '\0');
+
         size_t statusType = 0;
         in.read(reinterpret_cast<char*>(&statusType), sizeof(statusType));
-        STATUS_TYPE type = static_cast<STATUS_TYPE>(statusType);
+        auto type = static_cast<STATUS_TYPE>(statusType);
+
         if (type == STATUS_TYPE::IMAGE) {
-            ImageStatus* sv = new ImageStatus();
+            auto* sv = new ImageStatus();
+            getline(in, fileName, '\0');
             in.read(reinterpret_cast<char*>(sv), sizeof(*sv));
+            sv->Status::setStatusContent(statusContent);
+            sv->ImageStatus::setFileName(fileName);
             bulletinBoard.emplace_back(new ImageStatus(*sv));
         }
+
         else if (type == STATUS_TYPE::VIDEO) {
-            VideoStatus* sv = new VideoStatus();
+            auto* sv = new VideoStatus();
+            getline(in, fileName, '\0');
             in.read(reinterpret_cast<char*>(sv), sizeof(*sv));
+            sv->Status::setStatusContent(statusContent);
+            sv->VideoStatus::setFileName(fileName);
             bulletinBoard.emplace_back(new VideoStatus(*sv));
         }
+
         else {
-            Status* sv = new Status();
+            auto* sv = new Status();
             in.read(reinterpret_cast<char*>(sv), sizeof(*sv));
+            sv->Status::setStatusContent(statusContent);
             bulletinBoard.emplace_back(new Status(*sv));
         }
     }
 }
-
-//General Methods
 //----------------------------------------------------------
 bool Entity::checkIfMember(const std::string &_name) const //Checks whether _name is in object's members list.
 {
@@ -126,23 +150,6 @@ void Entity::addStatus() //Adds a new status to entity's bulletin board.
         throw EmptyStatus();
 }
 //----------------------------------------------------------
-void Entity::addStatusFromFile(Date& _date, Time& _time, string& _content, STATUS_TYPE& _type, string fileName) //Adds a new status to entity's bulletin board.
-{
-    if (fileName.empty())
-        bulletinBoard.emplace_back(new Status(_date, _time, _content, _type));
-
-    else
-    {
-        switch(static_cast<int>(_type)){
-            default: break;
-            case static_cast<int>(STATUS_TYPE::IMAGE): bulletinBoard.emplace_back(new ImageStatus
-            (_date, _time, _content, _type, fileName)); break;
-            case static_cast<int>(STATUS_TYPE::VIDEO): bulletinBoard.emplace_back(new VideoStatus
-            (_date, _time, _content, _type, fileName)); break;
-        }
-    }
-}
-//----------------------------------------------------------
 void Entity::printAllStatuses() const //Prints all object's statuses.
 {
     if (this->bulletinBoard.empty())
@@ -173,7 +180,7 @@ void Entity::printMembers() const //Print an entity's members list.
         cout << "----------------------------------\n" << this->Entity::getName() <<
              "'s connected members are:\n----------------------------------" << endl;
         for (const auto& kv : this->members)
-            cout <<"\t" << kv.first << endl;
+            cout << "\t" << kv.first << endl;
     }
 }
 //----------------------------------------------------------

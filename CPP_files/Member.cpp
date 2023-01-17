@@ -1,5 +1,6 @@
 #include "../Headers/Member.h"
 #include "../Headers/FanPage.h"
+
 //Constructor
 //----------------------------------------------------------
 Member::Member(std::string &_name, Date &_date): Entity(_name), birthday(_date){}
@@ -29,37 +30,39 @@ bool Member::isFan(FanPage & _fanPage) //Searches for fan page in member's pages
 {
     return this->pages.find(_fanPage.FanPage::getName()) != this->pages.end();
 }
-void Member::saveMembersToFile(ofstream& out)
+//----------------------------------------------------------
+
+//Member-to-File Methods
+//----------------------------------------------------------
+void Member::saveMembersToFile(ofstream& out) //Saves Member's connections to file.
 {
-    size_t numOfMembers =Member::getNumOfMembers();
+    size_t numOfMembers = Member::getNumOfMembers();
     size_t numOfPages = Member::getNumOfPages();
     out.write(name.c_str(), name.size() + 1);
+
+    const unordered_map<string, Member*> memberFriends = Member::getMembers();
     out.write(reinterpret_cast<const char*>(&numOfMembers),
         sizeof(numOfMembers));
-    const unordered_map<string, Member*> memberFriends = Member::getMembers();
-
     for (const auto& mv : memberFriends)
         out.write(mv.first.c_str(), mv.first.size() + 1);
 
     const unordered_map<string, FanPage*> memberPages = Member::getPages();
     out.write(reinterpret_cast<const char*>(&numOfPages),
         sizeof(numOfPages));
-
     for (const auto& pv : memberPages)
         out.write(pv.first.c_str(), pv.first.size() + 1);
 }
-void Member::loadMembersFromFile(ifstream& in, SystemMap& Entities)
+//----------------------------------------------------------
+void Member::loadMembersFromFile(ifstream& in, SystemMap& Entities) //Reads Member's connections from file.
 {
     size_t numOfMembers;
     size_t numOfPages;
 
     in.read(reinterpret_cast<char*>(&numOfMembers), sizeof(numOfMembers));
-  
     for (size_t j = 0; j < numOfMembers; ++j)
     {
         string friendName;
         std::getline(in, friendName, '\0');
-
         this->addMember(*(dynamic_cast<Member*>(Entities[std::type_index(typeid(Member*))][friendName])));
     }
 
@@ -68,7 +71,6 @@ void Member::loadMembersFromFile(ifstream& in, SystemMap& Entities)
     {
         string pageToAdd;
         std::getline(in, pageToAdd, '\0');
-
         this->addFanPage(*(dynamic_cast<FanPage*>(Entities[std::type_index(typeid(FanPage*))][pageToAdd])));
     }
 }
@@ -127,7 +129,7 @@ void Member::printPages() noexcept(false) //Prints member's pages (Implementatio
 
 //Operators
 //----------------------------------------------------------
- Member &Member::operator+=(Member& _member) //Member += Member operator.
+Member &Member::operator+=(Member& _member) noexcept(false) //Member += Member operator.
 {
     try {this->Entity::addMember(_member);}
     catch (connectedEntities& error) {throw addAFriendException();}
@@ -135,7 +137,7 @@ void Member::printPages() noexcept(false) //Prints member's pages (Implementatio
     return *this;
 }
 //----------------------------------------------------------
-Member &Member::operator-=(Member& _member) //Member -= Member operator.
+Member &Member::operator-=(Member& _member) noexcept(false) //Member -= Member operator.
 {
     try {this->Member::removeMember(_member);}
     catch (disconnectedEntities& error) {throw removeAFriendException();}
@@ -143,7 +145,7 @@ Member &Member::operator-=(Member& _member) //Member -= Member operator.
     return *this;
 }
 //----------------------------------------------------------
- Member &Member::operator+=(FanPage &fanPage) noexcept(false) //Member += FanPage operator.
+Member &Member::operator+=(FanPage &fanPage) noexcept(false) //Member += FanPage operator.
 {
     try {this->Member::addFanPage(fanPage);}
     catch (addAFanException& error) {throw addAFanException(error);}
@@ -151,12 +153,11 @@ Member &Member::operator-=(Member& _member) //Member -= Member operator.
     return *this;
 }
 //----------------------------------------------------------
- Member &Member::operator-=(FanPage &fanPage) noexcept(false) //Member -= FanPage operator.
+Member &Member::operator-=(FanPage &fanPage) noexcept(false) //Member -= FanPage operator.
 {
     try {this->Member::removeFanPage(fanPage);}
     catch (removeAFanException& error) {throw removeAFanException(error);}
     catch(...) {throw GlobalExceptions();}
-
     return *this;
 }
 //----------------------------------------------------------

@@ -25,8 +25,10 @@ using std::ifstream;//reading from file
 using std::ofstream;//writing to file
 using std::fstream;//reading&writing
 class Entity;
+
 typedef unsigned short int size_SI;
-typedef  unordered_map<std::type_index, unordered_map<string, Entity*>> SystemMap;
+typedef unordered_map<std::type_index, unordered_map<string, Entity*>> SystemMap;
+
 //Const Variables
 constexpr size_SI PRINT_STATUS = 10;
 constexpr size_SI MEMBER_CHOOSE = 1;

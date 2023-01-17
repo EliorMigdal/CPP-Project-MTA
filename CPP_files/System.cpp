@@ -583,8 +583,8 @@ void System::readData() //Reads data from bin file pre-startup.
     std::ifstream dataBinFile("SystemData.bin", std::ios_base::binary | std::ios_base::in);
     if (dataBinFile.peek() != std::ifstream::traits_type::eof())
     {
-        if (dataBinFile.good()) {
-
+        if (dataBinFile.good())
+        {
             //Step 2: Read all members and their statuses.
             size_t membersSize, fanPagesSize;
             dataBinFile.read(reinterpret_cast<char*>(&membersSize), sizeof(membersSize));
@@ -602,9 +602,9 @@ void System::readData() //Reads data from bin file pre-startup.
             dataBinFile.read(reinterpret_cast<char*>(&fanPagesSize), sizeof(fanPagesSize));
             for (size_t i = 0; i < fanPagesSize; ++i)
             {
-                auto* fanpage = new FanPage();
-                fanpage->Entity::loadFromFile(dataBinFile);
-                Entities[std::type_index(typeid(FanPage*))][fanpage->FanPage::getName()] = fanpage;
+                auto* fanPage = new FanPage();
+                fanPage->Entity::loadFromFile(dataBinFile);
+                Entities[std::type_index(typeid(FanPage*))][fanPage->FanPage::getName()] = fanPage;
             }
 
             //Step 4: Connect Members to Members and Members to Fan Pages.
@@ -614,7 +614,6 @@ void System::readData() //Reads data from bin file pre-startup.
                 std::getline(dataBinFile, nameToAdd, '\0');
                 auto* member = dynamic_cast<Member*>(Entities[std::type_index(typeid(Member*))][nameToAdd]);
                 member->Member::loadMembersFromFile(dataBinFile, Entities);
-             
             }
 
             //Step 5: Connect Fan Pages to Members
@@ -622,7 +621,7 @@ void System::readData() //Reads data from bin file pre-startup.
             {
                 string currFanPageName;
                 std::getline(dataBinFile, currFanPageName, '\0');
-                FanPage* currFanPage = dynamic_cast<FanPage*>(Entities[std::type_index(typeid(FanPage*))][currFanPageName]);
+                auto * currFanPage = dynamic_cast<FanPage*>(Entities[std::type_index(typeid(FanPage*))][currFanPageName]);
                 currFanPage->FanPage::loadMembersFromFile(dataBinFile, Entities);
             }            
         }
@@ -638,17 +637,19 @@ void System::writeData() //Writes current system data to bin file.
 {
     std::ofstream dataBinFile("SystemData.bin", std::ios_base::binary | std::ios_base::out);
 
-    if (dataBinFile.good()) {
+    if (dataBinFile.good())
+    {
          const auto& placeHolderMember = Entities[std::type_index(typeid(Member*))];
          const auto& placeHolderFanPage = Entities[std::type_index(typeid(FanPage*))];
 
          //Step 1: Writing num of members in system.
          size_t s = placeHolderMember.size();
          dataBinFile.write(reinterpret_cast<const char*>(&s), sizeof(s));
-         //Step 2: Writing each member's name, date of birth and statuses.
+
+         //Step 2: Writing each member's dob, name and statuses.
          for (const auto& kv : placeHolderMember)
          {
-             Date Birthday;
+             Date Birthday = dynamic_cast<Member*>(kv.second)->getBirthday();
              dataBinFile.write(reinterpret_cast<const char*>(&Birthday), sizeof(Birthday));
              dynamic_cast<Member*>(kv.second)->Entity::saveToFile(dataBinFile);
          }
@@ -659,21 +660,15 @@ void System::writeData() //Writes current system data to bin file.
 
          //Step 4: Writing each fan page's name and statuses.
          for (const auto& kv : placeHolderFanPage)
-         {
              dynamic_cast<FanPage*>(kv.second)->Entity::saveToFile(dataBinFile);
-         }
 
          //Step 5: Writing each member's friends and pages.
          for (const auto& kv : placeHolderMember)
-         {
              dynamic_cast<Member*>(kv.second)->Member::saveMembersToFile(dataBinFile);
-         }
 
          //Step 6: Writing each fan page's fans.
          for (const auto& kv : placeHolderFanPage)
-         {
              dynamic_cast<FanPage*>(kv.second)->FanPage::saveMembersToFile(dataBinFile);
-         }
     }
 
     else

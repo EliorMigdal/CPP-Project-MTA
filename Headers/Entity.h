@@ -10,6 +10,7 @@ protected:
     string name;
     unordered_map<string, Member*> members{};
     vector<Status*> bulletinBoard{};
+
 public:
     //Constructors & Destructor
     Entity() = default;
@@ -25,28 +26,27 @@ public:
     const vector<Status*>& getBulletinBoard() const {return bulletinBoard;}
     size_t getNumOfStatuses() const {return bulletinBoard.size();}
 
-    //Virtual Methods
-    void saveToFile(ofstream& out);
-    void loadFromFile(ifstream& in);
+    //General Methods
+    void saveToFile(ofstream&);
+    void loadFromFile(ifstream&);
     virtual bool checkIfMember(const string&) const;
     virtual void addMember(Member&) noexcept(false);
     virtual void removeMember(Member&) noexcept(false);
     virtual void printAllStatuses() const noexcept(false);
     virtual void addStatus() noexcept(false);
-    void addStatusFromFile(Date&, Time&, string&, STATUS_TYPE&, string = "");
     virtual void printMembers() const noexcept(false);
 
     //Operators
     friend ostream& operator<<(ostream&, Entity&);
-    virtual Entity& operator=(const Entity&);
-    virtual Entity& operator=(Entity&&) noexcept = default;
+    Entity& operator=(const Entity&);
+    Entity& operator=(Entity&&) noexcept = default;
     virtual bool operator>(const Entity&) const;
     virtual bool operator>=(const Entity&) const;
     virtual bool operator<(const Entity&) const;
     virtual bool operator<=(const Entity&) const;
 };
 
-class EntityExceptions : public std::exception{
+class EntityExceptions : public std::exception {
 public:
     const char* what() const noexcept override { return "Error handling entity."; }
 };
@@ -80,6 +80,7 @@ class disconnectedEntities : public EntityExceptions {
 public:
     const char* what() const noexcept override { return "Entities are already disconnected."; }
 };
+
 class addAFriendException : public EntityExceptions {
 public:
     const char* what() const noexcept override { return "Members are already friends."; }

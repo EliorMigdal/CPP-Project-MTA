@@ -51,8 +51,6 @@ private:
     //File methods
     void readData();
     void writeData();
-
-    
 };
 
 class systemExceptions : public std::exception {

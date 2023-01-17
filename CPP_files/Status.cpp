@@ -44,11 +44,13 @@ ostream& operator<<(ostream& os, const Status& obj) //Print operator.
 //------------------------------------------------------
 bool Status::operator==(const Status& _status) const //Status == Status operator.
 {
-    return this->Status::getStatusContent() == _status.Status::getStatusContent();
+    return (this->Status::getStatusContent() == _status.Status::getStatusContent())
+    && (this->Status::getStatusType() == _status.Status::getStatusType());
 }
 //------------------------------------------------------
 bool Status::operator!=(const Status& _status) const //Status != Status operator.
 {
-    return this->Status::getStatusContent() != _status.Status::getStatusContent();
+    return (this->Status::getStatusContent() != _status.Status::getStatusContent())
+           && (this->Status::getStatusType() != _status.Status::getStatusType());
 }
 //------------------------------------------------------

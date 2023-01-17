@@ -12,19 +12,22 @@ public:
     FanPage& operator=(const FanPage& fan_page) = default;
     FanPage& operator=(FanPage&& fan_page) = default;
     ~FanPage() override = default;
-    void saveMembersToFile(ofstream& out);
-    void loadMembersFromFile(ifstream& in, SystemMap& Entities);
+
+    //FanPage-to-File Methods
+    void saveMembersToFile(ofstream&);
+    void loadMembersFromFile(ifstream&, SystemMap&);
+
     //Operators
-    virtual  FanPage& operator+=(Member&) noexcept(false);
-    virtual  FanPage& operator-=(Member&) noexcept(false);
+    virtual FanPage& operator+=(Member&) noexcept(false);
+    virtual FanPage& operator-=(Member&) noexcept(false);
 };
 
-class fanPageExceptions : public std::exception{
+class fanPageExceptions : public std::exception {
 public:
     const char* what() const noexcept override { return "Error handling fan page."; }
 };
 
-class fanPagePrintStatusesException : public fanPageExceptions{
+class fanPagePrintStatusesException : public fanPageExceptions {
 public:
     const char* what() const noexcept override { return "Fan page has not posted any statuses yet."; }
 };

@@ -17,6 +17,9 @@ public:
     Status(Date&, Time&, string&, STATUS_TYPE&);
     virtual ~Status() = default;
 
+    //Setters
+    void setStatusContent(string& str) {statusContent = str;}
+
     //Getters
     const string& getStatusContent() const { return statusContent; }
     const Date& getStatusDate() const { return statusDate; }
@@ -25,6 +28,7 @@ public:
 
     //General Methods
     virtual void showContent(ostream&) const {cout << *this;}
+
     //Operators
     friend ostream& operator<<(ostream&, const Status&);
     Status& operator=(Status&& status) = default;
@@ -39,7 +43,9 @@ public:
     VideoStatus() = default;
     VideoStatus(Date&, Time&, string&, STATUS_TYPE&, string&);
     ~VideoStatus() override = default;
-    const string& getFileName() const {return fileName;}
+
+    string& getFileName() {return fileName;}
+    void setFileName(string& _fileName) {fileName = _fileName;}
     void showContent(ostream&) const override;
 };
 
@@ -49,7 +55,9 @@ public:
     ImageStatus() = default;
     ImageStatus(Date&, Time&, string&, STATUS_TYPE&, string&);
     ~ImageStatus() override = default;
-    const string& getFileName() const {return fileName;}
+
+    string& getFileName() {return fileName;}
+    void setFileName(string& _fileName) {fileName = _fileName;}
     void showContent(ostream&) const override;
 };
 
