@@ -18,7 +18,7 @@ public:
     virtual ~Status() = default;
 
     //Setters
-    void setStatusContent(string& str) {statusContent = str;}
+    void setStatusContent(string& str) {statusContent.assign(str.c_str());}
 
     //Getters
     const string& getStatusContent() const { return statusContent; }

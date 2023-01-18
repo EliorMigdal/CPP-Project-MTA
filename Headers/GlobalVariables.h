@@ -10,7 +10,6 @@
 #include <typeindex>
 #include <typeinfo>
 #include <fstream>
-#include <sstream>
 
 using std::cout;
 using std::cin;

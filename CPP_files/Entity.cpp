@@ -10,7 +10,7 @@ void Entity::saveToFile(ofstream& out) //Saves an Entity's data to a file.
     size_t size = bulletinBoard.size();
     out.write(reinterpret_cast<const char*>(&size), sizeof(size));
 
-    for (auto* sv : bulletinBoard)
+    for (Status* sv : bulletinBoard)
     {
         out.write(sv->getStatusContent().c_str(), sv->getStatusContent().size() + 1);
         size_t statusType = static_cast<int>(sv->Status::getStatusType());
@@ -53,7 +53,7 @@ void Entity::loadFromFile(ifstream& in) //Reads an Entity's data from file.
         auto type = static_cast<STATUS_TYPE>(statusType);
 
         if (type == STATUS_TYPE::IMAGE) {
-            auto* sv = new ImageStatus();
+            ImageStatus* sv = new ImageStatus();
             getline(in, fileName, '\0');
             in.read(reinterpret_cast<char*>(sv), sizeof(*sv));
             sv->Status::setStatusContent(statusContent);
@@ -62,7 +62,7 @@ void Entity::loadFromFile(ifstream& in) //Reads an Entity's data from file.
         }
 
         else if (type == STATUS_TYPE::VIDEO) {
-            auto* sv = new VideoStatus();
+            VideoStatus* sv = new VideoStatus();
             getline(in, fileName, '\0');
             in.read(reinterpret_cast<char*>(sv), sizeof(*sv));
             sv->Status::setStatusContent(statusContent);
@@ -71,7 +71,7 @@ void Entity::loadFromFile(ifstream& in) //Reads an Entity's data from file.
         }
 
         else {
-            auto* sv = new Status();
+            Status* sv = new Status();
             in.read(reinterpret_cast<char*>(sv), sizeof(*sv));
             sv->Status::setStatusContent(statusContent);
             bulletinBoard.emplace_back(new Status(*sv));
