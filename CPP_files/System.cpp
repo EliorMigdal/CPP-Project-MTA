@@ -608,7 +608,7 @@ void System::readData() //Reads data from bin file pre-startup.
             }
 
             //Step 4: Connect Members to Members and Members to Fan Pages.
-            for (int i = 0; i < membersSize; ++i) 
+            for (size_t i = 0; i < membersSize; ++i) 
             {
                 string nameToAdd;
                 std::getline(dataBinFile, nameToAdd, '\0');
@@ -617,7 +617,7 @@ void System::readData() //Reads data from bin file pre-startup.
             }
 
             //Step 5: Connect Fan Pages to Members
-            for (int i = 0; i < fanPagesSize; ++i)
+            for (size_t i = 0; i < fanPagesSize; ++i)
             {
                 string currFanPageName;
                 std::getline(dataBinFile, currFanPageName, '\0');

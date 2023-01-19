@@ -4,10 +4,10 @@
 
 class Status {
 private:
-    Date statusDate;
-    Time statusTime;
+    Date statusDate = {};
+    Time statusTime = {};
     STATUS_TYPE statusType = STATUS_TYPE::TEXT;
-    string statusContent;
+    string statusContent ="";
 
 public:
     //Constructors
@@ -18,8 +18,7 @@ public:
     virtual ~Status() = default;
 
     //Setters
-    void setStatusContent(string& str) {statusContent.assign(str.c_str());}
-
+    void setStatusContent(string& str) { statusContent.assign(str.c_str()); }
     //Getters
     const string& getStatusContent() const { return statusContent; }
     const Date& getStatusDate() const { return statusDate; }
@@ -27,6 +26,8 @@ public:
     const STATUS_TYPE& getStatusType() const { return statusType; }
 
     //General Methods
+    void saveStatusToFile(ofstream&);
+    void readStatusFromFile(ifstream&);
     virtual void showContent(ostream&) const {cout << *this;}
 
     //Operators
@@ -44,6 +45,8 @@ public:
     VideoStatus(Date&, Time&, string&, STATUS_TYPE&, string&);
     ~VideoStatus() override = default;
 
+    void saveFileNameToFile(ofstream&);
+    void loadFileNameFromFile(ifstream&);
     string& getFileName() {return fileName;}
     void setFileName(string& _fileName) {fileName = _fileName;}
     void showContent(ostream&) const override;
@@ -56,6 +59,9 @@ public:
     ImageStatus(Date&, Time&, string&, STATUS_TYPE&, string&);
     ~ImageStatus() override = default;
 
+    void saveFileNameToFile(ofstream&);
+    void loadFileNameFromFile(ifstream&);
+    void clearFileName() { fileName.clear(); }
     string& getFileName() {return fileName;}
     void setFileName(string& _fileName) {fileName = _fileName;}
     void showContent(ostream&) const override;

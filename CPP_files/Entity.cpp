@@ -12,28 +12,7 @@ void Entity::saveToFile(ofstream& out) //Saves an Entity's data to a file.
 
     for (Status* sv : bulletinBoard)
     {
-        out.write(sv->getStatusContent().c_str(), sv->getStatusContent().size() + 1);
-        size_t statusType = static_cast<int>(sv->Status::getStatusType());
-        out.write(reinterpret_cast<const char*>(&statusType), sizeof(statusType));
-
-        if (statusType == static_cast<int>(STATUS_TYPE::IMAGE))
-        {
-            out.write(dynamic_cast<ImageStatus*>(sv)->ImageStatus::getFileName().c_str(),
-                      dynamic_cast<ImageStatus*>(sv)->ImageStatus::getFileName().size() + 1);
-            out.write(reinterpret_cast<const char*>(dynamic_cast<ImageStatus*>(sv)),
-                      sizeof(*(dynamic_cast<ImageStatus*>(sv))));
-        }
-
-        else if (statusType == static_cast<int>(STATUS_TYPE::VIDEO))
-        {
-            out.write(dynamic_cast<VideoStatus*>(sv)->VideoStatus::getFileName().c_str(),
-                      dynamic_cast<VideoStatus*>(sv)->VideoStatus::getFileName().size() + 1);
-            out.write(reinterpret_cast<const char*>(dynamic_cast<VideoStatus*>(sv)),
-                      sizeof(*(dynamic_cast<VideoStatus*>(sv))));
-        }
-
-        else
-            out.write(reinterpret_cast<const char*>(sv), sizeof(*sv));
+        sv->saveStatusToFile(out);
     }
 }
 //----------------------------------------------------------
@@ -41,41 +20,26 @@ void Entity::loadFromFile(ifstream& in) //Reads an Entity's data from file.
 {
     getline(in, name, '\0');
     size_t size;
+    STATUS_TYPE statusType;
     in.read(reinterpret_cast<char*>(&size), sizeof(size));
-
-    for (size_t i = 0; i < size; ++i)
+    bulletinBoard.resize(size);
+    bulletinBoard.reserve(size);
+    for (size_t i = 0; i<size;++i)
     {
-        string statusContent, fileName;
-        getline(in, statusContent, '\0');
-
-        size_t statusType = 0;
         in.read(reinterpret_cast<char*>(&statusType), sizeof(statusType));
-        auto type = static_cast<STATUS_TYPE>(statusType);
-
-        if (type == STATUS_TYPE::IMAGE) {
-            ImageStatus* sv = new ImageStatus();
-            getline(in, fileName, '\0');
-            in.read(reinterpret_cast<char*>(sv), sizeof(*sv));
-            sv->Status::setStatusContent(statusContent);
-            sv->ImageStatus::setFileName(fileName);
-            bulletinBoard.emplace_back(new ImageStatus(*sv));
+        if (statusType == STATUS_TYPE::IMAGE)
+        {
+            bulletinBoard[i] = new ImageStatus();
         }
-
-        else if (type == STATUS_TYPE::VIDEO) {
-            VideoStatus* sv = new VideoStatus();
-            getline(in, fileName, '\0');
-            in.read(reinterpret_cast<char*>(sv), sizeof(*sv));
-            sv->Status::setStatusContent(statusContent);
-            sv->VideoStatus::setFileName(fileName);
-            bulletinBoard.emplace_back(new VideoStatus(*sv));
+        else if (statusType == STATUS_TYPE::VIDEO)
+        {
+            bulletinBoard[i] = new VideoStatus();
         }
-
-        else {
-            Status* sv = new Status();
-            in.read(reinterpret_cast<char*>(sv), sizeof(*sv));
-            sv->Status::setStatusContent(statusContent);
-            bulletinBoard.emplace_back(new Status(*sv));
+        else
+        {
+            bulletinBoard[i] = new Status();
         }
+        bulletinBoard.at(i)->readStatusFromFile(in);
     }
 }
 //----------------------------------------------------------
