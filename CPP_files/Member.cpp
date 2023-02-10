@@ -134,6 +134,16 @@ Member &Member::operator+=(Member& _member) noexcept(false) //Member += Member o
     try {this->Entity::addMember(_member);}
     catch (connectedEntities& error) {throw addAFriendException();}
     catch (...) {throw memberExceptions();}
+    //Tests
+    *this > _member ? cout << this->getName() << " has more friends than " << _member.getName() << endl :
+    cout << _member.getName() << " has more friends than " << this->getName() << endl;
+    *this >= _member ? cout << this->getName() << " has equal or more friends than " << _member.getName() << endl :
+    cout << _member.getName() << " has equal more friends than " << this->getName() << endl;
+    *this < _member ? cout << this->getName() << " has less friends than " << _member.getName() << endl :
+    cout << _member.getName() << " has less friends than " << this->getName() << endl;
+    *this <= _member ? cout << this->getName() << " has equal or less friends than " << _member.getName() << endl :
+    cout << _member.getName() << " has equal less friends than " << this->getName() << endl;
+    //End of Tests
     return *this;
 }
 //----------------------------------------------------------
@@ -150,6 +160,16 @@ Member &Member::operator+=(FanPage &fanPage) noexcept(false) //Member += FanPage
     try {this->Member::addFanPage(fanPage);}
     catch (addAFanException& error) {throw addAFanException(error);}
     catch (...) {throw GlobalExceptions();}
+    //Tests
+    *this > fanPage ? cout << this->getName() << " has more friends than " << fanPage.getName() << endl :
+    cout << fanPage.getName() << " has more friends than " << this->getName() << endl;
+    *this >= fanPage ? cout << this->getName() << " has equal or more friends than " << fanPage.getName() << endl :
+    cout << fanPage.getName() << " has equal more friends than " << this->getName() << endl;
+    *this < fanPage ? cout << this->getName() << " has less friends than " << fanPage.getName() << endl :
+    cout << fanPage.getName() << " has less friends than " << this->getName() << endl;
+    *this <= fanPage ? cout << this->getName() << " has equal or less friends than " << fanPage.getName() << endl :
+    cout << fanPage.getName() << " has equal or less friends than " << this->getName() << endl;
+    //End of Tests
     return *this;
 }
 //----------------------------------------------------------

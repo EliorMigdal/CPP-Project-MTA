@@ -41,6 +41,16 @@ FanPage& FanPage::operator+=(Member& _member) //FanPage += Member method.
     try {this->Entity::addMember(_member);}
     catch (connectedEntities& error) { throw reinterpret_cast<addAFanException*>(&error); }
     catch (...) {throw GlobalExceptions();}
+    //Tests
+    *this > _member ? cout << this->getName() << " has more friends than " << _member.getName() << endl :
+    cout << _member.getName() << " has more friends than " << this->getName() << endl;
+    *this >= _member ? cout << this->getName() << " has equal or more friends than " << _member.getName() << endl :
+    cout << _member.getName() << " has equal more friends than " << this->getName() << endl;
+    *this < _member ? cout << this->getName() << " has less friends than " << _member.getName() << endl :
+    cout << _member.getName() << " has less friends than " << this->getName() << endl;
+    *this <= _member ? cout << this->getName() << " has equal or less friends than " << _member.getName() << endl :
+    cout << _member.getName() << " has equal or less friends than " << this->getName() << endl;
+    //End of Tests
     return *this;
 }
 //-----------------------------------------------------------
